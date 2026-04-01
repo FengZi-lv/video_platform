@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../controller/mock_app_controller.dart';
+import '../controller/app_controller.dart';
 import '../models/models.dart';
 import 'admin/admin_shell.dart';
 import 'front/frontstage_shell.dart';
@@ -8,11 +8,17 @@ import 'front/frontstage_shell.dart';
 class AppShell extends StatelessWidget {
   const AppShell({super.key, required this.controller});
 
-  final MockAppController controller;
+  final AppController controller;
 
   @override
   Widget build(BuildContext context) {
-    if (controller.currentPath.startsWith('/admin') || controller.isAdmin) {
+    if (controller.bootstrapping) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (controller.currentPath.startsWith('/admin')) {
       return AdminShell(controller: controller);
     }
     return FrontstageShell(controller: controller);
@@ -25,15 +31,15 @@ void showFeedback(BuildContext context, String message) {
     ..showSnackBar(SnackBar(content: Text(message)));
 }
 
-String demoRoleLabel(DemoRole role) {
+String userRoleLabel(UserRole role) {
   switch (role) {
-    case DemoRole.guest:
+    case UserRole.guest:
       return '游客';
-    case DemoRole.member:
-      return '客户端';
-    case DemoRole.banned:
+    case UserRole.member:
+      return '普通用户';
+    case UserRole.banned:
       return '封禁账号';
-    case DemoRole.admin:
-      return '管理端';
+    case UserRole.admin:
+      return '管理员';
   }
 }
