@@ -10,7 +10,9 @@ CREATE TABLE users
     status     ENUM ('active', 'ban','admin') NOT NULL DEFAULT 'active',
     bio        TEXT                           NOT NULL,
     coins      INT                            NOT NULL DEFAULT 0,
-    earn_coins INT                            NOT NULL DEFAULT 0
+    earn_coins INT                            NOT NULL DEFAULT 0,
+
+    UNIQUE KEY (account)
 );
 
 CREATE TABLE check_in
@@ -34,7 +36,7 @@ CREATE TABLE videos
     status          ENUM ('reviewing','reject','pass') DEFAULT 'reviewing',
     likes_count     INT          NOT NULL              DEFAULT 0,
     favorites_count INT          NOT NULL              DEFAULT 0,
-    earn_coins     INT          NOT NULL              DEFAULT 0,
+    earn_coins      INT          NOT NULL              DEFAULT 0,
     video_url       VARCHAR(500) NOT NULL,
     create_date     TIMESTAMP                          DEFAULT CURRENT_TIMESTAMP(),
     thumbnail_url   VARCHAR(500) NOT NULL,
