@@ -3,23 +3,24 @@ USE video_platform_db;
 
 CREATE TABLE users
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    account  VARCHAR(255)                   NOT NULL UNIQUE,
-    password VARCHAR(255)                   NOT NULL,
-    username VARCHAR(255)                   NOT NULL,
-    status   ENUM ('active', 'ban','admin') NOT NULL DEFAULT 'active',
-    bio      TEXT                           NOT NULL,
-    coins    INT                            NOT NULL DEFAULT 0
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    account    VARCHAR(255)                   NOT NULL UNIQUE,
+    password   VARCHAR(255)                   NOT NULL,
+    username   VARCHAR(255)                   NOT NULL,
+    status     ENUM ('active', 'ban','admin') NOT NULL DEFAULT 'active',
+    bio        TEXT                           NOT NULL,
+    coins      INT                            NOT NULL DEFAULT 0,
+    earn_coins INT                            NOT NULL DEFAULT 0
 );
 
 CREATE TABLE check_in
 (
     id      INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT  NOT NULL,
-    date    DATE NOT NULL DEFAULT (CURRENT_DATE),   -- 无法直接使用函数
+    date    DATE NOT NULL DEFAULT (CURRENT_DATE), -- 无法直接使用函数
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    UNIQUE KEY (user_id, date) -- 防止重复签到
+    UNIQUE KEY (user_id, date)                    -- 防止重复签到
 );
 
 
@@ -33,9 +34,10 @@ CREATE TABLE videos
     status          ENUM ('reviewing','reject','pass') DEFAULT 'reviewing',
     likes_count     INT          NOT NULL              DEFAULT 0,
     favorites_count INT          NOT NULL              DEFAULT 0,
-    coins_count     INT          NOT NULL              DEFAULT 0,
+    earn_coins     INT          NOT NULL              DEFAULT 0,
     video_url       VARCHAR(500) NOT NULL,
     create_date     TIMESTAMP                          DEFAULT CURRENT_TIMESTAMP(),
+    thumbnail_url   VARCHAR(500) NOT NULL,
 
     FOREIGN KEY (uploader_id) REFERENCES users (id) ON DELETE CASCADE
 
@@ -75,10 +77,10 @@ CREATE TABLE video_history
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (video_id) REFERENCES videos (id) ON DELETE CASCADE,
-    UNIQUE KEY (user_id, video_id) -- 防止重复
+    UNIQUE KEY (user_id, video_id)                                 -- 防止重复
 );
 
-CREATE TABLE video_coins
+CREATE TABLE video_earn_coins
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     user_id     INT NULL,
