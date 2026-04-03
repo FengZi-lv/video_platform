@@ -1,8 +1,6 @@
-# 身份验证
+# 用户服务 (UserService)
 
-每次请求带上Bearer JWT
-
-未登录即带上`Bearer guest`
+每次身份验证请求带上Bearer JWT，未登录即带上`Bearer guest`
 
 ## 登录
 
@@ -23,7 +21,8 @@
 {
   "success": true,
   "token": "JWT",
-  "role": "user", // admin , banned
+  "role": "user"
+  // admin , banned
 }
 ```
 
@@ -179,7 +178,77 @@
 }
 ```
 
-# 用户
+## 查看所有用户
+
+`GET /api/admin/users`
+
+返回
+
+```json
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "用户名",
+      "role": "user"
+      // admin , banned
+    }
+  ]
+}
+```
+
+## 封禁账号
+
+`POST /api/admin/users/ban`
+
+请求
+
+```json
+{
+  "user_id": 1
+}
+```
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "封禁账号成功"
+}
+```
+
+```json
+{
+  "success": false,
+  "msg": "封禁账号失败"
+}
+```
+
+
+# 签到服务 (CheckInService)
+
+## 签到
+
+`POST /api/auth/sign-in`
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "签到成功，获得10个硬币"
+}
+```
+
+```json
+{
+  "success": false,
+  "msg": "签到失败，今天已经签到过了"
+}
+```
+
+# 视频服务 (VideoService)
 
 ## 视频列表
 
@@ -222,7 +291,6 @@
 }
 ```
 
-
 ## 视频详情
 
 `GET /api/videos/{id}`
@@ -250,6 +318,97 @@
   ]
 }
 ```
+
+## 发布视频
+
+`POST /api/videos/publish`
+
+请求
+
+```json
+{
+  "title": "视频标题",
+  "description": "视频描述",
+  "src": "视频URL",
+  "thumbnail": "缩略图URL"
+}
+```
+
+## 上传视频
+
+`POST /api/videos/upload`
+
+使用`multipart/form-data`上传数据
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "上传视频成功",
+  "video_url": "视频URL",
+  "thumbnail_url": "缩略图URL"
+}
+```
+
+```json
+{
+  "success": false,
+  "msg": "上传视频失败"
+}
+```
+
+## 查看审核视频
+
+`GET /api/admin/videos/pending`
+
+返回
+
+```json
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "视频标题",
+      "thumbnail": "缩略图URL",
+      "uploader": "上传者用户名"
+    }
+  ]
+}
+```
+
+## 审核视频
+
+`POST /api/admin/videos/review`
+
+请求
+
+```json
+{
+  "video_id": 1,
+  "action": "approve"
+  // approve or reject
+}
+```
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "审核成功"
+}
+```
+
+```json
+{
+  "success": false,
+  "msg": "审核失败"
+}
+```
+
+
+# 视频点赞服务 (VideoLikeService)
 
 ## 点赞视频
 
@@ -307,6 +466,8 @@
 }
 ```
 
+
+# 视频收藏服务 (VideoFavoritesService)
 ## 收藏视频
 
 `POST /api/videos/favorite`
@@ -363,6 +524,50 @@
 }
 ```
 
+## 收藏的视频
+
+`GET /api/videos/favorites`
+
+返回
+
+```json
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "视频标题",
+      "thumbnail": "缩略图URL",
+      "likes": 100,
+      "coins": 50
+    }
+  ]
+}
+```
+
+
+# 视频历史服务 (VideoHistoryService)
+## 历史浏览
+
+`GET /api/videos/history`
+
+返回
+
+```json
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "视频标题",
+      "thumbnail": "缩略图URL",
+      "likes": 100,
+      "coins": 50
+    }
+  ]
+}
+```
+
+
+# 视频投币服务 (VideoCoinsService)
 ## 投币
 
 `POST /api/videos/coin`
@@ -391,6 +596,9 @@
   "msg": "投币失败，硬币不足"
 }
 ```
+
+
+# 评论服务 (CommentService)
 
 ## 发表评论
 
@@ -443,6 +651,7 @@
 ```
 
 
+# 评论点赞服务 (CommentLikesService)
 
 ## 点赞评论
 
@@ -455,6 +664,7 @@
   "comment_id": 1
 }
 ```
+
 返回
 
 ```json
@@ -499,6 +709,9 @@
 }
 ```
 
+
+# 举报服务 (ReportService)
+
 ## 举报视频
 
 `POST /api/videos/report`
@@ -529,239 +742,6 @@
 ```
 
 
-## 发布视频
-
-`POST /api/videos/publish`
-
-请求
-
-```json
-{
-  "title": "视频标题",
-  "description": "视频描述",
-  "src": "视频URL",
-  "thumbnail": "缩略图URL"
-}
-```
-
-## 上传视频
-
-
-`POST /api/videos/upload`
-
-使用`multipart/form-data`上传数据
-
-返回
-```json
-{
-  "success": true,
-  "msg": "上传视频成功",
-  "video_url": "视频URL",
-  "thumbnail_url": "缩略图URL"
-}
-```
-
-```json
-{
-  "success": false,
-  "msg": "上传视频失败"
-}
-```
-
-
-## 查看自己发布的视频
-
-`GET /api/videos/me`
-
-返回
-
-```json
-{
-  "videos": [
-    {
-      "id": 1,
-      "title": "视频标题",
-      "thumbnail": "缩略图URL",
-      "likes": 100,
-      "coins": 50
-    }
-  ]
-}
-```
-
-## 历史浏览
-
-`GET /api/videos/history`
-
-返回
-
-```json
-{
-  "videos": [
-    {
-      "id": 1,
-      "title": "视频标题",
-      "thumbnail": "缩略图URL",
-      "likes": 100,
-      "coins": 50
-    }
-  ]
-}
-```
-
-## 收藏的视频
-
-`GET /api/videos/favorites`
-
-返回
-
-```json
-{
-  "videos": [
-    {
-      "id": 1,
-      "title": "视频标题",
-      "thumbnail": "缩略图URL",
-      "likes": 100,
-      "coins": 50
-    }
-  ]
-}
-```
-
-
-## 签到
-
-`POST /api/auth/sign-in`
-
-返回
-
-```json
-{
-  "success": true,
-  "msg": "签到成功，获得10个硬币"
-}
-```
-
-```json
-{
-  "success": false,
-  "msg": "签到失败，今天已经签到过了"
-}
-```
-
-## 统计所有视频数据
-
-`GET /api/user/stats`
-
-返回
-
-```json
-{
-  "total_videos": 10,
-  "total_likes": 100,
-  "total_coins": 50,
-  "total_favorites": 20
-}
-```
-
-# 管理员
-
-## 查看审核视频
-
-`GET /api/admin/videos/pending`
-
-返回
-
-```json
-{
-  "videos": [
-    {
-      "id": 1,
-      "title": "视频标题",
-      "thumbnail": "缩略图URL",
-      "uploader": "上传者用户名"
-    }
-  ]
-}
-```
-
-## 审核视频
-
-`POST /api/admin/videos/review`
-
-请求
-
-```json
-{
-  "video_id": 1,
-  "action": "approve" // approve or reject
-}
-```
-
-返回
-
-```json
-{
-  "success": true,
-  "msg": "审核成功"
-}
-```
-
-```json
-{
-  "success": false,
-  "msg": "审核失败"
-}
-```
-
-## 查看所有用户
-
-`GET /api/admin/users`
-
-返回
-
-```json
-{
-  "users": [
-    {
-      "id": 1,
-      "username": "用户名",
-      "role": "user" // admin , banned
-    }
-  ]
-}
-```
-
-## 封禁账号
-
-`POST /api/admin/users/ban`
-
-请求
-
-```json
-{
-  "user_id": 1
-}
-```
-
-
-返回
-
-```json
-{
-  "success": true,
-  "msg": "封禁账号成功"
-}
-```
-
-```json
-{
-  "success": false,
-  "msg": "封禁账号失败"
-}
-```
-
 ## 查看举报列表
 
 `GET /api/admin/reports`
@@ -790,7 +770,8 @@
 ```json
 {
   "report_id": 1,
-  "action": "approve" // approve or reject
+  "action": "approve"
+  // approve or reject
 }
 ```
 
