@@ -225,7 +225,6 @@
 }
 ```
 
-
 # 签到服务 (CheckInService)
 
 ## 签到
@@ -245,6 +244,20 @@
 {
   "success": false,
   "msg": "签到失败，今天已经签到过了"
+}
+```
+
+## 签到记录
+
+`GET /api/auth/sign-in/history`
+
+返回
+
+```json
+{
+  "records": [
+    "2024-06-01"
+  ]
 }
 ```
 
@@ -407,7 +420,6 @@
 }
 ```
 
-
 # 视频点赞服务 (VideoLikeService)
 
 ## 点赞视频
@@ -466,8 +478,8 @@
 }
 ```
 
-
 # 视频收藏服务 (VideoFavoritesService)
+
 ## 收藏视频
 
 `POST /api/videos/favorite`
@@ -544,8 +556,8 @@
 }
 ```
 
-
 # 视频历史服务 (VideoHistoryService)
+
 ## 历史浏览
 
 `GET /api/videos/history`
@@ -566,8 +578,8 @@
 }
 ```
 
-
 # 视频投币服务 (VideoCoinsService)
+
 ## 投币
 
 `POST /api/videos/coin`
@@ -596,7 +608,6 @@
   "msg": "投币失败，硬币不足"
 }
 ```
-
 
 # 评论服务 (CommentService)
 
@@ -649,7 +660,6 @@
   "msg": "删除评论失败"
 }
 ```
-
 
 # 评论点赞服务 (CommentLikesService)
 
@@ -709,7 +719,6 @@
 }
 ```
 
-
 # 举报服务 (ReportService)
 
 ## 举报视频
@@ -740,7 +749,6 @@
   "msg": "举报失败，已举报过"
 }
 ```
-
 
 ## 查看举报列表
 
