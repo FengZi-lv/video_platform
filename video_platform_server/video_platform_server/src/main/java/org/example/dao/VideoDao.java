@@ -2,23 +2,15 @@ package org.example.dao;
 
 
 import org.example.entity.Video;
-import org.example.util.DBUtil;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoDao implements AutoCloseable {
-    private final Connection conn;
+public class VideoDao extends BaseDao {
 
     public VideoDao() throws SQLException {
-        this.conn = DBUtil.getConnection();
-    }
-
-    @Override
-    public void close() {
-        DBUtil.close(conn);
+        super();
     }
 
     public List<Video> getRadomVideos() throws Exception {

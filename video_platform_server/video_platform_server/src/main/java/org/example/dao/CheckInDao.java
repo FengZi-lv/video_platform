@@ -1,23 +1,14 @@
 package org.example.dao;
 
 
-import org.example.util.DBUtil;
-
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckInDao implements AutoCloseable {
-    private final Connection conn;
+public class CheckInDao extends BaseDao {
 
     public CheckInDao() throws SQLException {
-        this.conn = DBUtil.getConnection();
-    }
-
-    @Override
-    public void close() {
-        DBUtil.close(conn);
+        super();
     }
 
     public int signIn(int id) throws Exception {

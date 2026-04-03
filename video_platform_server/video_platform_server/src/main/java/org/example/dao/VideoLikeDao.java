@@ -1,23 +1,14 @@
 package org.example.dao;
 
 
-import org.example.util.DBUtil;
-
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoLikeDao implements AutoCloseable {
-    private final Connection conn;
+public class VideoLikeDao extends BaseDao {
 
     public VideoLikeDao() throws SQLException {
-        this.conn = DBUtil.getConnection();
-    }
-
-    @Override
-    public void close() {
-        DBUtil.close(conn);
+        super();
     }
 
     public int addLike(int userId, int videoId) throws Exception {

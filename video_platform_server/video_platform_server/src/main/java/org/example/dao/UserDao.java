@@ -1,23 +1,15 @@
 package org.example.dao;
 
 import org.example.entity.User;
-import org.example.util.DBUtil;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao implements AutoCloseable {
-    private final Connection conn;
+public class UserDao extends BaseDao {
 
     public UserDao() throws SQLException {
-        this.conn = DBUtil.getConnection();
-    }
-
-    @Override
-    public void close() {
-        DBUtil.close(conn);
+        super();
     }
 
 
