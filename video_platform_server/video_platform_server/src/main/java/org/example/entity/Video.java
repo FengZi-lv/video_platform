@@ -13,9 +13,10 @@ public class Video {
     private Integer coinsCount;
     private String videoUrl;
     private Timestamp createDate;
+    private String thumbnailUrl;
 
 
-    public Video(Integer id, Integer uploaderId, String title, String intro, String status, Integer likesCount, Integer favoritesCount, Integer coinsCount, String videoUrl, Timestamp createDate) {
+    public Video(Integer id, Integer uploaderId, String title, String intro, String status, Integer likesCount, Integer favoritesCount, Integer coinsCount, String videoUrl, String thumbnailUrl, Timestamp createDate) {
         this.id = id;
         this.uploaderId = uploaderId;
         this.title = title;
@@ -25,6 +26,7 @@ public class Video {
         this.favoritesCount = favoritesCount;
         this.coinsCount = coinsCount;
         this.videoUrl = videoUrl;
+        this.thumbnailUrl = thumbnailUrl;
         this.createDate = createDate;
     }
 
@@ -106,5 +108,9 @@ public class Video {
 
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 }

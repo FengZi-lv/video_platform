@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/init_db.sql" value="bde03e58-6893-4f92-a37b-b936c27484da" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/example/dao/CheckInDao.java" value="bde03e58-6893-4f92-a37b-b936c27484da" />
     <file url="file://$PROJECT_DIR$/src/main/java/org/example/dao/UserDao.java" value="bde03e58-6893-4f92-a37b-b936c27484da" />
+    <file url="file://$PROJECT_DIR$/src/main/java/org/example/dao/VideoDao.java" value="bde03e58-6893-4f92-a37b-b936c27484da" />
   </component>
 </project>
