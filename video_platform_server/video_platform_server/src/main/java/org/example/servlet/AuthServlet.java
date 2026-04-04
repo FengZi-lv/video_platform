@@ -35,6 +35,9 @@ public class AuthServlet extends HttpServlet {
         try {
             var userLoginDTO = new com.google.gson.Gson().fromJson(req.getReader(), UserLoginDTO.class);
             var loginVO = userService.login(userLoginDTO);
+            if (!loginVO.isSuccess()) {
+                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
             resp.setContentType("application/json;charset=UTF-8");
             resp.getWriter().write(new com.google.gson.Gson().toJson(loginVO));
         } catch (Exception e) {
