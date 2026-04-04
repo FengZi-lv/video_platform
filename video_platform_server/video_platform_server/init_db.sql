@@ -4,15 +4,15 @@ USE video_platform_db;
 CREATE TABLE users
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
-    account    VARCHAR(255)                   NOT NULL UNIQUE,
+    username   VARCHAR(255)                   NOT NULL UNIQUE,
     password   VARCHAR(255)                   NOT NULL,
-    username   VARCHAR(255)                   NOT NULL,
+    nickname   VARCHAR(255)                   NOT NULL,
     status     ENUM ('active', 'ban','admin') NOT NULL DEFAULT 'active',
     bio        TEXT                           NOT NULL,
     coins      INT                            NOT NULL DEFAULT 0,
     earn_coins INT                            NOT NULL DEFAULT 0,
 
-    UNIQUE KEY (account)
+    UNIQUE KEY (username)
 );
 
 CREATE TABLE check_in

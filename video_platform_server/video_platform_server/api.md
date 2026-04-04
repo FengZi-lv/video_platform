@@ -1,6 +1,7 @@
 # 认证服务 (AuthService)
 
 每次身份验证请求带上Bearer JWT，未登录即带上`Bearer guest`
+`username` 表示登录名，`nickname` 表示用户名称。
 
 ## 登录
 
@@ -10,7 +11,7 @@
 
 ```json
 {
-  "username": "用户名",
+  "username": "登录名",
   "password": "密码"
 }
 ```
@@ -21,8 +22,6 @@
 {
   "success": true,
   "token": "JWT",
-  "role": "user"
-  // admin , banned
 }
 ```
 
@@ -41,9 +40,9 @@
 
 ```json
 {
-  "account": "111@qqqq.com",
+  "username": "111@qqqq.com",
   "password": "密码",
-  "username": "用户名",
+  "nickname": "显示名称",
   "bio": "个人简介"
 }
 ```
@@ -60,7 +59,7 @@
 ```json
 {
   "success": false,
-  "msg": "注册失败，账号已存在"
+  "msg": "注册失败，用户名已存在"
 }
 ```
 
@@ -130,7 +129,7 @@
 
 ```json
 {
-  "username": "新用户名"
+  "nickname": "新显示名称"
 }
 ```
 
@@ -164,7 +163,7 @@
 ```json
 {
   "id": 1,
-  "username": "用户名",
+  "nickname": "用户名称",
   "bio": "个人简介",
   "likes": 100,
   "earn_coins": 100,
@@ -191,7 +190,7 @@
   "users": [
     {
       "id": 1,
-      "username": "用户名",
+      "nickname": "用户名称",
       "role": "user"
       // admin , banned
     }
@@ -386,7 +385,7 @@
       "id": 1,
       "title": "视频标题",
       "thumbnail": "缩略图URL",
-      "uploader": "上传者用户名"
+      "uploader": "上传者昵称"
     }
   ]
 }
@@ -765,7 +764,7 @@
       "id": 1,
       "video_id": 1,
       "reason": "举报理由",
-      "reporter": "举报者用户名"
+      "reporter": "举报者昵称"
     }
   ]
 }

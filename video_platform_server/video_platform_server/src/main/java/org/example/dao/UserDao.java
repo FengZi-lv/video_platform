@@ -22,9 +22,9 @@ public class UserDao extends BaseDao {
                 while (rs.next()) {
                     var user = new User(
                             rs.getInt("id"),
-                            rs.getString("account"),
-                            rs.getString("password"),
                             rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("nickname"),
                             rs.getString("status"),
                             rs.getString("bio"),
                             rs.getInt("coins")
@@ -36,18 +36,18 @@ public class UserDao extends BaseDao {
         return users;
     }
 
-    public List<User> queryUsersByAccount(String account) throws SQLException {
-        var sql = "SELECT * FROM users WHERE account = ?";
+    public List<User> queryUsersByUsername(String username) throws SQLException {
+        var sql = "SELECT * FROM users WHERE username = ?";
         var users = new ArrayList<User>();
         try (var stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, account);
+            stmt.setString(1, username);
             try (var rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     var user = new User(
                             rs.getInt("id"),
-                            rs.getString("account"),
-                            rs.getString("password"),
                             rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("nickname"),
                             rs.getString("status"),
                             rs.getString("bio"),
                             rs.getInt("coins")
@@ -60,11 +60,11 @@ public class UserDao extends BaseDao {
     }
 
     public int addUser(User user) throws SQLException {
-        var sql = "INSERT INTO users (account, password, username, bio) VALUES (?, ?, ?, ?)";
+        var sql = "INSERT INTO users (username, password, nickname, bio) VALUES (?, ?, ?, ?)";
         try (var stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, user.getAccount());
+            stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getUsername());
+            stmt.setString(3, user.getNickname());
             stmt.setString(4, user.getBio());
             return stmt.executeUpdate();
         }
@@ -80,12 +80,12 @@ public class UserDao extends BaseDao {
     }
 
     public int updateUserInfo(User user) throws SQLException {
-        var sql = "UPDATE users SET username = ?, status = ?, bio = ? WHERE account = ?";
+        var sql = "UPDATE users SET nickname = ?, status = ?, bio = ? WHERE username = ?";
         try (var stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, user.getUsername());
+            stmt.setString(1, user.getNickname());
             stmt.setString(2, user.getStatus());
             stmt.setString(3, user.getBio());
-            stmt.setString(4, user.getAccount());
+            stmt.setString(4, user.getUsername());
             return stmt.executeUpdate();
         }
     }
@@ -98,9 +98,9 @@ public class UserDao extends BaseDao {
             while (rs.next()) {
                 var user = new User(
                         rs.getInt("id"),
-                        rs.getString("account"),
-                        rs.getString("password"),
                         rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("nickname"),
                         rs.getString("status"),
                         rs.getString("bio"),
                         rs.getInt("coins")
@@ -111,10 +111,10 @@ public class UserDao extends BaseDao {
         return users;
     }
 
-    public int deleteUserByAccount(String account) throws SQLException {
-        var sql = "DELETE FROM users WHERE account = ?";
+    public int deleteUserByUsername(String username) throws SQLException {
+        var sql = "DELETE FROM users WHERE username = ?";
         try (var stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, account);
+            stmt.setString(1, username);
             return stmt.executeUpdate();
         }
     }

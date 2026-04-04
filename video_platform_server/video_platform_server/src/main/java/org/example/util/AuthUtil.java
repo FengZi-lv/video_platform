@@ -3,7 +3,7 @@ package org.example.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
-import org.example.entity.UserPayload;
+import org.example.dto.UserPayloadDTO;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -39,7 +39,7 @@ public class AuthUtil {
         return new String(Base64.getUrlDecoder().decode(base64), StandardCharsets.UTF_8);
     }
 
-    public static String hashJWT(UserPayload payload) throws Exception {
+    public static String hashJWT(UserPayloadDTO payload) throws Exception {
         var header_payload = strToBase64(HEADER.getBytes(StandardCharsets.UTF_8)) + "." + strToBase64(payload.toJSON().getBytes(StandardCharsets.UTF_8));
         var hash = generateHS256(header_payload);
         return header_payload + "." + hash;
@@ -51,7 +51,7 @@ public class AuthUtil {
         }
         var parts = token.split("\\.");
 
-        if (parts.length == 3)
+        if (parts.length <= 3)
             return false;
         var header = parts[0];
         var payload = parts[1];
@@ -64,7 +64,7 @@ public class AuthUtil {
         }
     }
 
-    public static UserPayload parseToken(String token) {
+    public static UserPayloadDTO parseToken(String token) {
         if (token == null || token.isEmpty()) {
             return null;
         }
@@ -85,10 +85,14 @@ public class AuthUtil {
                             })
                     .create();
 
-            return gson.fromJson(jsonStr, UserPayload.class);
+            return gson.fromJson(jsonStr, UserPayloadDTO.class);
         } catch (Exception e) {
             return null;
         }
     }
 
+
+    public static String generatePwdHash(String pwd) throws Exception {
+        return generateHS256("pwd{" + pwd + "}salt{" + salt + '}' );
+    }
 }

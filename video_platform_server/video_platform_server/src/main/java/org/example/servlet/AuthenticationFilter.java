@@ -23,9 +23,12 @@ public class AuthenticationFilter implements Filter {
             "/api/admin"
     };
 
+    // 需要根据工件名称排除path
+    private static final String artifactName = "/video_platform_server_war_exploded";
+
     private static boolean verifyPathIsAllow(String path, String[] allowedList) {
         for (var allowedPath : allowedList) {
-            if (!path.startsWith(allowedPath)) {
+            if (path.startsWith(allowedPath)) {
                 return true;
             }
         }
@@ -62,11 +65,14 @@ public class AuthenticationFilter implements Filter {
 
         var path = httpRequest.getRequestURI();
 
+        // 过滤工件名
+        path = path.substring(artifactName.length());
+
         // role为guest
         if (token.equals("guest")) {
 
             // 如果范围的是游客可访问的接口
-            if (verifyPathIsAllow(path, guestAllowed)) {
+            if (!verifyPathIsAllow(path, guestAllowed)) {
                 reject(httpResponse);
                 return;
             }
@@ -84,7 +90,7 @@ public class AuthenticationFilter implements Filter {
         var payload = AuthUtil.parseToken(token);
 
         // 验证访问路径是否为管理员
-        if (verifyPathIsAllow(path, adminAllowed) && payload.getRole().equals("admin")) {
+        if (!verifyPathIsAllow(path, adminAllowed) && payload.getRole().equals("admin")) {
             reject(httpResponse);
             return;
         }
