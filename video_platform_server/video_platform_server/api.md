@@ -1,4 +1,4 @@
-# 用户服务 (UserService)
+# 认证服务 (AuthService)
 
 每次身份验证请求带上Bearer JWT，未登录即带上`Bearer guest`
 
@@ -121,9 +121,11 @@
 }
 ```
 
+# 用户服务 (UserService)
+
 ## 修改个人信息
 
-`POST /api/auth/update-profile`
+`POST /api/users/profile`
 请求
 
 ```json
@@ -156,7 +158,7 @@
 
 ## 用户信息
 
-`GET /api/auth/user`
+`GET /api/users/me`
 返回
 
 ```json
@@ -229,7 +231,7 @@
 
 ## 签到
 
-`POST /api/auth/sign-in`
+`POST /api/users/sign-in`
 
 返回
 
@@ -249,7 +251,7 @@
 
 ## 签到记录
 
-`GET /api/auth/sign-in/history`
+`GET /api/users/sign-in/history`
 
 返回
 
