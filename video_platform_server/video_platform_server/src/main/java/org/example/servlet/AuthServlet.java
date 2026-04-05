@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dto.UserChangePwdDTO;
+import org.example.dto.UserDeleteAccountDTO;
 import org.example.dto.UserLoginDTO;
 import org.example.dto.UserRegisterDTO;
 import org.example.service.UserService;
@@ -51,16 +53,16 @@ public class AuthServlet extends HttpServlet {
      * POST /api/auth/change-password
      * 修改密码
      */
-    private void changePassword(HttpServletRequest req, HttpServletResponse resp) {
-
+    private ResultVO changePassword(UserChangePwdDTO userChangePwdDTO) throws Exception {
+        return userService.changePassword(userChangePwdDTO);
     }
 
     /**
      * POST /api/auth/delete-account
      * 注销账号
      */
-    private void deleteAccount(HttpServletRequest req, HttpServletResponse resp) {
-
+    private ResultVO deleteAccount(UserDeleteAccountDTO userDeleteAccountDTO) throws Exception {
+        return   userService.deleteAccount(userDeleteAccountDTO);
     }
 
 
@@ -70,8 +72,10 @@ public class AuthServlet extends HttpServlet {
         switch (pathInfo) {
             case "/login" -> ServletUtil.handleJsonRequest(req, resp, UserLoginDTO.class, this::login);
             case "/register" -> ServletUtil.handleJsonRequest(req, resp, UserRegisterDTO.class, this::register);
-            case "/change-password" -> changePassword(req, resp);
-            case "/delete-account" -> deleteAccount(req, resp);
+            case "/change-password" ->
+                    ServletUtil.handleJsonRequest(req, resp, UserChangePwdDTO.class, this::changePassword);
+            case "/delete-account" ->
+                    ServletUtil.handleJsonRequest(req, resp, UserDeleteAccountDTO.class, this::deleteAccount);
             case null, default -> {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 resp.getWriter().write("{\"success\": false, \"message\": \"Not Found api\"}");

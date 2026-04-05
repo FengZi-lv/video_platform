@@ -109,6 +109,7 @@ paths:
     post:
       tags: [ Auth ]
       summary: 注销账号
+      description: 当前用户由 Bearer JWT 的 payload 决定，请求体只提交账号密码。
       requestBody:
         required: true
         content:
@@ -127,8 +128,8 @@ paths:
     post:
       tags: [ User ]
       summary: 修改个人信息
+      description: 当前用户由 Bearer JWT 的 payload 决定，请求体只提交要修改的新昵称或简介。
       requestBody:
-        required: true
         content:
           application/json:
             schema:
@@ -866,11 +867,11 @@ components:
 
     ChangePasswordRequest:
       type: object
-      required: [ old_password, new_password ]
+      required: [ oldPassword, newPassword ]
       properties:
-        old_password:
+        oldPassword:
           type: string
-        new_password:
+        newPassword:
           type: string
 
     DeleteAccountRequest:

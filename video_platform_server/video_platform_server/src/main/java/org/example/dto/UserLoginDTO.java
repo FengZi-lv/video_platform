@@ -1,12 +1,16 @@
 package org.example.dto;
 
-public class UserLoginDTO {
+public class UserLoginDTO extends UserPayloadDTO {
     private String username;
     private String password;
 
-    public UserLoginDTO(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public UserLoginDTO() {
+    }
+
+    public UserLoginDTO(String loginUsername, String loginPassword) {
+        super(null, null, null, null, null);
+        this.username = loginUsername;
+        this.password = loginPassword;
     }
 
     public String getUsername() {

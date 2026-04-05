@@ -111,10 +111,10 @@ public class UserDao extends BaseDao {
         return users;
     }
 
-    public int deleteUserByUsername(String username) throws SQLException {
-        var sql = "DELETE FROM users WHERE username = ?";
+    public int deleteUserById(int id) throws SQLException {
+        var sql = "DELETE FROM users WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setInt(1, id);
             return stmt.executeUpdate();
         }
     }

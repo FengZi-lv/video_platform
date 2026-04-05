@@ -15,6 +15,9 @@ public class UserPayloadDTO {
     private Timestamp exp;
     private String role;
 
+    public UserPayloadDTO() {
+    }
+
     /**
      *
      * @param userId 用户Id
@@ -49,6 +52,7 @@ public class UserPayloadDTO {
     public String getNickname() {
         return nickname;
     }
+
     public String toJSON() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, (JsonSerializer<Timestamp>) (src, typeOfSrc, context) -> {
@@ -58,5 +62,25 @@ public class UserPayloadDTO {
         return gson.toJson(this);
     }
 
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setIat(Timestamp iat) {
+        this.iat = iat;
+    }
+
+    public void setExp(Timestamp exp) {
+        this.exp = exp;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 }

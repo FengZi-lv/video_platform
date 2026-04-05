@@ -71,8 +71,8 @@
 
 ```json
 {
-  "old_password": "旧密码",
-  "new_password": "新密码"
+  "oldPassword": "旧密码",
+  "newPassword": "新密码"
 }
 ```
 

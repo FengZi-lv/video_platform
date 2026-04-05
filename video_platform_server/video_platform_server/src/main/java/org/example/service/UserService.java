@@ -1,15 +1,12 @@
 package org.example.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.UserLoginDTO;
-import org.example.dto.UserPayloadDTO;
+import org.example.dto.*;
 import org.example.dao.UserDao;
-import org.example.dto.UserRegisterDTO;
 import org.example.entity.User;
 import org.example.util.AuthUtil;
 import org.example.vo.LoginVO;
 import org.example.vo.RegisterVO;
+import org.example.vo.ResultVO;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -90,15 +87,38 @@ public class UserService {
     /**
      * 修改密码
      */
-    public void changePassword(HttpServletRequest req, HttpServletResponse resp) {
+    public ResultVO changePassword(UserChangePwdDTO userChangePwdDTO) throws Exception {
+        var user = userDao.queryUsersById(userChangePwdDTO.getUserId());
+        if (user.isEmpty()) {
+            return new ResultVO(false, "不存在此用户名，或发生错误");
+        }
+        if (!user.get(0).getPassword().equals(
+                AuthUtil.generatePwdHash(userChangePwdDTO.getOldPassword())
+        )) {
+            return new ResultVO(false, "旧密码错误");
+        }
+
+        userDao.updateUserPassword(user.get(0).getId(), AuthUtil.generatePwdHash(userChangePwdDTO.getNewPassword()));
+        return new ResultVO(true, "密码修改成功");
 
     }
 
     /**
      * 注销账号
      */
-    public void deleteAccount(HttpServletRequest req, HttpServletResponse resp) {
+    public ResultVO deleteAccount(UserDeleteAccountDTO userDeleteAccountDTO) throws Exception {
+        var user = userDao.queryUsersById(userDeleteAccountDTO.getUserId());
+        if (user.isEmpty()) {
+            return new ResultVO(false, "不存在此用户名，或发生错误");
+        }
+        if (!user.get(0).getPassword().equals(
+                AuthUtil.generatePwdHash(userDeleteAccountDTO.getPassword())
+        )) {
+            return new ResultVO(false, "密码错误");
+        }
 
+        userDao.deleteUserById(user.get(0).getId());
+        return new ResultVO(true, "账号注销成功");
     }
 }
 
