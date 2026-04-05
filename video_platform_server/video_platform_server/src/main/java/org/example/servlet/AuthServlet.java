@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.UserLoginDTO;
+import org.example.dto.UserRegisterDTO;
 import org.example.service.UserService;
 
 import java.io.IOException;
@@ -43,7 +44,8 @@ public class AuthServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "服务器出错");
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"success\": false, \"message\": \"服务器出错\"}");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -55,7 +57,23 @@ public class AuthServlet extends HttpServlet {
      * 用户注册
      */
     private void register(HttpServletRequest req, HttpServletResponse resp) {
-
+        try {
+            var userRegisterDTO = new com.google.gson.Gson().fromJson(req.getReader(), UserRegisterDTO.class);
+            var registerVO = userService.register(userRegisterDTO);
+            if (!registerVO.isSuccess()) {
+                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+            resp.setContentType("application/json;charset=UTF-8");
+            resp.getWriter().write(new com.google.gson.Gson().toJson(registerVO));
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"success\": false, \"message\": \"服务器出错\"}");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -83,7 +101,10 @@ public class AuthServlet extends HttpServlet {
             case "/register" -> register(req, resp);
             case "/change-password" -> changePassword(req, resp);
             case "/delete-account" -> deleteAccount(req, resp);
-            case null, default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            case null, default -> {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("{\"success\": false, \"message\": \"Not Found api\"}");
+            }
         }
     }
 }
