@@ -51,7 +51,7 @@ public class AuthUtil {
         }
         var parts = token.split("\\.");
 
-        if (parts.length <= 3)
+        if (parts.length != 3)
             return null;
         var header = parts[0];
         var payload = parts[1];
@@ -60,7 +60,7 @@ public class AuthUtil {
 
         try {
             var expectedHash = generateHS256(header + "." + payload);
-            if (expectedHash.equals(hash)) return null;
+            if (!expectedHash.equals(hash)) return null;
         } catch (Exception e) {
             return null;
         }
