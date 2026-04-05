@@ -35,16 +35,15 @@ public class AuthServlet extends HttpServlet {
      * POST /api/auth/login
      * 用户登录
      */
-    private LoginVO login(UserLoginDTO userLoginDTO) {
+    private LoginVO login(UserLoginDTO userLoginDTO) throws Exception {
         return userService.login(userLoginDTO);
-
     }
 
     /**
      * POST /api/auth/register
      * 用户注册
      */
-    private RegisterVO register(UserRegisterDTO userRegisterDTO) {
+    private RegisterVO register(UserRegisterDTO userRegisterDTO) throws Exception {
         return userService.register(userRegisterDTO);
     }
 
