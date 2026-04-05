@@ -9,6 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.UserLoginDTO;
 import org.example.dto.UserRegisterDTO;
 import org.example.service.UserService;
+import org.example.util.ServletUtil;
+import org.example.vo.LoginVO;
+import org.example.vo.RegisterVO;
+import org.example.vo.ResultVO;
 
 import java.io.IOException;
 
@@ -31,49 +35,17 @@ public class AuthServlet extends HttpServlet {
      * POST /api/auth/login
      * 用户登录
      */
-    private void login(HttpServletRequest req, HttpServletResponse resp) {
-        // 把req的json数据转为UserLoginDTO
-        try {
-            var userLoginDTO = new com.google.gson.Gson().fromJson(req.getReader(), UserLoginDTO.class);
-            var loginVO = userService.login(userLoginDTO);
-            if (!loginVO.isSuccess()) {
-                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            }
-            resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write(new com.google.gson.Gson().toJson(loginVO));
-        } catch (Exception e) {
-            e.printStackTrace();
-            try {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                resp.getWriter().write("{\"success\": false, \"message\": \"服务器出错\"}");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
+    private LoginVO login(UserLoginDTO userLoginDTO) {
+        return userService.login(userLoginDTO);
+
     }
 
     /**
      * POST /api/auth/register
      * 用户注册
      */
-    private void register(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            var userRegisterDTO = new com.google.gson.Gson().fromJson(req.getReader(), UserRegisterDTO.class);
-            var registerVO = userService.register(userRegisterDTO);
-            if (!registerVO.isSuccess()) {
-                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            }
-            resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write(new com.google.gson.Gson().toJson(registerVO));
-        } catch (Exception e) {
-            e.printStackTrace();
-            try {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                resp.getWriter().write("{\"success\": false, \"message\": \"服务器出错\"}");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
+    private RegisterVO register(UserRegisterDTO userRegisterDTO) {
+        return userService.register(userRegisterDTO);
     }
 
     /**
@@ -97,8 +69,8 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
         switch (pathInfo) {
-            case "/login" -> login(req, resp);
-            case "/register" -> register(req, resp);
+            case "/login" -> ServletUtil.handleJsonRequest(req, resp, UserLoginDTO.class, this::login);
+            case "/register" -> ServletUtil.handleJsonRequest(req, resp, UserRegisterDTO.class, this::register);
             case "/change-password" -> changePassword(req, resp);
             case "/delete-account" -> deleteAccount(req, resp);
             case null, default -> {
