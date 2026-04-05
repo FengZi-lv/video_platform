@@ -82,12 +82,11 @@ public class AuthenticationFilter implements Filter {
         }
 
         // 验证jwt是否正确
-        if (!AuthUtil.verifyToken(token)) {
+        var payload = AuthUtil.verifyToken(token);
+        if (payload == null) {
             reject(httpResponse);
             return;
         }
-
-        var payload = AuthUtil.parseToken(token);
 
         // 验证访问路径是否为管理员
         if (!verifyPathIsAllow(path, adminAllowed) && payload.getRole().equals("admin")) {

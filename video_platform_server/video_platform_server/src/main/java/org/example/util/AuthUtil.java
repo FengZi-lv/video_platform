@@ -45,26 +45,37 @@ public class AuthUtil {
         return header_payload + "." + hash;
     }
 
-    public static boolean verifyToken(String token) {
+    public static UserPayloadDTO verifyToken(String token) {
         if (token == null || token.isEmpty()) {
-            return false;
+            return null;
         }
         var parts = token.split("\\.");
 
         if (parts.length <= 3)
-            return false;
+            return null;
         var header = parts[0];
         var payload = parts[1];
         var hash = parts[2];
+
+
         try {
             var expectedHash = generateHS256(header + "." + payload);
-            return expectedHash.equals(hash);
+            if (expectedHash.equals(hash)) return null;
         } catch (Exception e) {
-            return false;
+            return null;
         }
+
+        // 验证时间
+        UserPayloadDTO userPayloadDTO = parseToken(token);
+        if (userPayloadDTO == null) return null;
+        if (userPayloadDTO.getExp().before(new Timestamp(System.currentTimeMillis()))) {
+            return null;
+        }
+        return userPayloadDTO;
+
     }
 
-    public static UserPayloadDTO parseToken(String token) {
+    private static UserPayloadDTO parseToken(String token) {
         if (token == null || token.isEmpty()) {
             return null;
         }
@@ -93,6 +104,6 @@ public class AuthUtil {
 
 
     public static String generatePwdHash(String pwd) throws Exception {
-        return generateHS256("pwd{" + pwd + "}salt{" + salt + '}' );
+        return generateHS256("pwd{" + pwd + "}salt{" + salt + '}');
     }
 }
