@@ -79,13 +79,12 @@ public class UserDao extends BaseDao {
         }
     }
 
-    public int updateUserInfo(User user) throws SQLException {
-        var sql = "UPDATE users SET nickname = ?, status = ?, bio = ? WHERE username = ?";
+    public int updateUserInfoById(User user) throws SQLException {
+        var sql = "UPDATE users SET nickname = COALESCE(?, nickname), bio = COALESCE(?, bio) WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getNickname());
-            stmt.setString(2, user.getStatus());
-            stmt.setString(3, user.getBio());
-            stmt.setString(4, user.getUsername());
+            stmt.setString(2, user.getBio());
+            stmt.setInt(3, user.getId());
             return stmt.executeUpdate();
         }
     }
