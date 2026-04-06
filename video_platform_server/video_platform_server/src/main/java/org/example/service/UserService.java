@@ -1,5 +1,7 @@
 package org.example.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.*;
 import org.example.dao.UserDao;
 import org.example.entity.User;
@@ -119,6 +121,46 @@ public class UserService {
 
         userDao.deleteUserById(user.get(0).getId());
         return new ResultVO(true, "账号注销成功");
+    }
+
+    /**
+     * 修改个人信息
+     */
+    public ResultVO updateProfile(UpdateProfileDTO updateProfileDTO) throws Exception {
+        var effortLinesCount = userDao.updateUserInfoById(new User(
+                updateProfileDTO.getUserId(),
+                null,
+                null,
+                updateProfileDTO.getNickname(),
+                null,
+                updateProfileDTO.getBio(),
+                null
+        ));
+        if (effortLinesCount == 0) {
+            return new ResultVO(false, "更新失败，用户不存在或发生错误");
+        }
+        return new ResultVO(true, "个人信息更新成功");
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public void getUserInfo(HttpServletRequest req, HttpServletResponse resp) {
+
+    }
+
+    /**
+     * 签到，获得10个硬币
+     */
+    public void signIn(HttpServletRequest req, HttpServletResponse resp) {
+
+    }
+
+    /**
+     * 获取签到记录
+     */
+    public void getSignInHistory(HttpServletRequest req, HttpServletResponse resp) {
+
     }
 }
 

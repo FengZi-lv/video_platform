@@ -68,6 +68,8 @@ public class UserPayloadDTO {
     }
 
     public void setNickname(String nickname) {
+        // 如果已经设置了昵称，就不允许再次修改
+        if (this.nickname != null) return;
         this.nickname = nickname;
     }
 

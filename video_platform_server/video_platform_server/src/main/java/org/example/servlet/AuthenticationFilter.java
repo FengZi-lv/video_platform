@@ -38,7 +38,7 @@ public class AuthenticationFilter implements Filter {
 
     private void reject(HttpServletResponse httpResponse) throws IOException {
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        httpResponse.setContentType("application/json;charset=UTF-8");
+        
         httpResponse.getWriter().write("{\"success\": false, \"message\": \"Unauthorized\"}");
     }
 
@@ -47,6 +47,8 @@ public class AuthenticationFilter implements Filter {
         var httpRequest = (HttpServletRequest) request;
         var httpResponse = (HttpServletResponse) response;
 
+        // 先设置所有后续返回的响应头为json
+        httpResponse.setContentType("application/json;charset=UTF-8");
 
         String authHeader = httpRequest.getHeader("Authorization");
 

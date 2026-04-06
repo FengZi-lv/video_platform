@@ -50,13 +50,13 @@ public class ServletUtil {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
 
-            resp.setContentType("application/json;charset=UTF-8");
             resp.getWriter().write(new Gson().toJson(resultVO));
 
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "服务器出错");
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"success\": false, \"message\": \"服务器发生错误\"}");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
