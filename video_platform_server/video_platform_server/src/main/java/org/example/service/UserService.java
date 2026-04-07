@@ -212,8 +212,12 @@ public class UserService {
     /**
      * 获取签到记录
      */
-    public void getSignInHistory(HttpServletRequest req, HttpServletResponse resp) {
-
+    public CheckInRecordVO getSignInHistory(UserPayloadDTO userPayloadDTO) throws Exception {
+        return new CheckInRecordVO(
+                true,
+                "签到成功",
+                checkInDao.getAllRecords(userPayloadDTO.getUserId())
+        );
     }
 }
 

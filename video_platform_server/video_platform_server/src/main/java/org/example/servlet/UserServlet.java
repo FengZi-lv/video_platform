@@ -10,6 +10,7 @@ import org.example.dto.UserPayloadDTO;
 import org.example.service.UserService;
 import org.example.util.AuthUtil;
 import org.example.util.ServletUtil;
+import org.example.vo.CheckInRecordVO;
 import org.example.vo.ResultVO;
 import org.example.vo.UserInfoVO;
 
@@ -60,15 +61,15 @@ public class UserServlet extends HttpServlet {
      * GET /api/users/sign-in/history
      * 获取签到记录
      */
-    private void getSignInHistory(HttpServletRequest req, HttpServletResponse resp) {
-
+    private CheckInRecordVO getSignInHistory(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
+        return userService.getSignInHistory(userPayloadDTO);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
         switch (pathInfo) {
-            case "/sign-in/history" -> getSignInHistory(req, resp);
+            case "/sign-in/history" -> ServletUtil.handleGetRequest(req, resp, this::getSignInHistory);
             case null, default -> {
                 if (pathInfo != null && pathInfo.matches("/\\d+")) {
                     ServletUtil.handleGetRequest(req, resp, this::getUserInfo);
