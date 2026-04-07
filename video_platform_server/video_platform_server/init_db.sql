@@ -11,6 +11,7 @@ CREATE TABLE users
     bio        TEXT                           NOT NULL,
     coins      INT                            NOT NULL DEFAULT 0,
     earn_coins INT                            NOT NULL DEFAULT 0,
+    likes      INT                            NOT NULL DEFAULT 0,
 
     UNIQUE KEY (username)
 );

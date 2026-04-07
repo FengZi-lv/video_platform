@@ -11,9 +11,51 @@ import java.io.IOException;
 
 public class ServletUtil {
 
-    public interface ServiceAction<T, R> {
+    public interface PostServiceAction<T, R> {
         R execute(T DTO) throws Exception;
     }
+
+    public interface GetServiceAction<R> {
+        R execute(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception;
+    }
+
+
+    /**
+     * 通用的 GET 请求带参数处理方法
+     * <p>
+     * 会将payload的内容也插入
+     *
+     * @param req    HttpServletRequest
+     * @param resp   HttpServletResponse
+     * @param action 具体的 Service 业务逻辑方法引用
+     */
+    public static <R extends ResultVO> void handleGetRequest(
+            HttpServletRequest req,
+            HttpServletResponse resp,
+            GetServiceAction<R> action
+    ) {
+        try {
+            UserPayloadDTO currentUser = (UserPayloadDTO) req.getAttribute("currentUser");
+            req.getParameter("currentUser");
+            R resultVO = action.execute(currentUser, req);
+
+            if (!resultVO.isSuccess()) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+
+            resp.getWriter().write(new Gson().toJson(resultVO));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"success\": false, \"message\": \"服务器发生错误\"}");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 
     /**
      * 通用的 JSON 请求处理方法
@@ -29,7 +71,7 @@ public class ServletUtil {
             HttpServletRequest req,
             HttpServletResponse resp,
             Class<T> dtoClass,
-            ServiceAction<T, R> action
+            PostServiceAction<T, R> action
     ) {
         try {
 

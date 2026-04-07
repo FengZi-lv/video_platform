@@ -6,10 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.UpdateProfileDTO;
+import org.example.dto.UserPayloadDTO;
 import org.example.service.UserService;
 import org.example.util.AuthUtil;
 import org.example.util.ServletUtil;
 import org.example.vo.ResultVO;
+import org.example.vo.UserInfoVO;
 
 import java.io.IOException;
 
@@ -37,11 +39,13 @@ public class UserServlet extends HttpServlet {
     }
 
     /**
-     * GET /api/users/me
+     * GET /api/users/{id}
      * 获取用户信息
      */
-    private void getUserInfo(HttpServletRequest req, HttpServletResponse resp) {
-
+    private UserInfoVO getUserInfo(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
+        return userService.getUserInfo(userPayloadDTO,
+                Integer.valueOf(req.getPathInfo().replace("/", ""))
+        );
     }
 
     /**
@@ -64,9 +68,14 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
         switch (pathInfo) {
-            case "/me" -> getUserInfo(req, resp);
             case "/sign-in/history" -> getSignInHistory(req, resp);
-            case null, default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            case null, default -> {
+                if (pathInfo != null && pathInfo.matches("/\\d+")) {
+                    ServletUtil.handleGetRequest(req, resp, this::getUserInfo);
+                } else {
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+                }
+            }
         }
     }
 

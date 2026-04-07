@@ -27,7 +27,9 @@ public class UserDao extends BaseDao {
                             rs.getString("nickname"),
                             rs.getString("status"),
                             rs.getString("bio"),
-                            rs.getInt("coins")
+                            rs.getInt("coins"),
+                            rs.getInt("earn_coins"),
+                            rs.getInt("likes")
                     );
                     users.add(user);
                 }
@@ -50,7 +52,9 @@ public class UserDao extends BaseDao {
                             rs.getString("nickname"),
                             rs.getString("status"),
                             rs.getString("bio"),
-                            rs.getInt("coins")
+                            rs.getInt("coins"),
+                            rs.getInt("earn_coins"),
+                            rs.getInt("likes")
                     );
                     users.add(user);
                 }
@@ -102,7 +106,9 @@ public class UserDao extends BaseDao {
                         rs.getString("nickname"),
                         rs.getString("status"),
                         rs.getString("bio"),
-                        rs.getInt("coins")
+                        rs.getInt("earn_coins"),
+                        rs.getInt("coins"),
+                        rs.getInt("likes")
                 );
                 users.add(user);
             }

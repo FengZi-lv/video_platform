@@ -2,24 +2,26 @@ package org.example.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dao.VideoDao;
 import org.example.dto.*;
 import org.example.dao.UserDao;
 import org.example.entity.User;
 import org.example.util.AuthUtil;
-import org.example.vo.LoginVO;
-import org.example.vo.RegisterVO;
-import org.example.vo.ResultVO;
+import org.example.vo.*;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 public class UserService {
 
     private final UserDao userDao;
+    private final VideoDao videoDao;
 
     public UserService() throws SQLException {
+        videoDao = new VideoDao();
         userDao = new UserDao();
     }
 
@@ -77,6 +79,8 @@ public class UserService {
                 userRegisterDTO.getNickname(),
                 "active",
                 userRegisterDTO.getBio(),
+                0,
+                0,
                 0
         );
 
@@ -134,6 +138,8 @@ public class UserService {
                 updateProfileDTO.getNickname(),
                 null,
                 updateProfileDTO.getBio(),
+                null,
+                null,
                 null
         ));
         if (effortLinesCount == 0) {
@@ -145,8 +151,36 @@ public class UserService {
     /**
      * 获取用户信息
      */
-    public void getUserInfo(HttpServletRequest req, HttpServletResponse resp) {
+    public UserInfoVO getUserInfo(UserPayloadDTO userPayloadDTO, Integer id) throws Exception {
+        var user = userDao.queryUsersById(id);
+        if (user.isEmpty()) {
+            return null;
+        }
+        var u = user.get(0);
 
+        var videos = videoDao.getUserAllVideoById(u.getId())
+                .stream().map(temp_user -> {
+                    return new VideoVO(
+                            true,
+                            "成功",
+                            temp_user.getId(),
+                            temp_user.getTitle(),
+                            temp_user.getThumbnailUrl(),
+                            temp_user.getLikesCount(),
+                            temp_user.getCoinsCount()
+                    );
+                }).toList();
+
+        return new UserInfoVO(
+                true,
+                "成功",
+                u.getId(),
+                u.getUsername(),
+                u.getNickname(),
+                u.getLikes(),
+                u.getCoins(),
+                videos
+        );
     }
 
     /**

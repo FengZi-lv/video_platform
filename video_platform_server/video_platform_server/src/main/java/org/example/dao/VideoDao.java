@@ -27,7 +27,7 @@ public class VideoDao extends BaseDao {
                         "pass",
                         rs.getInt("likes_count"),
                         rs.getInt("favorites_count"),
-                        rs.getInt("coins_count"),
+                        rs.getInt("earn_coins"),
                         rs.getString("video_url"),
                         rs.getString("thumbnail_url"),
 
@@ -54,7 +54,7 @@ public class VideoDao extends BaseDao {
                             "pass",
                             rs.getInt("likes_count"),
                             rs.getInt("favorites_count"),
-                            rs.getInt("coins_count"),
+                            rs.getInt("earn_coins"),
                             rs.getString("video_url"),
                             rs.getString("thumbnail_url"),
                             rs.getTimestamp("create_date")
@@ -79,6 +79,32 @@ public class VideoDao extends BaseDao {
         }
     }
 
+    public List<Video> getUserAllVideoById(int id) throws Exception {
+        var sql = "SELECT * FROM videos WHERE uploader_id = ? AND status = 'pass'";
+        var videos = new ArrayList<Video>();
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (var rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    videos.add(new Video(
+                            rs.getInt("id"),
+                            rs.getInt("uploader_id"),
+                            rs.getString("title"),
+                            rs.getString("intro"),
+                            "pass",
+                            rs.getInt("likes_count"),
+                            rs.getInt("favorites_count"),
+                            rs.getInt("earn_coins"),
+                            rs.getString("video_url"),
+                            rs.getString("thumbnail_url"),
+                            rs.getTimestamp("create_date")
+                    ));
+                }
+            }
+        }
+        return videos;
+    }
+
     public Video getVideoById(int id) throws Exception {
         var sql = "SELECT * FROM videos WHERE id = ? AND status = 'pass'";
         try (var stmt = conn.prepareStatement(sql)) {
@@ -93,7 +119,7 @@ public class VideoDao extends BaseDao {
                             "pass",
                             rs.getInt("likes_count"),
                             rs.getInt("favorites_count"),
-                            rs.getInt("coins_count"),
+                            rs.getInt("earn_coins"),
                             rs.getString("video_url"),
                             rs.getString("thumbnail_url"),
                             rs.getTimestamp("create_date")
@@ -107,7 +133,7 @@ public class VideoDao extends BaseDao {
 
     public int addVideo(Video video) throws Exception {
         var sql = "INSERT INTO videos " +
-                "(uploader_id, title, intro, status, likes_count, favorites_count, coins_count, video_url) " +
+                "(uploader_id, title, intro, status, likes_count, favorites_count, earn_coins, video_url) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, video.getUploaderId());
@@ -136,7 +162,7 @@ public class VideoDao extends BaseDao {
                         "pending",
                         rs.getInt("likes_count"),
                         rs.getInt("favorites_count"),
-                        rs.getInt("coins_count"),
+                        rs.getInt("earn_coins"),
                         rs.getString("video_url"),
                         rs.getString("thumbnail_url"),
                         rs.getTimestamp("create_date")
@@ -154,8 +180,6 @@ public class VideoDao extends BaseDao {
             return stmt.executeUpdate();
         }
     }
-
-
 
 
 }

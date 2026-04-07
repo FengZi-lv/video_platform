@@ -157,7 +157,10 @@
 
 ## 用户信息
 
-`GET /api/users/me`
+`GET /api/users/{id}`
+
+当id=me时查看自己的信息
+
 返回
 
 ```json

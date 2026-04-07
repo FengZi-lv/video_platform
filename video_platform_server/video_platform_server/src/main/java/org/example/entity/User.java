@@ -8,8 +8,10 @@ public class User {
     private String status;
     private String bio;
     private Integer coins;
+    private Integer earn_coins;
+    private Integer likes;
 
-    public User(Integer id, String username, String password, String nickname, String status, String bio, Integer coins) {
+    public User(Integer id, String username, String password, String nickname, String status, String bio, Integer coins,Integer earn_coins, Integer likes) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -17,26 +19,79 @@ public class User {
         this.status = status;
         this.bio = bio;
         this.coins = coins;
+        this.earn_coins = earn_coins;
+        this.likes = likes;
     }
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getUsername() {
+        return username;
+    }
 
-    public String getNickname() { return nickname; }
-    public void setNickname(String nickname) { this.nickname = nickname; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getPassword() {
+        return password;
+    }
 
-    public String getBio() { return bio; }
-    public void setBio(String bio) { this.bio = bio; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public Integer getCoins() { return coins; }
-    public void setCoins(Integer coins) { this.coins = coins; }
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public Integer getCoins() {
+        return coins;
+    }
+
+    public void setCoins(Integer coins) {
+        this.coins = coins;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
+    public Integer getEarn_coins() {
+        return earn_coins;
+    }
+
+    public void setEarn_coins(Integer earn_coins) {
+        this.earn_coins = earn_coins;
+    }
 }
