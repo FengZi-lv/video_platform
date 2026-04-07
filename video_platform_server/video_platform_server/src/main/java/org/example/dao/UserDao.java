@@ -83,12 +83,26 @@ public class UserDao extends BaseDao {
         }
     }
 
+    /**
+     * 修改用户信息
+     * <p>
+     * coins，earn_coins，likes会自动累加
+     */
     public int updateUserInfoById(User user) throws SQLException {
-        var sql = "UPDATE users SET nickname = COALESCE(?, nickname), bio = COALESCE(?, bio) WHERE id = ?";
+        var sql = "UPDATE users SET" +
+                " nickname = COALESCE(?, nickname)," +
+                " bio = COALESCE(?, bio)," +
+                " coins = coins + COALESCE(?, 0)," +
+                " earn_coins = earn_coins + COALESCE(?, 0)," +
+                " likes = likes + COALESCE(?, 0)" +
+                " WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getNickname());
             stmt.setString(2, user.getBio());
-            stmt.setInt(3, user.getId());
+            stmt.setInt(3, user.getCoins());
+            stmt.setInt(4, user.getEarn_coins());
+            stmt.setInt(5, user.getLikes());
+            stmt.setInt(6, user.getId());
             return stmt.executeUpdate();
         }
     }

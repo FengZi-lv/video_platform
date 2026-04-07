@@ -2,6 +2,7 @@ package org.example.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dao.CheckInDao;
 import org.example.dao.VideoDao;
 import org.example.dto.*;
 import org.example.dao.UserDao;
@@ -19,10 +20,12 @@ public class UserService {
 
     private final UserDao userDao;
     private final VideoDao videoDao;
+    private final CheckInDao checkInDao;
 
     public UserService() throws SQLException {
         videoDao = new VideoDao();
         userDao = new UserDao();
+        checkInDao = new CheckInDao();
     }
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
@@ -186,8 +189,24 @@ public class UserService {
     /**
      * 签到，获得10个硬币
      */
-    public void signIn(HttpServletRequest req, HttpServletResponse resp) {
-
+    public ResultVO signIn(UserPayloadDTO userPayloadDTO) throws Exception {
+        if (checkInDao.signIn(userPayloadDTO.getUserId()) <= 0) {
+            return new ResultVO(false, "签到失败，已经签到过");
+        }
+        if (userDao.updateUserInfoById(new User(
+                userPayloadDTO.getUserId(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                10,
+                0,
+                0
+        )) <= 0) {
+            return new ResultVO(false, "签到失败，发生错误");
+        }
+        return new ResultVO(true, "签到成功，获得10个硬币");
     }
 
     /**

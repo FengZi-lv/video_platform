@@ -52,8 +52,8 @@ public class UserServlet extends HttpServlet {
      * POST /api/users/sign-in
      * 签到，获得10个硬币
      */
-    private void signIn(HttpServletRequest req, HttpServletResponse resp) {
-
+    private ResultVO signIn(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
+        return userService.signIn(userPayloadDTO);
     }
 
     /**
@@ -84,7 +84,7 @@ public class UserServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
         switch (pathInfo) {
             case "/profile" -> ServletUtil.handleJsonRequest(req, resp, UpdateProfileDTO.class, this::updateProfile);
-            case "/sign-in" -> signIn(req, resp);
+            case "/sign-in" -> ServletUtil.handleGetRequest(req, resp, this::signIn);
             case null, default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
         }
     }
