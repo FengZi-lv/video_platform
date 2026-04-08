@@ -12,23 +12,56 @@ public class VideoCoinsDao extends BaseDao {
     }
 
     public int addCoins(VideoCoin videoCoin) throws Exception {
+        var checkSql = "SELECT coins FROM users WHERE id = ?";
+        try (var checkStmt = conn.prepareStatement(checkSql)) {
+            checkStmt.setInt(1, videoCoin.getUserId());
+            try (var rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    int balance = rs.getInt("coins");
+                    if (balance < videoCoin.getCount()) {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+        }
+
+        var updateSql = "UPDATE users SET coins = coins - ? WHERE id = ?";
+        try (var updateStmt = conn.prepareStatement(updateSql)) {
+            updateStmt.setInt(1, videoCoin.getCount());
+            updateStmt.setInt(2, videoCoin.getUserId());
+            updateStmt.executeUpdate();
+        }
+
         var sql = "INSERT INTO video_earn_coins (user_id, video_id,count) VALUES (?, ?,?)";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, videoCoin.getUserId());
             stmt.setInt(2, videoCoin.getVideoId());
             stmt.setInt(3, videoCoin.getCount());
-            return stmt.executeUpdate();
+
+            int rows = stmt.executeUpdate();
+
+            // Note: need to update videos.earn_coins to reflect the total earned coins
+            var updateVideoSql = "UPDATE videos SET earn_coins = earn_coins + ? WHERE id = ?";
+            try (var updateVideoStmt = conn.prepareStatement(updateVideoSql)) {
+                updateVideoStmt.setInt(1, videoCoin.getCount());
+                updateVideoStmt.setInt(2, videoCoin.getVideoId());
+                updateVideoStmt.executeUpdate();
+            }
+
+            // Note: need to update users.earn_coins (for the uploader) to reflect total earned coins
+            var updateUserEarnSql = "UPDATE users SET earn_coins = earn_coins + ? WHERE id = (SELECT uploader_id FROM videos WHERE id = ?)";
+            try (var updateUserEarnStmt = conn.prepareStatement(updateUserEarnSql)) {
+                updateUserEarnStmt.setInt(1, videoCoin.getCount());
+                updateUserEarnStmt.setInt(2, videoCoin.getVideoId());
+                updateUserEarnStmt.executeUpdate();
+            }
+
+            return rows;
         }
     }
 
-    public int deleteCoins(VideoCoin videoCoin) throws Exception {
-        var sql = "DELETE FROM video_earn_coins WHERE user_id = ? AND video_id = ?";
-        try (var stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, videoCoin.getUserId());
-            stmt.setInt(2, videoCoin.getVideoId());
-            return stmt.executeUpdate();
-        }
-    }
 
     public List<VideoCoin> getAllCoinsRecords() throws Exception {
         var sql = "SELECT user_id, video_id, count FROM video_earn_coins";
@@ -48,4 +81,3 @@ public class VideoCoinsDao extends BaseDao {
     }
 
 }
-
