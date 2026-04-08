@@ -11,21 +11,15 @@ public class VideoHistoryDao extends BaseDao {
         super();
     }
 
-    public int updateHistory(int userId, int videoId) throws Exception {
-        var updateSql = "UPDATE video_history SET last_watch_date = CURRENT_TIMESTAMP WHERE user_id = ? AND video_id = ?";
-        try (var updateStmt = conn.prepareStatement(updateSql)) {
-            updateStmt.setInt(1, userId);
-            updateStmt.setInt(2, videoId);
-            return updateStmt.executeUpdate();
-        }
-    }
 
     public int addHistory(int userId, int videoId) throws Exception {
-        var insertSql = "INSERT INTO video_history (user_id, video_id) VALUES (?, ?)";
-        try (var insertStmt = conn.prepareStatement(insertSql)) {
-            insertStmt.setInt(1, userId);
-            insertStmt.setInt(2, videoId);
-            return insertStmt.executeUpdate();
+        var sql = "INSERT INTO video_history (user_id, video_id, last_watch_date) " +
+                "VALUES (?, ?, CURRENT_TIMESTAMP)" +
+                "ON DUPLICATE KEY UPDATE last_watch_date = CURRENT_TIMESTAMP;";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, videoId);
+            return stmt.executeUpdate();
         }
     }
 
@@ -44,7 +38,7 @@ public class VideoHistoryDao extends BaseDao {
                         "pass",
                         rs.getInt("likes_count"),
                         rs.getInt("favorites_count"),
-                        rs.getInt("coins_count"),
+                        rs.getInt("earn_coins"),
                         rs.getString("video_url"),
                         rs.getString("thumbnail_url"),
                         rs.getTimestamp("create_date")
