@@ -15,12 +15,18 @@ public class CommentDao extends BaseDao {
 
     public int addComment(Comment comment) throws Exception {
         var sql = "INSERT INTO comments (user_id, video_id, context,parent_id) VALUES (?, ?,?, ?)";
-        try (var stmt = conn.prepareStatement(sql)) {
+        try (var stmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, comment.getUserId());
             stmt.setInt(2, comment.getVideoId());
             stmt.setString(3, comment.getContext());
             stmt.setInt(4, comment.getParentId());
-            return stmt.executeUpdate();
+            stmt.executeUpdate();
+            try (var rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+            return 0;
         }
     }
 
@@ -28,6 +34,23 @@ public class CommentDao extends BaseDao {
         var sql = "UPDATE comments SET status = ? WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, comment.getStatus());
+            stmt.setInt(2, comment.getId());
+            return stmt.executeUpdate();
+        }
+    }
+
+    public int incrementLikes(int commentId) throws Exception {
+        var sql = "UPDATE comments SET likes = likes + 1 WHERE id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, commentId);
+            return stmt.executeUpdate();
+        }
+    }
+
+    public int decrementLikes(int commentId) throws Exception {
+        var sql = "UPDATE comments SET likes = likes - 1 WHERE id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, commentId);
             return stmt.executeUpdate();
         }
     }
@@ -57,4 +80,3 @@ public class CommentDao extends BaseDao {
 
 
 }
-

@@ -634,7 +634,12 @@
 ```json
 {
   "success": true,
-  "msg": "评论成功"
+  "msg": "评论成功",
+  "id": 1,
+  "content": "评论内容",
+  "likes": 0,
+  "parentId": null,
+  "status": "true"
 }
 ```
 
