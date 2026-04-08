@@ -133,8 +133,8 @@ public class VideoDao extends BaseDao {
 
     public int addVideo(Video video) throws Exception {
         var sql = "INSERT INTO videos " +
-                "(uploader_id, title, intro, status, likes_count, favorites_count, earn_coins, video_url) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "(uploader_id, title, intro, status, likes_count, favorites_count, earn_coins, video_url,thumbnail_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, video.getUploaderId());
             stmt.setString(2, video.getTitle());
@@ -144,6 +144,7 @@ public class VideoDao extends BaseDao {
             stmt.setInt(6, video.getFavoritesCount());
             stmt.setInt(7, video.getCoinsCount());
             stmt.setString(8, video.getVideoUrl());
+            stmt.setString(9, video.getThumbnailUrl());
             return stmt.executeUpdate();
         }
     }

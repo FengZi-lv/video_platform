@@ -10,11 +10,13 @@ public class Comment {
     private Timestamp createDate;
     private Integer parentId;
     private String context;
+    private Integer likes;
 
 
-    public Comment(Integer id, Integer userId, Integer videoId, String status, Timestamp createDate, Integer parentId, String context) {
+    public Comment(Integer id, Integer userId, Integer likes, Integer videoId, String status, Timestamp createDate, Integer parentId, String context) {
         this.id = id;
         this.userId = userId;
+        this.likes = likes;
         this.videoId = videoId;
         this.status = status;
         this.createDate = createDate;
@@ -76,5 +78,13 @@ public class Comment {
 
     public void setContext(String context) {
         this.context = context;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes() {
+        this.likes = likes;
     }
 }

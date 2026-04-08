@@ -42,6 +42,7 @@ public class CommentDao extends BaseDao {
                 var comment = new Comment(
                         rs.getInt("id"),
                         rs.getInt("user_id"),
+                        rs.getInt("likes"),
                         rs.getInt("video_id"),
                         rs.getString("status"),
                         rs.getTimestamp("create_date"),

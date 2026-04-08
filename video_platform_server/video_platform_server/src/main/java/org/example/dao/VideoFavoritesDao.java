@@ -45,7 +45,7 @@ public class VideoFavoritesDao extends BaseDao {
                         "pass",
                         rs.getInt("likes_count"),
                         rs.getInt("favorites_count"),
-                        rs.getInt("coins_count"),
+                        rs.getInt("earn_coins"),
                         rs.getString("video_url"),
                         rs.getString("thumbnail_url"),
                         rs.getTimestamp("create_date")

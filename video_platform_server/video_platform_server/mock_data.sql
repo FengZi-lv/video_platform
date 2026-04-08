@@ -1,59 +1,92 @@
 USE video_platform_db;
 
-INSERT INTO users (id, username, password, nickname, status, bio, coins, earn_coins) VALUES
-(1, 'admin@test.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Administrator', 'admin', 'I am the admin.', 9999, 0),
-(2, 'banned@test.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'BadGuy', 'ban', 'I broke the rules.', 0, 0),
-(3, 'user1@test.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Alice', 'active', 'Hello, I am Alice.', 100, 50),
-(4, 'user2@test.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Bob', 'active', 'Tech enthusiast.', 50, 10),
-(5, 'user3@test.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Charlie', 'active', 'Love peace.', 200, 150);
+-- --------------------------------------------------------
+-- 1. 插入用户数据 (Users)
+-- 包含一个管理员，三个正常活跃用户，以及一个被封禁的用户
+-- --------------------------------------------------------
+INSERT INTO users (username, password, nickname, status, bio, coins, earn_coins, likes) VALUES
+                                                                                            ('admin01', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '超级管理员', 'admin', '我是这个平台的管理员。', 9999, 5000, 1000),
+                                                                                            ('alice_vlog', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Alice的生活', 'active', '分享日常Vlog和美食。', 500, 120, 350),
+                                                                                            ('tech_bob', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '极客Bob', 'active', '硬核科技产品评测。', 800, 450, 890),
+                                                                                            ('gamer_carol', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Carol玩游戏', 'active', '单机游戏实况主。', 150, 30, 80),
+                                                                                            ('bad_guy', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '违规用户', 'ban', '发广告的。', 0, 0, 0);
 
-INSERT INTO videos (id, uploader_id, title, intro, status, likes_count, favorites_count, earn_coins, video_url, thumbnail_url) VALUES
-(1, 1, 'Platform Introduction', 'Welcome to our platform', 'pass', 2, 1, 2, 'http://example.com/v1.mp4', 'http://example.com/t1.jpg'),
-(2, 3, 'My first vlog', 'A day in my life', 'pass', 1, 1, 0, 'http://example.com/v2.mp4', 'http://example.com/t2.jpg'),
-(3, 3, 'Cooking tutorial', 'How to make a cake', 'pass', 0, 0, 0, 'http://example.com/v3.mp4', 'http://example.com/t3.jpg'),
-(4, 4, 'Tech Review 2024', 'Reviewing latest gadgets', 'pass', 1, 0, 1, 'http://example.com/v4.mp4', 'http://example.com/t4.jpg'),
-(5, 5, 'Travel to Japan', 'Amazing trip', 'pass', 0, 1, 0, 'http://example.com/v5.mp4', 'http://example.com/t5.jpg'),
-(6, 1, 'Site Rules', 'Please read these rules', 'pass', 0, 0, 0, 'http://example.com/v6.mp4', 'http://example.com/t6.jpg'),
-(7, 4, 'Unboxing new phone', 'It looks great', 'reviewing', 0, 0, 0, 'http://example.com/v7.mp4', 'http://example.com/t7.jpg'),
-(8, 2, 'Spam video', 'Buy my stuff', 'reject', 0, 0, 0, 'http://example.com/v8.mp4', 'http://example.com/t8.jpg'),
-(9, 3, 'Cat compilation', 'Cute cats', 'pass', 1, 1, 2, 'http://example.com/v9.mp4', 'http://example.com/t9.jpg'),
-(10, 5, 'Piano cover', 'Classical music', 'pass', 1, 0, 0, 'http://example.com/v10.mp4', 'http://example.com/t10.jpg'),
-(11, 4, 'Programming in Java', 'Java basics', 'pass', 0, 0, 0, 'http://example.com/v11.mp4', 'http://example.com/t11.jpg'),
-(12, 3, 'Workout routine', 'Stay fit', 'pass', 0, 0, 0, 'http://example.com/v12.mp4', 'http://example.com/t12.jpg'),
-(13, 5, 'Daily news', 'What happened today', 'reviewing', 0, 0, 0, 'http://example.com/v13.mp4', 'http://example.com/t13.jpg'),
-(14, 1, 'Future Updates', 'What to expect', 'pass', 0, 0, 0, 'http://example.com/v14.mp4', 'http://example.com/t14.jpg'),
-(15, 4, 'Gaming stream highlights', 'Epic moments', 'pass', 0, 0, 0, 'http://example.com/v15.mp4', 'http://example.com/t15.jpg'),
-(16, 3, 'Painting tutorial', 'Bob Ross style', 'pass', 0, 0, 0, 'http://example.com/v16.mp4', 'http://example.com/t16.jpg'),
-(17, 5, 'History of Rome', 'Documentary', 'pass', 0, 0, 0, 'http://example.com/v17.mp4', 'http://example.com/t17.jpg'),
-(18, 4, 'How to build a PC', 'Step by step', 'pass', 0, 0, 0, 'http://example.com/v18.mp4', 'http://example.com/t18.jpg'),
-(19, 3, 'Funny jokes', 'Laugh together', 'pass', 0, 0, 0, 'http://example.com/v19.mp4', 'http://example.com/t19.jpg'),
-(20, 2, 'Another spam', 'Click here', 'reject', 0, 0, 0, 'http://example.com/v20.mp4', 'http://example.com/t20.jpg');
-
+-- --------------------------------------------------------
+-- 2. 插入签到数据 (Check_in)
+-- 模拟过去几天的签到记录
+-- --------------------------------------------------------
 INSERT INTO check_in (user_id, date) VALUES
-(1, '2024-01-01'), (3, '2024-01-01'), (4, '2024-01-01'), (5, '2024-01-02');
+                                         (2, DATE_SUB(CURRENT_DATE, INTERVAL 2 DAY)),
+                                         (2, DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY)),
+                                         (2, CURRENT_DATE),
+                                         (3, DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY)),
+                                         (3, CURRENT_DATE),
+                                         (4, CURRENT_DATE);
 
+-- --------------------------------------------------------
+-- 3. 插入视频数据 (Videos)
+-- 包含已通过、审核中和被拒绝的视频
+-- --------------------------------------------------------
+INSERT INTO videos (uploader_id, title, intro, status, likes_count, favorites_count, earn_coins, video_url, thumbnail_url) VALUES
+                                                                                                                               (2, '我的周末Vlog：探索城市隐藏咖啡馆', '和大家分享我这周末发现的宝藏咖啡厅！环境超级棒！', 'pass', 2, 1, 2, 'https://example.com/video1.mp4', 'https://example.com/thumb1.jpg'),
+                                                                                                                               (3, '2024最新旗舰手机横评', '花了半个月时间做的硬核评测，希望能帮到大家。', 'pass', 1, 1, 5, 'https://example.com/video2.mp4', 'https://example.com/thumb2.jpg'),
+                                                                                                                               (4, '只狼 完美无伤BOSS战合集', '太肝了，求三连！', 'reviewing', 0, 0, 0, 'https://example.com/video3.mp4', 'https://example.com/thumb3.jpg'),
+                                                                                                                               (5, '点击链接领取免费皮肤!!!', '不要错过这个免费拿皮肤的机会！', 'reject', 0, 0, 0, 'https://example.com/video4.mp4', 'https://example.com/thumb4.jpg');
+
+-- --------------------------------------------------------
+-- 4. 插入视频点赞数据 (Video_like)
+-- 对应视频表的 likes_count (注意：此处数据应该与视频表的统计相符，模拟业务逻辑已更新状态)
+-- --------------------------------------------------------
 INSERT INTO video_like (user_id, video_id) VALUES
-(3, 1), (4, 1), (5, 2), (3, 4), (1, 9), (4, 10);
+                                               (3, 1), -- Bob点赞了Alice的Vlog
+                                               (4, 1), -- Carol点赞了Alice的Vlog
+                                               (2, 2); -- Alice点赞了Bob的评测
 
+-- --------------------------------------------------------
+-- 5. 插入视频收藏数据 (Video_favorites)
+-- --------------------------------------------------------
 INSERT INTO video_favorites (user_id, video_id) VALUES
-(3, 1), (5, 2), (1, 5), (4, 9);
+                                                    (4, 1), -- Carol收藏了Alice的Vlog
+                                                    (1, 2); -- 管理员收藏了Bob的评测
 
+-- --------------------------------------------------------
+-- 6. 插入历史观看记录 (Video_history)
+-- --------------------------------------------------------
 INSERT INTO video_history (user_id, video_id) VALUES
-(3, 1), (4, 1), (5, 2), (3, 4), (1, 5), (4, 9), (5, 10);
+                                                  (3, 1),
+                                                  (4, 1),
+                                                  (2, 2),
+                                                  (1, 4); -- 管理员观看了违规视频进行审核
 
+-- --------------------------------------------------------
+-- 7. 插入投币数据 (Video_earn_coins)
+-- --------------------------------------------------------
 INSERT INTO video_earn_coins (user_id, video_id, count) VALUES
-(3, 1, 2), (4, 4, 1), (5, 9, 2);
+                                                            (3, 1, 2), -- Bob给Alice投了2个币
+                                                            (2, 2, 2), -- Alice给Bob投了2个币
+                                                            (4, 2, 3); -- Carol给Bob投了3个币
 
-INSERT INTO comments (id, user_id, video_id, status, parent_id, context) VALUES
-(1, 4, 1, 'none', NULL, 'Great introduction!'),
-(2, 5, 2, 'none', NULL, 'Nice vlog!'),
-(3, 3, 2, 'none', 2, 'Thanks!'),
-(4, 1, 4, 'none', NULL, 'Very informative.'),
-(5, 2, 9, 'del', NULL, 'Some toxic comment');
+-- --------------------------------------------------------
+-- 8. 插入评论数据 (Comments)
+-- 包含父子评论(楼层)和已删除的评论
+-- --------------------------------------------------------
+INSERT INTO comments (user_id, video_id, status, likes, parent_id, context) VALUES
+                                                                                (3, 1, 'none', 1, NULL, '咖啡厅看起来好棒，求地址！'),           -- id: 1
+                                                                                (2, 1, 'none', 0, 1, '在中山路那边，改天我把详细地址私发你哈~'), -- id: 2 (回复上一条)
+                                                                                (4, 2, 'none', 2, NULL, '评测得很详细，打算入手了！'),         -- id: 3
+                                                                                (5, 1, 'del', 0, NULL, '加微信带你赚钱...');                   -- id: 4 (垃圾评论，状态为已删除)
 
+-- --------------------------------------------------------
+-- 9. 插入评论点赞数据 (Comment_likes)
+-- --------------------------------------------------------
 INSERT INTO comment_likes (user_id, comment_id) VALUES
-(1, 1), (3, 1), (4, 2);
+                                                    (2, 1), -- Alice点赞了Bob的评论
+                                                    (3, 3), -- Bob点赞了Carol的评论
+                                                    (2, 3); -- Alice点赞了Carol的评论
 
+-- --------------------------------------------------------
+-- 10. 插入举报记录 (Reports)
+-- --------------------------------------------------------
 INSERT INTO reports (user_id, video_id, context, status) VALUES
-(3, 8, 'Spam content', 'pass'),
-(4, 20, 'Also spam', 'reviewing');
+                                                             (2, 4, '这个视频是个骗局链接，请处理。', 'pass'),
+                                                             (3, 4, '广告引流，涉嫌诈骗。', 'reviewing');

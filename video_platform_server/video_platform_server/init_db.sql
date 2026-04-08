@@ -102,6 +102,7 @@ CREATE TABLE comments
     video_id    INT                 NOT NULL,
     status      ENUM ('del','none') NOT NULL DEFAULT 'none',        -- 设置为del即为删除，不影响下一个评论
     create_date TIMESTAMP                    DEFAULT CURRENT_TIMESTAMP(),
+    likes       INT                 NOT NULL DEFAULT 0,
 
     parent_id   INT,
     context     TEXT                NOT NULL,
