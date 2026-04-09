@@ -388,7 +388,8 @@
       "id": 1,
       "title": "视频标题",
       "thumbnail": "缩略图URL",
-      "uploader": "上传者昵称"
+      "likes": 100,
+      "earn_coins": 50
     }
   ]
 }
