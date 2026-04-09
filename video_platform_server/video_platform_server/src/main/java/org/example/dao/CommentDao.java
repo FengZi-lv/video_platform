@@ -79,4 +79,25 @@ public class CommentDao extends BaseDao {
     }
 
 
+    public Comment getCommentById(int id) throws Exception {
+        var sql = "SELECT * FROM comments WHERE id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            var rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Comment(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("likes"),
+                        rs.getInt("video_id"),
+                        rs.getString("status"),
+                        rs.getTimestamp("create_date"),
+                        rs.getInt("parent_id"),
+                        rs.getString("context")
+                );
+            }
+            return null;
+        }
+    }
+
 }

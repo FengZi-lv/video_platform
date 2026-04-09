@@ -1,17 +1,21 @@
 package org.example.service;
 
 import org.example.dao.CommentDao;
+import org.example.dao.VideoDao;
 import org.example.dto.CommentActionDTO;
 import org.example.dto.UserPayloadDTO;
 import org.example.entity.Comment;
+import org.example.entity.Video;
 import org.example.vo.CommentVO;
 import org.example.vo.ResultVO;
 
 public class CommentService {
     private CommentDao commentDao;
+    private VideoDao videoDao;
 
     public CommentService() throws Exception {
         commentDao = new CommentDao();
+        videoDao = new VideoDao();
     }
 
     public ResultVO postComment(CommentActionDTO dto) throws Exception {
@@ -33,6 +37,27 @@ public class CommentService {
     }
 
     public ResultVO deleteComment(UserPayloadDTO user, int commentId) throws Exception {
+        Comment existingComment = commentDao.getCommentById(commentId);
+        if (existingComment == null || "del".equals(existingComment.getStatus())) {
+            return new ResultVO(false, "删除评论失败，评论不存在");
+        }
+
+        boolean isAuthorized = false;
+        if (existingComment.getUserId().equals(user.getUserId())) {
+            // 如果是发表评论的用户
+            isAuthorized = true;
+        } else {
+            Video video = videoDao.getVideoById(existingComment.getVideoId());
+            if (video != null && video.getUploaderId().equals(user.getUserId())) {
+                // 如果是视频的上传者
+                isAuthorized = true;
+            }
+        }
+
+        if (!isAuthorized) {
+             return new ResultVO(false, "删除评论失败，无权删除");
+        }
+
         Comment comment = new Comment(
                 commentId,
                 null,
