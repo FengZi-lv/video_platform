@@ -30,24 +30,34 @@ public class ReportDao extends BaseDao {
         }
     }
 
+    public int updateReviewingReportStatus(int id, String status) throws Exception {
+        var sql = "UPDATE reports SET status = ? WHERE id = ? AND status = 'reviewing'";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, id);
+            return stmt.executeUpdate();
+        }
+    }
+
     public List<Report> getAllReports() throws Exception {
-        var sql = "SELECT * FROM reports";
+        var sql = "SELECT r.id, r.video_id, r.context, r.status, u.nickname, r.user_id " +
+                "FROM reports r " +
+                "LEFT JOIN users u ON r.user_id = u.id";
         try (var stmt = conn.prepareStatement(sql)) {
             var rs = stmt.executeQuery();
             var reports = new java.util.ArrayList<Report>();
             while (rs.next()) {
-                var report = new Report(
+                reports.add(new Report(
                         rs.getInt("id"),
                         rs.getInt("user_id"),
                         rs.getInt("video_id"),
                         rs.getString("context"),
                         rs.getString("status"),
-                        rs.getTimestamp("create_date")
-                );
-                reports.add(report);
+                        rs.getTimestamp("create_date"),
+                        rs.getString("nickname")
+                ));
             }
             return reports;
         }
     }
 }
-

@@ -37,7 +37,7 @@ public class AuthUtil {
 
     private static String base64ToStr(String base64) {
         return new String(Base64.getUrlDecoder().decode(base64), StandardCharsets.UTF_8);
-    }
+    }   
 
     public static String hashJWT(UserPayloadDTO payload) throws Exception {
         var header_payload = strToBase64(HEADER.getBytes(StandardCharsets.UTF_8)) + "." + strToBase64(payload.toJSON().getBytes(StandardCharsets.UTF_8));

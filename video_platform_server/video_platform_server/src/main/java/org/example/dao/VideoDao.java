@@ -182,6 +182,13 @@ public class VideoDao extends BaseDao {
         }
     }
 
+    public int updateReviewingVideoStatus(int id, String status) throws Exception {
+        var sql = "UPDATE videos SET status = ? WHERE id = ? AND status = 'reviewing'";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, id);
+            return stmt.executeUpdate();
+        }
+    }
 
 }
-

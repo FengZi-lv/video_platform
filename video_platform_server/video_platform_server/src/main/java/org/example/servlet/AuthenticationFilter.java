@@ -91,7 +91,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         // 验证访问路径是否为管理员
-        if (!verifyPathIsAllow(path, adminAllowed) && payload.getRole().equals("admin")) {
+        if (verifyPathIsAllow(path, adminAllowed) && !payload.getRole().equals("admin")) {
             reject(httpResponse);
             return;
         }

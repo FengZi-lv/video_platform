@@ -1,15 +1,17 @@
 package org.example.vo;
 
+import java.util.List;
+
 public class VideoDetailVO extends ResultVO {
     private Integer id;
     private String description;
     private String src;
-    private CommentVO[] comments;
+    private List<CommentVO> comments;
 
     public VideoDetailVO() {
     }
 
-    public VideoDetailVO(boolean success, String msg, Integer id, String description, String src, CommentVO[] comments) {
+    public VideoDetailVO(boolean success, String msg, Integer id, String description, String src, List<CommentVO> comments) {
         super(success, msg);
 
         this.id = id;
@@ -42,11 +44,11 @@ public class VideoDetailVO extends ResultVO {
         this.src = src;
     }
 
-    public CommentVO[] getComments() {
+    public List<CommentVO> getComments() {
         return comments;
     }
 
-    public void setComments(CommentVO[] comments) {
+    public void setComments(List<CommentVO> comments) {
         this.comments = comments;
     }
 }

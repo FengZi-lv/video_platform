@@ -772,7 +772,8 @@
       "id": 1,
       "video_id": 1,
       "reason": "举报理由",
-      "reporter": "举报者昵称"
+      "reporter": "举报者昵称",
+      "status": "pending"
     }
   ]
 }
@@ -788,7 +789,7 @@
 {
   "report_id": 1,
   "action": "approve"
-  // approve or reject
+  // approve or reject or reviewing
 }
 ```
 

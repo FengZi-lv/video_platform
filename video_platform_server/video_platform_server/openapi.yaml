@@ -765,16 +765,19 @@ paths:
                         video_id: { type: integer }
                         reason: { type: string }
                         reporter: { type: string }
+                        status: { type: string, description: "approved, rejected, reviewing" }
               example:
                 reports:
                   - id: 1
                     video_id: 8
                     reason: Spam content
                     reporter: Alice
+                    status: reviewing
                   - id: 2
                     video_id: 20
                     reason: Also spam
                     reporter: Bob
+                    status: approved
 
   /api/admin/reports/handle:
     post:

@@ -9,15 +9,17 @@ public class Report {
     private String context;
     private String status;
     private Timestamp createDate;
+    private String reporterName;
 
 
-    public Report(Integer id, Integer userId, Integer videoId, String context, String status, Timestamp createDate) {
+    public Report(Integer id, Integer userId, Integer videoId, String context, String status, Timestamp createDate, String reporterName) {
         this.id = id;
         this.userId = userId;
         this.videoId = videoId;
         this.context = context;
         this.status = status;
         this.createDate = createDate;
+        this.reporterName = reporterName;
     }
 
     public Integer getId() {
@@ -66,5 +68,13 @@ public class Report {
 
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
+    }
+
+    public String getReporterName() {
+        return reporterName;
+    }
+
+    public void setReporterName(String reporterName) {
+        this.reporterName = reporterName;
     }
 }

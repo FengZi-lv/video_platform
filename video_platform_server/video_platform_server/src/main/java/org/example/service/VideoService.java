@@ -45,7 +45,7 @@ public class VideoService {
      */
     public VideoListVO getVideos(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
         List<Video> videos = videoDao.getRadomVideos();
-        VideoVO[] videoArray = toVideoVOArray(videos);
+        List<VideoVO> videoArray = toVideoVOArray(videos);
         return new VideoListVO(true, "获取视频列表成功", videoArray, null);
     }
 
@@ -79,8 +79,7 @@ public class VideoService {
             videoHistoryDao.addHistory(userPayloadDTO.getUserId(), videoId);
         }
 
-        List<Comment> comments = commentDao.getCommentsByVideoId(videoId);
-        CommentVO[] commentArray = comments.stream()
+        List<CommentVO> comments = commentDao.getCommentsByVideoId(videoId).stream()
                 .map(c -> new CommentVO(
                         true,
                         "成功",
@@ -90,7 +89,7 @@ public class VideoService {
                         c.getParentId(),
                         c.getStatus()
                 ))
-                .toArray(CommentVO[]::new);
+                .toList();
 
         return new VideoDetailVO(
                 true,
@@ -98,7 +97,7 @@ public class VideoService {
                 video.getId(),
                 video.getIntro(),
                 video.getVideoUrl(),
-                commentArray
+                comments
         );
     }
 
@@ -225,7 +224,7 @@ public class VideoService {
 
 
 
-    private VideoVO[] toVideoVOArray(List<Video> videos) {
+    private List<VideoVO> toVideoVOArray(List<Video> videos) {
         return videos.stream()
                 .map(v -> new VideoVO(
                         true,
@@ -235,7 +234,6 @@ public class VideoService {
                         v.getThumbnailUrl(),
                         v.getLikesCount(),
                         v.getCoinsCount()
-                ))
-                .toArray(VideoVO[]::new);
+                )).toList();
     }
 }
