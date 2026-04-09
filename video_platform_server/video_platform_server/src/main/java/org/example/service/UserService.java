@@ -162,17 +162,15 @@ public class UserService {
         var u = user.get(0);
 
         var videos = videoDao.getUserAllVideoById(u.getId())
-                .stream().map(temp_user -> {
-                    return new VideoVO(
-                            true,
-                            "成功",
-                            temp_user.getId(),
-                            temp_user.getTitle(),
-                            temp_user.getThumbnailUrl(),
-                            temp_user.getLikesCount(),
-                            temp_user.getCoinsCount()
-                    );
-                }).toList();
+                .stream().map(temp_user -> new VideoVO(
+                        true,
+                        "成功",
+                        temp_user.getId(),
+                        temp_user.getTitle(),
+                        temp_user.getThumbnailUrl(),
+                        temp_user.getLikesCount(),
+                        temp_user.getCoinsCount()
+                )).collect(Collectors.toList());
 
         return new UserInfoVO(
                 true,
@@ -182,6 +180,7 @@ public class UserService {
                 u.getNickname(),
                 u.getLikes(),
                 u.getCoins(),
+                u.getStatus(),
                 videos
         );
     }
@@ -215,9 +214,37 @@ public class UserService {
     public CheckInRecordVO getSignInHistory(UserPayloadDTO userPayloadDTO) throws Exception {
         return new CheckInRecordVO(
                 true,
-                "签到成功",
+                "获取成功",
                 checkInDao.getAllRecords(userPayloadDTO.getUserId())
         );
     }
-}
 
+    /**
+     * 获取所有用户
+     */
+    public UserListVO getAllUsers(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
+        var users = userDao.getAllUsers().stream().map(u -> new UserInfoVO(
+                true,
+                "获取成功",
+                u.getId(),
+                u.getNickname(),
+                u.getBio(),
+                u.getLikes(),
+                u.getEarn_coins(),
+                u.getStatus(),
+                null
+        )).collect(Collectors.toList());
+        return new UserListVO(true, "获取成功", users);
+    }
+
+    /**
+     * 封禁用户
+     */
+    public ResultVO banUser(BanUserDTO banUserDTO) throws Exception {
+        int rows = userDao.banUserById(banUserDTO.getUser_id());
+        if (rows > 0) {
+            return new ResultVO(true, "封禁账号成功");
+        }
+        return new ResultVO(false, "封禁账号失败");
+    }
+}

@@ -9,21 +9,22 @@ public class UserInfoVO extends ResultVO {
     private String bio;
     private Integer likes;
     private Integer earn_coins;
+    private String status;
     private List<VideoVO> videos;
 
     public UserInfoVO() {
     }
 
-    public UserInfoVO(boolean success, String msg, Integer id, String nickname, String bio, Integer likes, Integer earn_coins, List<VideoVO> videos) {
+    public UserInfoVO(boolean success, String msg, Integer id, String nickname, String bio, Integer likes, Integer earn_coins, String status, List<VideoVO> videos) {
         super(success, msg);
         this.id = id;
         this.nickname = nickname;
         this.bio = bio;
         this.likes = likes;
         this.earn_coins = earn_coins;
+        this.status = status;
         this.videos = videos;
     }
-
 
     public Integer getId() {
         return id;
@@ -47,6 +48,10 @@ public class UserInfoVO extends ResultVO {
 
     public List<VideoVO> getVideos() {
         return videos;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public void setId(Integer id) {
@@ -73,5 +78,8 @@ public class UserInfoVO extends ResultVO {
         this.videos = videos;
     }
 
-}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
+}
