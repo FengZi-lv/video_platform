@@ -40,7 +40,7 @@ public class ReportDao extends BaseDao {
     }
 
     public List<Report> getAllReports() throws Exception {
-        var sql = "SELECT r.id, r.video_id, r.context, r.status, u.nickname, r.user_id " +
+        var sql = "SELECT r.id, r.video_id, r.context, r.status, u.nickname, r.user_id, r.create_date " +
                 "FROM reports r " +
                 "LEFT JOIN users u ON r.user_id = u.id";
         try (var stmt = conn.prepareStatement(sql)) {
