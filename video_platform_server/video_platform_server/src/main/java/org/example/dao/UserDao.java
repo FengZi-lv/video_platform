@@ -76,7 +76,8 @@ public class UserDao extends BaseDao {
     }
 
     public int updateUserPassword(int id, String pwd) throws SQLException {
-        var sql = "UPDATE users SET password = ?, invalidate_tokens_before = CURRENT_TIMESTAMP WHERE id = ?";
+//        这里的invalidate_tokens_before应该向前推进5分钟，以确保重新生成的token有效
+        var sql = "UPDATE users SET password = ?, invalidate_tokens_before = CURRENT_TIMESTAMP - INTERVAL 5 MINUTE WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, pwd);
             stmt.setInt(2, id);
@@ -140,7 +141,8 @@ public class UserDao extends BaseDao {
     }
 
     public int banUserById(int id) throws SQLException {
-        var sql = "UPDATE users SET status = 'ban', invalidate_tokens_before = CURRENT_TIMESTAMP WHERE id = ?";
+        // 这里的invalidate_tokens_before应该向前推进5分钟，以确保重新生成的token有效
+        var sql = "UPDATE users SET status = 'ban', invalidate_tokens_before = CURRENT_TIMESTAMP- INTERVAL 5 MINUTE  WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             return stmt.executeUpdate();

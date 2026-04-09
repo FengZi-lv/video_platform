@@ -108,8 +108,13 @@ public class AuthenticationFilter implements Filter {
             return;
         }
         // 验证jwt是否是修改密码前生成的
-            Timestamp validAfter = userDao.getTokenInvalidationTime(payload.getUserId());
-            if (validAfter != null && payload.getIat() != null) {
+        Timestamp validAfter = null;
+        try {
+            validAfter = userDao.getTokenInvalidationTime(payload.getUserId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if (validAfter != null && payload.getIat() != null) {
                 if (payload.getIat().before(validAfter)) {
                     reject(httpResponse);
                     return;
