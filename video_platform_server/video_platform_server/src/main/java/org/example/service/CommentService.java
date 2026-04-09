@@ -23,13 +23,13 @@ public class CommentService {
                 dto.getUserId(),
                 0,
                 dto.getVideo_id(),
-                "true",
+                "none",
                 null,
                 dto.getParent_id() != null ? dto.getParent_id() : 0,
                 dto.getContent()
         );
         int generatedId = commentDao.addComment(comment);
-        return new CommentVO(true, "评论成功", generatedId, dto.getContent(), 0, dto.getParent_id(), "true");
+        return new CommentVO(true, "评论成功", generatedId, dto.getContent(), 0, dto.getParent_id(), "none");
     }
 
     public ResultVO deleteComment(UserPayloadDTO user, int commentId) throws Exception {
