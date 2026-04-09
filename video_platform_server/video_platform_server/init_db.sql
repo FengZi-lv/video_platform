@@ -12,6 +12,7 @@ CREATE TABLE users
     coins      INT                            NOT NULL DEFAULT 0,
     earn_coins INT                            NOT NULL DEFAULT 0,
     likes      INT                            NOT NULL DEFAULT 0,
+    invalidate_tokens_before TIMESTAMP        NULL DEFAULT NULL,
 
     UNIQUE KEY (username)
 );

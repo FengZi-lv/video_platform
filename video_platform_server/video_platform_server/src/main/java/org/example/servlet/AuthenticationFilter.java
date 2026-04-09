@@ -6,6 +6,10 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.util.AuthUtil;
+import org.example.dao.UserDao;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import java.io.IOException;
 
@@ -25,6 +29,20 @@ public class AuthenticationFilter implements Filter {
 
     // 需要根据工件名称排除path
     private static final String artifactName = "/video_platform_server_war_exploded";
+
+    private static UserDao userDao;
+
+    @Override
+    public void init(FilterConfig filterConfig) {
+        try {
+            userDao = new UserDao();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+
+
 
     private static boolean verifyPathIsAllow(String path, String[] allowedList) {
         for (var allowedPath : allowedList) {
@@ -89,6 +107,14 @@ public class AuthenticationFilter implements Filter {
             reject(httpResponse);
             return;
         }
+        // 验证jwt是否是修改密码前生成的
+            Timestamp validAfter = userDao.getTokenInvalidationTime(payload.getUserId());
+            if (validAfter != null && payload.getIat() != null) {
+                if (payload.getIat().before(validAfter)) {
+                    reject(httpResponse);
+                    return;
+                }
+            }
 
         // 验证访问路径是否为管理员
         if (verifyPathIsAllow(path, adminAllowed) && !payload.getRole().equals("admin")) {

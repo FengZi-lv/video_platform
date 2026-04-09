@@ -5,6 +5,7 @@ import org.example.entity.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 public class UserDao extends BaseDao {
 
@@ -75,7 +76,7 @@ public class UserDao extends BaseDao {
     }
 
     public int updateUserPassword(int id, String pwd) throws SQLException {
-        var sql = "UPDATE users SET password = ? WHERE id = ?";
+        var sql = "UPDATE users SET password = ?, invalidate_tokens_before = CURRENT_TIMESTAMP WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, pwd);
             stmt.setInt(2, id);
@@ -139,7 +140,7 @@ public class UserDao extends BaseDao {
     }
 
     public int banUserById(int id) throws SQLException {
-        var sql = "UPDATE users SET status = 'ban' WHERE id = ?";
+        var sql = "UPDATE users SET status = 'ban', invalidate_tokens_before = CURRENT_TIMESTAMP WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             return stmt.executeUpdate();
@@ -152,6 +153,19 @@ public class UserDao extends BaseDao {
             stmt.setInt(1, id);
             return stmt.executeUpdate();
         }
+    }
+
+    public Timestamp getTokenInvalidationTime(int userId) throws SQLException {
+        var sql = "SELECT invalidate_tokens_before FROM users WHERE id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getTimestamp(1);
+                }
+            }
+        }
+        return null;
     }
 
 }
