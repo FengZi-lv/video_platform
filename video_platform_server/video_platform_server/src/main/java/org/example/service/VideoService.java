@@ -108,7 +108,11 @@ public class VideoService {
     public ResultVO publishVideo(PublishVideoDTO dto) throws Exception {
 
         // 检查服务器是否存在视频文件和缩略图文件
-        if (!new File(dto.getSrc()).exists() || !new File(dto.getThumbnail()).exists()) {
+        String physicalSrc = dto.getSrc() != null ?
+                                        dto.getSrc().replace("/uploads/", uploadDir) : "";
+        String physicalThumb = dto.getThumbnail() != null ?
+                                        dto.getThumbnail().replace("/uploads/", uploadDir) : "";
+        if (!new File(physicalSrc).exists() || !new File(physicalThumb).exists()) {
             return new ResultVO(false, "发布失败：视频文件或缩略图文件不存在");
         }
 
