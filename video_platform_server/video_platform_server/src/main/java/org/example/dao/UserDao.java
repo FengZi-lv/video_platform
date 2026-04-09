@@ -99,9 +99,9 @@ public class UserDao extends BaseDao {
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getNickname());
             stmt.setString(2, user.getBio());
-            stmt.setInt(3, user.getCoins());
-            stmt.setInt(4, user.getEarn_coins());
-            stmt.setInt(5, user.getLikes());
+            stmt.setObject(3, user.getCoins(), java.sql.Types.INTEGER);
+            stmt.setObject(4, user.getEarn_coins(), java.sql.Types.INTEGER);
+            stmt.setObject(5, user.getLikes(), java.sql.Types.INTEGER);
             stmt.setInt(6, user.getId());
             return stmt.executeUpdate();
         }
