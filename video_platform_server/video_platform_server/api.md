@@ -319,6 +319,7 @@
   "id": 1,
   "description": "视频描述",
   "src": "视频URL",
+  "uploader_id": 1,
   "comments": [
     {
       "id": 1,

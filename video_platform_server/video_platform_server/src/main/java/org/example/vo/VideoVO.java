@@ -8,6 +8,7 @@ public class VideoVO extends ResultVO {
     private int likes;
     private int earn_coins;
 
+
     public VideoVO() {
     }
 

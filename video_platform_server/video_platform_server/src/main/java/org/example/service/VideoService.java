@@ -97,6 +97,7 @@ public class VideoService {
                 video.getId(),
                 video.getIntro(),
                 video.getVideoUrl(),
+                video.getUploaderId(),
                 comments
         );
     }

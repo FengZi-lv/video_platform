@@ -6,17 +6,19 @@ public class VideoDetailVO extends ResultVO {
     private Integer id;
     private String description;
     private String src;
+    private Integer uploader_id;
     private List<CommentVO> comments;
 
     public VideoDetailVO() {
     }
 
-    public VideoDetailVO(boolean success, String msg, Integer id, String description, String src, List<CommentVO> comments) {
+    public VideoDetailVO(boolean success, String msg, Integer id, String description, String src,Integer uploader_id,  List<CommentVO> comments) {
         super(success, msg);
 
         this.id = id;
         this.description = description;
         this.src = src;
+        this.uploader_id=uploader_id;
         this.comments = comments;
     }
 
@@ -50,5 +52,13 @@ public class VideoDetailVO extends ResultVO {
 
     public void setComments(List<CommentVO> comments) {
         this.comments = comments;
+    }
+
+    public Integer getUploader_id() {
+        return uploader_id;
+    }
+
+    public void setUploader_id(Integer uploader_id) {
+        this.uploader_id = uploader_id;
     }
 }
