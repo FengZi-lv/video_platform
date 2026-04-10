@@ -40,8 +40,6 @@ public class AuthenticationFilter implements Filter {
             e.printStackTrace();
         }
     }
-    
-
 
 
     private static boolean verifyPathIsAllow(String path, String[] allowedList) {
@@ -54,10 +52,10 @@ public class AuthenticationFilter implements Filter {
     }
 
 
-    private void reject(HttpServletResponse httpResponse) throws IOException {
+    private void reject(HttpServletResponse httpResponse, String msg) throws IOException {
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        
-        httpResponse.getWriter().write("{\"success\": false, \"message\": \"Unauthorized\"}");
+
+        httpResponse.getWriter().write("{\"success\": false, \"message\": \"" + msg + "\"}");
     }
 
     @Override
@@ -72,14 +70,14 @@ public class AuthenticationFilter implements Filter {
 
         // 验证是否带bearer
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            reject(httpResponse);
+            reject(httpResponse,"没有携带jwt");
             return;
         }
         var token = authHeader.substring(7);
 
         // bearer为空
         if (token.isEmpty()) {
-            reject(httpResponse);
+            reject(httpResponse,"jwt为空");
             return;
         }
 
@@ -93,7 +91,7 @@ public class AuthenticationFilter implements Filter {
 
             // 如果范围的是游客可访问的接口
             if (!verifyPathIsAllow(path, guestAllowed)) {
-                reject(httpResponse);
+                reject(httpResponse,"游客不可访问");
                 return;
             }
 
@@ -104,9 +102,16 @@ public class AuthenticationFilter implements Filter {
         // 验证jwt是否正确
         var payload = AuthUtil.verifyToken(token);
         if (payload == null) {
-            reject(httpResponse);
+            reject(httpResponse,"jwt格式错误");
             return;
         }
+
+        // 验证用户是否已经被封禁
+        if (payload.getRole().equals("ban")) {
+            reject(httpResponse,"用户已被封禁");
+            return;
+        }
+
         // 验证jwt是否是修改密码前生成的
         Timestamp validAfter = null;
         try {
@@ -115,15 +120,15 @@ public class AuthenticationFilter implements Filter {
             throw new RuntimeException(e);
         }
         if (validAfter != null && payload.getIat() != null) {
-                if (payload.getIat().before(validAfter)) {
-                    reject(httpResponse);
-                    return;
-                }
+            if (payload.getIat().before(validAfter)) {
+                reject(httpResponse,"jwt已过期");
+                return;
             }
+        }
 
         // 验证访问路径是否为管理员
         if (verifyPathIsAllow(path, adminAllowed) && !payload.getRole().equals("admin")) {
-            reject(httpResponse);
+            reject(httpResponse,"无权限访问管理员接口");
             return;
         }
 
