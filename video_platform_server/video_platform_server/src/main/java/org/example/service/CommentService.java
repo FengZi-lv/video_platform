@@ -33,7 +33,7 @@ public class CommentService {
                 dto.getContent()
         );
         int generatedId = commentDao.addComment(comment);
-        return new CommentVO(true, "评论成功", generatedId, dto.getContent(), 0, dto.getParent_id(), "none");
+        return new CommentVO(true, "评论成功", generatedId, dto.getContent(), 0, dto.getParent_id(), "none", false, dto.getUserId());
     }
 
     public ResultVO deleteComment(UserPayloadDTO user, int commentId) throws Exception {

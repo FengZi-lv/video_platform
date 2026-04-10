@@ -97,7 +97,8 @@ public class VideoService {
                         c.getLikes(),
                         c.getParentId(),
                         c.getStatus(),
-                        finalLikedCommentIds.contains(c.getId())
+                        finalLikedCommentIds.contains(c.getId()),
+                        c.getUserId()
                 ))
                 .toList();
 

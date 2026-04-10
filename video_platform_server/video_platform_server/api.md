@@ -328,14 +328,16 @@
       "content": "评论内容",
       "likes": 10,
       "parent_id": null,
-      "is_liked": true
+      "is_liked": true,
+      "user_id": 2
     },
     {
       "id": 2,
       "content": "回复内容",
       "likes": 5,
       "parent_id": 1,
-      "is_liked": false
+      "is_liked": false,
+      "user_id": 3
     }
   ]
 }
@@ -645,14 +647,9 @@
   "content": "评论内容",
   "likes": 0,
   "parentId": null,
-  "status": "true"
-}
-```
-
-```json
-{
-  "success": false,
-  "msg": "评论失败，内容不能为空"
+  "status": "true",
+  "is_liked": false,
+  "user_id": 2
 }
 ```
 
