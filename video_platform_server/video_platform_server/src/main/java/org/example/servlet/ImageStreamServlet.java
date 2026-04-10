@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.util.Config;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.nio.file.Files;
 @WebServlet("/api/video/thumbnail")
 public class ImageStreamServlet extends HttpServlet {
 
-    private static final String IMAGE_BASE_PATH = "C:\\Users\\fengz\\Downloads\\uploads\\";
+    private static final String IMAGE_BASE_PATH = Config.RES_BASE_PATH;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

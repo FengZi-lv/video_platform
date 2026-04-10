@@ -6,6 +6,7 @@ import org.example.dto.*;
 import org.example.entity.Comment;
 import org.example.entity.Video;
 import org.example.entity.VideoCoin;
+import org.example.util.Config;
 import org.example.vo.*;
 
 import java.sql.SQLException;
@@ -38,7 +39,7 @@ public class VideoService {
         videoCoinsDao = new VideoCoinsDao();
         commentDao = new CommentDao();
         commentLikesDao = new CommentLikesDao();
-        uploadDir = "C:\\Users\\fengz\\Downloads\\uploads\\";
+        uploadDir = Config.RES_BASE_PATH;
 
     }
 
@@ -123,9 +124,9 @@ public class VideoService {
 
         // 检查服务器是否存在视频文件和缩略图文件
         String physicalSrc = dto.getSrc() != null ?
-                                        dto.getSrc().replace("/uploads/", uploadDir) : "";
+                                        dto.getSrc().replace("/", uploadDir) : "";
         String physicalThumb = dto.getThumbnail() != null ?
-                                        dto.getThumbnail().replace("/uploads/", uploadDir) : "";
+                                        dto.getThumbnail().replace("/", uploadDir) : "";
         if (!new File(physicalSrc).exists() || !new File(physicalThumb).exists()) {
             return new ResultVO(false, "发布失败：视频文件或缩略图文件不存在");
         }
@@ -169,7 +170,7 @@ public class VideoService {
         videoPart.write(uploadDir + videoFileName);
         thumbnailPart.write(uploadDir + thumbnailFileName);
 
-        return new UploadResult(true, "上传视频成功", "/uploads/" + videoFileName, "/uploads/" + thumbnailFileName);
+        return new UploadResult(true, "上传视频成功", "/" + videoFileName, "/" + thumbnailFileName);
     }
 
     private String getSubmittedFileName(Part part) {

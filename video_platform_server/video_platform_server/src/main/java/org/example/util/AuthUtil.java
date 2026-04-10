@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.Base64;
 
 public class AuthUtil {
-    private final static String salt = "11111111111111";
+    private final static String salt = Config.SALT;
     private final static String HEADER = "{\"alg\": \"HS256\",\"typ\": \"JWT\"}";
 
 
