@@ -382,6 +382,16 @@
 }
 ```
 
+## 播放视频流
+
+`GET /api/video/play?name=xxxx.mp4`
+
+
+## 获取视频缩略图
+
+`GET /api/video/thumbnail?name=xx.jpg`
+
+
 ## 查看审核视频
 
 `GET /api/admin/videos/pending`

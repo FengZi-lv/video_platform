@@ -23,6 +23,11 @@ public class AuthenticationFilter implements Filter {
             "/api/videos/search"
     };
 
+    private static final String[] withoutJWTAllowed = {
+            "/api/video/play",
+            "/api/video/thumbnail"
+    };
+
     private static final String[] adminAllowed = {
             "/api/admin"
     };
@@ -63,6 +68,18 @@ public class AuthenticationFilter implements Filter {
         var httpRequest = (HttpServletRequest) request;
         var httpResponse = (HttpServletResponse) response;
 
+        var path = httpRequest.getRequestURI();
+
+        // 过滤工件名
+        path = path.substring(artifactName.length());
+
+        // 如果是请求视频和缩略图
+        if (verifyPathIsAllow(path, withoutJWTAllowed)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+
         // 先设置所有后续返回的响应头为json
         httpResponse.setContentType("application/json;charset=UTF-8");
 
@@ -70,28 +87,24 @@ public class AuthenticationFilter implements Filter {
 
         // 验证是否带bearer
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            reject(httpResponse,"没有携带jwt");
+            reject(httpResponse, "没有携带jwt");
             return;
         }
         var token = authHeader.substring(7);
 
         // bearer为空
         if (token.isEmpty()) {
-            reject(httpResponse,"jwt为空");
+            reject(httpResponse, "jwt为空");
             return;
         }
 
-        var path = httpRequest.getRequestURI();
-
-        // 过滤工件名
-        path = path.substring(artifactName.length());
 
         // role为guest
         if (token.equals("guest")) {
 
             // 如果范围的是游客可访问的接口
             if (!verifyPathIsAllow(path, guestAllowed)) {
-                reject(httpResponse,"游客不可访问");
+                reject(httpResponse, "游客不可访问");
                 return;
             }
 
@@ -102,13 +115,13 @@ public class AuthenticationFilter implements Filter {
         // 验证jwt是否正确
         var payload = AuthUtil.verifyToken(token);
         if (payload == null) {
-            reject(httpResponse,"jwt格式错误");
+            reject(httpResponse, "jwt格式错误");
             return;
         }
 
         // 验证用户是否已经被封禁
         if (payload.getRole().equals("ban")) {
-            reject(httpResponse,"用户已被封禁");
+            reject(httpResponse, "用户已被封禁");
             return;
         }
 
@@ -121,14 +134,14 @@ public class AuthenticationFilter implements Filter {
         }
         if (validAfter != null && payload.getIat() != null) {
             if (payload.getIat().before(validAfter)) {
-                reject(httpResponse,"jwt已过期");
+                reject(httpResponse, "jwt已过期");
                 return;
             }
         }
 
         // 验证访问路径是否为管理员
         if (verifyPathIsAllow(path, adminAllowed) && !payload.getRole().equals("admin")) {
-            reject(httpResponse,"无权限访问管理员接口");
+            reject(httpResponse, "无权限访问管理员接口");
             return;
         }
 

@@ -1,92 +1,61 @@
 USE video_platform_db;
 
--- --------------------------------------------------------
--- 1. 插入用户数据 (Users)
--- 包含一个管理员，三个正常活跃用户，以及一个被封禁的用户
--- --------------------------------------------------------
+-- 1. 清理旧数据（可选，视情况执行）
+-- SET FOREIGN_KEY_CHECKS = 0;
+-- TRUNCATE TABLE comment_likes; TRUNCATE TABLE comments; TRUNCATE TABLE reports;
+-- TRUNCATE TABLE video_earn_coins; TRUNCATE TABLE video_history; TRUNCATE TABLE video_favorites;
+-- TRUNCATE TABLE video_like; TRUNCATE TABLE videos; TRUNCATE TABLE check_in; TRUNCATE TABLE users;
+-- SET FOREIGN_KEY_CHECKS = 1;
+
+-- 2. 批量插入用户 (不同角色和状态)
 INSERT INTO users (username, password, nickname, status, bio, coins, earn_coins, likes) VALUES
-                                                                                            ('admin01', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '超级管理员', 'admin', '我是这个平台的管理员。', 9999, 5000, 1000),
-                                                                                            ('alice_vlog', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Alice的生活', 'active', '分享日常Vlog和美食。', 500, 120, 350),
-                                                                                            ('tech_bob', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '极客Bob', 'active', '硬核科技产品评测。', 800, 450, 890),
-                                                                                            ('gamer_carol', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', 'Carol玩游戏', 'active', '单机游戏实况主。', 150, 30, 80),
-                                                                                            ('bad_guy', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '违规用户', 'ban', '发广告的。', 0, 0, 0);
+                                                                                            ('tech_master@gmail.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '极客张三', 'active', '分享最新的科技资讯', 1000, 500, 200),
+                                                                                            ('travel_vlog@163.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '环球小李', 'active', '带你看遍世界', 200, 1000, 450),
+                                                                                            ('foodie_queen@outlook.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '美食达人阿珍', 'active', '唯有美食不可辜负', 50, 20, 15),
+                                                                                            ('silent_watcher@qq.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '路人甲', 'active', '这个人很懒，什么都没留下', 10, 0, 0),
+                                                                                            ('bad_user@spam.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '违规搬运工', 'ban', '账号已被封禁', 0, 0, 0),
+                                                                                            ('system_mod@video.com', 'AR4fHuQgPbWbNiU0rs5CNXGCzcPb60KbU53PIIqapko', '内容审核员01', 'admin', '负责维护社区环境', 9999, 0, 0);
 
--- --------------------------------------------------------
--- 2. 插入签到数据 (Check_in)
--- 模拟过去几天的签到记录
--- --------------------------------------------------------
-INSERT INTO check_in (user_id, date) VALUES
-                                         (2, DATE_SUB(CURRENT_DATE, INTERVAL 2 DAY)),
-                                         (2, DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY)),
-                                         (2, CURRENT_DATE),
-                                         (3, DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY)),
-                                         (3, CURRENT_DATE),
-                                         (4, CURRENT_DATE);
-
--- --------------------------------------------------------
--- 3. 插入视频数据 (Videos)
--- 包含已通过、审核中和被拒绝的视频
--- --------------------------------------------------------
+-- 3. 批量插入视频 (复用 1.mp4, 2.mp4, 3.mp4)
 INSERT INTO videos (uploader_id, title, intro, status, likes_count, favorites_count, earn_coins, video_url, thumbnail_url) VALUES
-                                                                                                                               (2, '我的周末Vlog：探索城市隐藏咖啡馆', '和大家分享我这周末发现的宝藏咖啡厅！环境超级棒！', 'pass', 2, 1, 2, 'https://example.com/video1.mp4', 'https://example.com/thumb1.jpg'),
-                                                                                                                               (3, '2024最新旗舰手机横评', '花了半个月时间做的硬核评测，希望能帮到大家。', 'pass', 1, 1, 5, 'https://example.com/video2.mp4', 'https://example.com/thumb2.jpg'),
-                                                                                                                               (4, '只狼 完美无伤BOSS战合集', '太肝了，求三连！', 'reviewing', 0, 0, 0, 'https://example.com/video3.mp4', 'https://example.com/thumb3.jpg'),
-                                                                                                                               (5, '点击链接领取免费皮肤!!!', '不要错过这个免费拿皮肤的机会！', 'reject', 0, 0, 0, 'https://example.com/video4.mp4', 'https://example.com/thumb4.jpg');
+                                                                                                                               (1, '2024年最强显卡测评', '深度解析性能参数。', 'pass', 150, 45, 120, '1.mp4', '1.jpg'),
+                                                                                                                               (1, '如何组装一台工作站', '从零开始的装机教程。', 'pass', 80, 20, 50, '2.mp4', '2.jpg'),
+                                                                                                                               (2, '冰岛极光之旅', '极地美景实拍，震撼心灵。', 'pass', 300, 120, 400, '3.mp4', '3.jpg'),
+                                                                                                                               (2, '京都的雨季', '漫步在古城小巷。', 'pass', 120, 30, 90, '1.mp4', '1.jpg'),
+                                                                                                                               (3, '秘制红烧肉教程', '家常菜也能做出饭店味。', 'pass', 45, 15, 10, '2.mp4', '2.jpg'),
+                                                                                                                               (3, '三分钟学会煎牛排', '新手必看系列。', 'pass', 20, 5, 2, '3.mp4', '3.jpg'),
+                                                                                                                               (5, '搬运：火爆全网的短片', '未经许可的转载内容。', 'reject', 0, 0, 0, '1.mp4', '1.jpg'),
+                                                                                                                               (1, '新项目预告', '下周将开启全新挑战。', 'reviewing', 0, 0, 0, '2.mp4', '2.jpg');
 
--- --------------------------------------------------------
--- 4. 插入视频点赞数据 (Video_like)
--- 对应视频表的 likes_count (注意：此处数据应该与视频表的统计相符，模拟业务逻辑已更新状态)
--- --------------------------------------------------------
-INSERT INTO video_like (user_id, video_id) VALUES
-                                               (3, 1), -- Bob点赞了Alice的Vlog
-                                               (4, 1), -- Carol点赞了Alice的Vlog
-                                               (2, 2); -- Alice点赞了Bob的评测
+-- 4. 签到数据
+INSERT INTO check_in (user_id, date) VALUES
+                                         (1, '2024-03-20'), (1, '2024-03-21'), (2, '2024-03-21'), (3, '2024-03-21'), (4, '2024-03-21');
 
--- --------------------------------------------------------
--- 5. 插入视频收藏数据 (Video_favorites)
--- --------------------------------------------------------
-INSERT INTO video_favorites (user_id, video_id) VALUES
-                                                    (4, 1), -- Carol收藏了Alice的Vlog
-                                                    (1, 2); -- 管理员收藏了Bob的评测
+-- 5. 视频互动 (点赞、收藏、投币、历史)
+-- 点赞
+INSERT INTO video_like (user_id, video_id) VALUES (2, 1), (3, 1), (4, 1), (1, 3), (4, 3);
+-- 收藏
+INSERT INTO video_favorites (user_id, video_id) VALUES (4, 1), (4, 3), (2, 1);
+-- 历史记录
+INSERT INTO video_history (user_id, video_id) VALUES (4, 1), (4, 2), (4, 3), (1, 3), (2, 5);
+-- 投币记录 (用户投给视频)
+INSERT INTO video_earn_coins (user_id, video_id, count) VALUES (1, 3, 5), (4, 1, 2), (2, 1, 10);
 
--- --------------------------------------------------------
--- 6. 插入历史观看记录 (Video_history)
--- --------------------------------------------------------
-INSERT INTO video_history (user_id, video_id) VALUES
-                                                  (3, 1),
-                                                  (4, 1),
-                                                  (2, 2),
-                                                  (1, 4); -- 管理员观看了违规视频进行审核
-
--- --------------------------------------------------------
--- 7. 插入投币数据 (Video_earn_coins)
--- --------------------------------------------------------
-INSERT INTO video_earn_coins (user_id, video_id, count) VALUES
-                                                            (3, 1, 2), -- Bob给Alice投了2个币
-                                                            (2, 2, 2), -- Alice给Bob投了2个币
-                                                            (4, 2, 3); -- Carol给Bob投了3个币
-
--- --------------------------------------------------------
--- 8. 插入评论数据 (Comments)
--- 包含父子评论(楼层)和已删除的评论
--- --------------------------------------------------------
+-- 6. 评论系统 (包含父子评论)
+-- 视频1的评论
 INSERT INTO comments (user_id, video_id, status, likes, parent_id, context) VALUES
-                                                                                (3, 1, 'none', 1, NULL, '咖啡厅看起来好棒，求地址！'),           -- id: 1
-                                                                                (2, 1, 'none', 0, 1, '在中山路那边，改天我把详细地址私发你哈~'), -- id: 2 (回复上一条)
-                                                                                (4, 2, 'none', 2, NULL, '评测得很详细，打算入手了！'),         -- id: 3
-                                                                                (5, 1, 'del', 0, NULL, '加微信带你赚钱...');                   -- id: 4 (垃圾评论，状态为已删除)
+                                                                                (2, 1, 'none', 15, NULL, '测评很专业，已经下单了。'),
+                                                                                (1, 1, 'none', 5, 1, '感谢支持，记得分享使用体验哦！'),
+                                                                                (4, 1, 'none', 0, NULL, '求问这款显卡的功耗是多少？'),
+-- 视频3的评论
+                                                                                (3, 3, 'none', 50, NULL, '景色太美了，简直是人间仙境。'),
+                                                                                (4, 3, 'none', 2, 4, '同意！我也想去这里旅游。');
 
--- --------------------------------------------------------
--- 9. 插入评论点赞数据 (Comment_likes)
--- --------------------------------------------------------
-INSERT INTO comment_likes (user_id, comment_id) VALUES
-                                                    (2, 1), -- Alice点赞了Bob的评论
-                                                    (3, 3), -- Bob点赞了Carol的评论
-                                                    (2, 3); -- Alice点赞了Carol的评论
+-- 7. 评论点赞
+INSERT INTO comment_likes (user_id, comment_id) VALUES (1, 1), (4, 1), (2, 4);
 
--- --------------------------------------------------------
--- 10. 插入举报记录 (Reports)
--- --------------------------------------------------------
+-- 8. 举报数据
 INSERT INTO reports (user_id, video_id, context, status) VALUES
-                                                             (2, 4, '这个视频是个骗局链接，请处理。', 'pass'),
-                                                             (3, 4, '广告引流，涉嫌诈骗。', 'reviewing');
+                                                             (1, 7, '此视频疑似侵权搬运，请核实。', 'pass'),
+                                                             (4, 5, '简介里有错别字。', 'reject'),
+                                                             (2, 8, '等待审核中...', 'reviewing');
