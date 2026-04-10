@@ -15,4 +15,10 @@
 - 可以在 [Zephyr 在 Apifox 邀请你加入项目 video_platform（7天有效）](https://app.apifox.com/invite/project?token=eRXinh4OFgXbnf2Zmv84h) 中测试接口
 - 或者是查看[在线文档](https://s.apifox.cn/229a5b78-df62-41ac-bc0f-8107bcfa136f)
 
-视频上传路径需要更改`video_platform_server\video_platform_server\src\main\java\org\example\util\Config.java`中的`RES_BASE_PATH`
+
+#### 运行前需要先进行如下操作：
+
+- 视频上传路径需要更改`src\main\java\org\example\util\Config.java`中的`RES_BASE_PATH`
+- 数据库连接需要更改`src\main\java\org\example\util\Config.java`中的`USERNAME`和`PASSWORD`
+- 数据库初始化需要执行`init.sql`中的SQL语句
+- 使用`mock_data.sql`中的SQL语句向数据库中插入一些测试数据，或者是插入一个管理员账号以便于测试
