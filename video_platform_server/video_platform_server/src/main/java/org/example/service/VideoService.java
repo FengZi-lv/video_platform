@@ -26,6 +26,7 @@ public class VideoService {
     private final VideoHistoryDao videoHistoryDao;
     private final VideoCoinsDao videoCoinsDao;
     private final CommentDao commentDao;
+    private final CommentLikesDao commentLikesDao;
 
     private final String uploadDir;
 
@@ -36,6 +37,7 @@ public class VideoService {
         videoHistoryDao = new VideoHistoryDao();
         videoCoinsDao = new VideoCoinsDao();
         commentDao = new CommentDao();
+        commentLikesDao = new CommentLikesDao();
         uploadDir = "C:\\Users\\fengz\\Downloads\\uploads\\";
 
     }
@@ -74,11 +76,18 @@ public class VideoService {
             return new VideoDetailVO();
         }
 
-        // 记录浏览历史
+        List<Integer> likedCommentIds = new java.util.ArrayList<>();
+        boolean isLiked = false;
+        boolean isFavorited = false;
         if (userPayloadDTO != null && userPayloadDTO.getUserId() != null) {
-            videoHistoryDao.addHistory(userPayloadDTO.getUserId(), videoId);
+            int userId = userPayloadDTO.getUserId();
+            videoHistoryDao.addHistory(userId, videoId);
+            likedCommentIds = commentLikesDao.getLikedCommentIds(userId, videoId);
+            isLiked = videoLikeDao.isLiked(userId, videoId);
+            isFavorited = videoFavoritesDao.isFavorited(userId, videoId);
         }
 
+        List<Integer> finalLikedCommentIds = likedCommentIds;
         List<CommentVO> comments = commentDao.getCommentsByVideoId(videoId).stream()
                 .map(c -> new CommentVO(
                         true,
@@ -87,7 +96,8 @@ public class VideoService {
                         Objects.equals(c.getStatus(), "del") ? "" : c.getContext(),
                         c.getLikes(),
                         c.getParentId(),
-                        c.getStatus()
+                        c.getStatus(),
+                        finalLikedCommentIds.contains(c.getId())
                 ))
                 .toList();
 
@@ -98,6 +108,8 @@ public class VideoService {
                 video.getIntro(),
                 video.getVideoUrl(),
                 video.getUploaderId(),
+                isLiked,
+                isFavorited,
                 comments
         );
     }

@@ -30,6 +30,17 @@ public class VideoFavoritesDao extends BaseDao {
         }
     }
 
+    public boolean isFavorited(int userId, int videoId) throws Exception {
+        var sql = "SELECT 1 FROM video_favorites WHERE user_id = ? AND video_id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, videoId);
+            try (var rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
     public List<Video> getAllFavoritesByUserId(int userId) throws Exception {
         var sql = "SELECT v.* FROM video_favorites vf JOIN videos v ON vf.video_id = v.id WHERE vf.user_id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
@@ -56,4 +67,3 @@ public class VideoFavoritesDao extends BaseDao {
         }
     }
 }
-

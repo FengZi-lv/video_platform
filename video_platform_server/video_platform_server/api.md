@@ -320,18 +320,22 @@
   "description": "视频描述",
   "src": "视频URL",
   "uploader_id": 1,
+  "is_liked": true,
+  "is_favorited": false,
   "comments": [
     {
       "id": 1,
       "content": "评论内容",
       "likes": 10,
-      "parent_id": null
+      "parent_id": null,
+      "is_liked": true
     },
     {
       "id": 2,
       "content": "回复内容",
       "likes": 5,
-      "parent_id": 1
+      "parent_id": 1,
+      "is_liked": false
     }
   ]
 }

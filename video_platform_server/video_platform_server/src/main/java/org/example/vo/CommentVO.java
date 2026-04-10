@@ -6,7 +6,7 @@ public class CommentVO extends ResultVO {
     private int likes;
     private Integer parentId;
     private String status;
-
+    private Boolean is_liked;
 
     public CommentVO() {
     }
@@ -19,6 +19,18 @@ public class CommentVO extends ResultVO {
         this.likes = likes;
         this.parentId = parentId;
         this.status = status;
+        this.is_liked = false;
+    }
+
+    public CommentVO(boolean success, String msg, int id, String content, int likes, Integer parentId, String status, Boolean is_liked) {
+        super(success, msg);
+
+        this.id = id;
+        this.content = content;
+        this.likes = likes;
+        this.parentId = parentId;
+        this.status = status;
+        this.is_liked = is_liked;
     }
 
     public int getId() {
@@ -59,5 +71,13 @@ public class CommentVO extends ResultVO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Boolean getIs_liked() {
+        return is_liked;
+    }
+
+    public void setIs_liked(Boolean is_liked) {
+        this.is_liked = is_liked;
     }
 }

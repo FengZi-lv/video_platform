@@ -29,6 +29,15 @@ public class VideoLikeDao extends BaseDao {
         }
     }
 
-
+    public boolean isLiked(int userId, int videoId) throws Exception {
+        var sql = "SELECT 1 FROM video_like WHERE user_id = ? AND video_id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, videoId);
+            try (var rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
 }
 

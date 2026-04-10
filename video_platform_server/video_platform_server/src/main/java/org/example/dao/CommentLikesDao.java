@@ -27,6 +27,19 @@ public class CommentLikesDao extends BaseDao {
         }
     }
 
+    public java.util.List<Integer> getLikedCommentIds(int userId, int videoId) throws Exception {
+        var sql = "SELECT cl.comment_id FROM comment_likes cl JOIN comments c ON cl.comment_id = c.id WHERE cl.user_id = ? AND c.video_id = ?";
+        java.util.List<Integer> list = new java.util.ArrayList<>();
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, videoId);
+            try (var rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(rs.getInt(1));
+                }
+            }
+        }
+        return list;
+    }
 
 }
-
