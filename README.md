@@ -8,7 +8,8 @@
 
 `video_platform_server`为后端服务
 
-服务默认运行在`http://localhost:8080/video_platform_server_war_exploded`
+前端服务默认运行在`http://localhost:8080/video_platform_server_war_exploded`
+后端服务运行在`http://localhost:8080/video_platform_server_war_exploded/api`
 
 接口可以在`api.md`中查看定义
 
@@ -22,3 +23,30 @@
 - 数据库连接需要更改`src\main\java\org\example\util\Config.java`中的`USERNAME`和`PASSWORD`
 - 数据库初始化需要执行`init.sql`中的SQL语句
 - 使用`mock_data.sql`中的SQL语句向数据库中插入一些测试数据，或者是插入一个管理员账号以便于测试
+
+> mock_data.sql中用户的密码均为**123456**
+
+
+# 权限说明
+
+## 游客
+
+可访问接口
+```
+"/api/auth/login",
+"/api/auth/register",
+"/api/videos",
+"/api/videos/search"，
+"/api/video/play",
+"/api/video/thumbnail"
+```
+
+即游客仅能查看视频列表、搜索视频、播放视频和查看视频缩略图，并且可以进行登录和注册操作，无法查看个人信息的接口
+
+## 用户
+
+除`/api/admin`外的其他接口均可访问
+
+## 管理员
+
+可访问所有接口
