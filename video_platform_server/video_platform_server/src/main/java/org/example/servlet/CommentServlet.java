@@ -67,7 +67,8 @@ public class CommentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
     }
 
     @Override
@@ -77,7 +78,10 @@ public class CommentServlet extends HttpServlet {
             case null -> ServletUtil.handleJsonRequest(req, resp, CommentActionDTO.class, this::postComment);
             case "/like" -> ServletUtil.handleJsonRequest(req, resp, CommentLikeDTO.class, this::likeComment);
             case "/unlike" -> ServletUtil.handleJsonRequest(req, resp, CommentLikeDTO.class, this::unlikeComment);
-            default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            default -> {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
+            }
         }
     }
 
@@ -87,7 +91,8 @@ public class CommentServlet extends HttpServlet {
         if (pathInfo != null && pathInfo.matches("/\\d+")) {
             ServletUtil.handleGetRequest(req, resp, this::deleteComment);
         } else {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
         }
     }
 }

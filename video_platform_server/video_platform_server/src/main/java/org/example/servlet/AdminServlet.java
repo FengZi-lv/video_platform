@@ -90,7 +90,10 @@ public class AdminServlet extends HttpServlet {
             case "/users" -> ServletUtil.handleGetRequest(req, resp, this::getUsers);
             case "/videos/pending" -> ServletUtil.handleGetRequest(req, resp, this::getPendingVideos);
             case "/reports" -> ServletUtil.handleGetRequest(req, resp, this::getReports);
-            case null, default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            case null, default -> {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
+            }
         }
     }
 
@@ -101,7 +104,10 @@ public class AdminServlet extends HttpServlet {
             case "/users/ban" -> ServletUtil.handleJsonRequest(req, resp, BanUserDTO.class, this::banUser);
             case "/videos/review" -> ServletUtil.handleJsonRequest(req, resp, ReviewVideoDTO.class, this::reviewVideo);
             case "/reports/handle" -> ServletUtil.handleJsonRequest(req, resp, HandleReportDTO.class, this::handleReport);
-            case null, default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            case null, default -> {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
+            }
         }
     }
 }

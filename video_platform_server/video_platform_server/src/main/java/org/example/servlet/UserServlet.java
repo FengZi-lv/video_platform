@@ -74,7 +74,8 @@ public class UserServlet extends HttpServlet {
                 if (pathInfo != null && pathInfo.matches("/\\d+")) {
                     ServletUtil.handleGetRequest(req, resp, this::getUserInfo);
                 } else {
-                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
                 }
             }
         }
@@ -86,7 +87,10 @@ public class UserServlet extends HttpServlet {
         switch (pathInfo) {
             case "/profile" -> ServletUtil.handleJsonRequest(req, resp, UpdateProfileDTO.class, this::updateProfile);
             case "/sign-in" -> ServletUtil.handleGetRequest(req, resp, this::signIn);
-            case null, default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            case null, default -> {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
+            }
         }
     }
 }

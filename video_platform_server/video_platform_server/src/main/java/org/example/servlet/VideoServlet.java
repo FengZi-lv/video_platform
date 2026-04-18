@@ -99,7 +99,8 @@ public class VideoServlet extends HttpServlet {
             try {
                 e.printStackTrace();
                 resp.setContentType("application/json;charset=UTF-8");
-                resp.getWriter().write("{\"success\": false, \"message\": \"上传失败，发生错误\"}");
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"success\": false, \"msg\": \"服务器发生错误\"}");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -166,7 +167,8 @@ public class VideoServlet extends HttpServlet {
                 if (pathInfo.matches("/\\d+")) {
                     ServletUtil.handleGetRequest(req, resp, this::getVideoDetail);
                 } else {
-                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
                 }
             }
         }
@@ -184,7 +186,10 @@ public class VideoServlet extends HttpServlet {
             case "/unfavorite" -> ServletUtil.handleJsonRequest(req, resp, VideoActionDTO.class, this::unfavoriteVideo);
             case "/coin" -> ServletUtil.handleJsonRequest(req, resp, VideoCoinDTO.class, this::coinVideo);
             case "/report" -> ServletUtil.handleJsonRequest(req, resp, ReportVideoDTO.class, this::reportVideo);
-            case null, default -> resp.sendError(HttpServletResponse.SC_NOT_FOUND, "API not found");
+            case null, default -> {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
+            }
         }
     }
 }

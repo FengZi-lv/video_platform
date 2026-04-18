@@ -40,7 +40,7 @@ public class ServletUtil {
             R resultVO = action.execute(currentUser, req);
 
             if (!resultVO.isSuccess()) {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
             resp.getWriter().write(new Gson().toJson(resultVO));
@@ -49,7 +49,7 @@ public class ServletUtil {
             e.printStackTrace();
             try {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                resp.getWriter().write("{\"success\": false, \"message\": \"服务器发生错误\"}");
+                resp.getWriter().write("{\"success\": false, \"msg\": \"服务器发生错误\"}");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -89,7 +89,7 @@ public class ServletUtil {
             R resultVO = action.execute(reqDTO);
 
             if (!resultVO.isSuccess()) {
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
 
             resp.getWriter().write(new Gson().toJson(resultVO));
@@ -98,7 +98,7 @@ public class ServletUtil {
             e.printStackTrace();
             try {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                resp.getWriter().write("{\"success\": false, \"message\": \"服务器发生错误\"}");
+                resp.getWriter().write("{\"success\": false, \"msg\": \"服务器发生错误\"}");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

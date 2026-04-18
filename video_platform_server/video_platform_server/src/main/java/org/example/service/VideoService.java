@@ -10,6 +10,7 @@ import org.example.util.Config;
 import org.example.vo.*;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
 
@@ -188,8 +189,12 @@ public class VideoService {
      * 点赞视频
      */
     public ResultVO likeVideo(VideoActionDTO dto) throws Exception {
-        int rows = videoLikeDao.addLike(dto.getUserId(), dto.getVideo_id());
-        return new ResultVO(rows > 0, rows > 0 ? "点赞成功" : "已点赞过");
+        try {
+            int rows = videoLikeDao.addLike(dto.getUserId(), dto.getVideo_id());
+            return new ResultVO(rows > 0, rows > 0 ? "点赞成功" : "点赞失败");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return new ResultVO(false, "已点赞过");
+        }
     }
 
     /**
@@ -204,8 +209,12 @@ public class VideoService {
      * 收藏视频
      */
     public ResultVO favoriteVideo(VideoActionDTO dto) throws Exception {
-        int rows = videoFavoritesDao.addFavorite(dto.getUserId(), dto.getVideo_id());
-        return new ResultVO(rows > 0, rows > 0 ? "收藏成功" : "已收藏过");
+        try {
+            int rows = videoFavoritesDao.addFavorite(dto.getUserId(), dto.getVideo_id());
+            return new ResultVO(rows > 0, rows > 0 ? "收藏成功" : "收藏失败");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return new ResultVO(false, "已收藏过");
+        }
     }
 
     /**
@@ -236,9 +245,13 @@ public class VideoService {
      * 投币
      */
     public ResultVO coinVideo(VideoCoinDTO dto) throws Exception {
-        VideoCoin videoCoin = new VideoCoin(dto.getUserId(), dto.getVideo_id(), dto.getCoins());
-        int rows = videoCoinsDao.addCoins(videoCoin);
-        return new ResultVO(rows > 0, rows > 0 ? "投币成功" : "投币失败，硬币不足");
+        try {
+            VideoCoin videoCoin = new VideoCoin(dto.getUserId(), dto.getVideo_id(), dto.getCoins());
+            int rows = videoCoinsDao.addCoins(videoCoin);
+            return new ResultVO(rows > 0, rows > 0 ? "投币成功" : "投币失败，硬币不足");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return new ResultVO(false, "已投币过");
+        }
     }
 
 

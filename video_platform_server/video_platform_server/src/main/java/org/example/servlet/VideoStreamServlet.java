@@ -26,13 +26,15 @@ public class VideoStreamServlet extends HttpServlet {
 
 
         if (videoName == null || videoName.isEmpty() || videoName.contains("..") || videoName.contains("/") || videoName.contains("\\")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid video  name");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"success\": false, \"msg\": \"Invalid video name\"}");
             return;
         }
 
         File videoFile = new File(VIDEO_BASE_PATH + videoName);
         if (!videoFile.exists()) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Video not found");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("{\"success\": false, \"msg\": \"Video not found\"}");
             return;
         }
 

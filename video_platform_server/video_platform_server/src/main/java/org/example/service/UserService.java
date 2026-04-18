@@ -10,6 +10,7 @@ import org.example.entity.User;
 import org.example.util.AuthUtil;
 import org.example.vo.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -87,7 +88,11 @@ public class UserService {
                 0
         );
 
-        userDao.addUser(newUser);
+        try {
+            userDao.addUser(newUser);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return new RegisterVO(false, "用户名已存在");
+        }
 
         return new RegisterVO(true, "注册成功");
 
@@ -189,8 +194,12 @@ public class UserService {
      * 签到，获得10个硬币
      */
     public ResultVO signIn(UserPayloadDTO userPayloadDTO) throws Exception {
-        if (checkInDao.signIn(userPayloadDTO.getUserId()) <= 0) {
-            return new ResultVO(false, "签到失败，已经签到过");
+        try {
+            if (checkInDao.signIn(userPayloadDTO.getUserId()) <= 0) {
+                return new ResultVO(false, "签到失败，请稍后再试");
+            }
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return new ResultVO(false, "签到失败，今日已签到过");
         }
         if (userDao.updateUserInfoById(new User(
                 userPayloadDTO.getUserId(),

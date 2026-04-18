@@ -25,13 +25,15 @@ public class ImageStreamServlet extends HttpServlet {
         String imageName = request.getParameter("name");
 
         if (imageName == null || imageName.isEmpty() || imageName.contains("..") || imageName.contains("/") || imageName.contains("\\")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid image name");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"success\": false, \"msg\": \"Invalid image name\"}");
             return;
         }
 
         File imageFile = new File(IMAGE_BASE_PATH, imageName);
         if (!imageFile.exists() || !imageFile.isFile()) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("{\"success\": false, \"msg\": \"Image not found\"}");
             return;
         }
 

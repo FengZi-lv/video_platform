@@ -78,7 +78,7 @@ public class AuthServlet extends HttpServlet {
                     ServletUtil.handleJsonRequest(req, resp, UserDeleteAccountDTO.class, this::deleteAccount);
             case null, default -> {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                resp.getWriter().write("{\"success\": false, \"message\": \"Not Found api\"}");
+                resp.getWriter().write("{\"success\": false, \"msg\": \"Not Found api\"}");
             }
         }
     }

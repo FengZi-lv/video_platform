@@ -60,7 +60,7 @@ public class AuthenticationFilter implements Filter {
     private void reject(HttpServletResponse httpResponse, String msg) throws IOException {
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        httpResponse.getWriter().write("{\"success\": false, \"message\": \"" + msg + "\"}");
+        httpResponse.getWriter().write("{\"success\": false, \"msg\": \"" + msg + "\"}");
     }
 
     @Override
