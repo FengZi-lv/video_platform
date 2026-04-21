@@ -7,6 +7,7 @@ CREATE TABLE users
     username   VARCHAR(255)                   NOT NULL UNIQUE,
     password   VARCHAR(255)                   NOT NULL,
     nickname   VARCHAR(255)                   NOT NULL,
+    avatar_url     VARCHAR(500)                   NULL,
     status     ENUM ('active', 'ban','admin') NOT NULL DEFAULT 'active',
     bio        TEXT                           NOT NULL,
     coins      INT                            NOT NULL DEFAULT 0,
@@ -107,6 +108,7 @@ CREATE TABLE comments
 
     parent_id   INT,
     context     TEXT                NOT NULL,
+    image_url   VARCHAR(500)        NULL,                           -- 评论上传的照片
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL, -- 注销用户后无法查看id，但还可以看到评论
     FOREIGN KEY (video_id) REFERENCES videos (id) ON DELETE CASCADE
@@ -137,6 +139,85 @@ CREATE TABLE reports
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL, -- 注销用户后无法查看id，但还可以看到举报
     FOREIGN KEY (video_id) REFERENCES videos (id) ON DELETE CASCADE
+);
+
+CREATE TABLE user_follows
+(
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    follower_id  INT NOT NULL,
+    following_id INT NOT NULL,
+    create_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+
+    FOREIGN KEY (follower_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (following_id) REFERENCES users (id) ON DELETE CASCADE,
+    UNIQUE KEY (follower_id, following_id) -- 防止重复关注
+);
+
+
+
+CREATE TABLE exhibitions
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    title       VARCHAR(255) NOT NULL,
+    cover       VARCHAR(500) NOT NULL,
+    address     VARCHAR(500) NOT NULL,
+    type        ENUM('展览', '演出', '赛事', '本地生活') NOT NULL,
+    phone       VARCHAR(20),
+    description TEXT,
+    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+);
+
+CREATE TABLE exhibition_sessions
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    exhibition_id INT NOT NULL,
+    session_name  VARCHAR(100) NOT NULL,
+    session_time  TIMESTAMP NOT NULL,
+    FOREIGN KEY (exhibition_id) REFERENCES exhibitions (id) ON DELETE CASCADE
+);
+
+CREATE TABLE ticket_types
+(
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    session_id   INT NOT NULL,
+    type_name    VARCHAR(100) NOT NULL,
+    price        DECIMAL(10, 2) NOT NULL,
+    quantity     INT NOT NULL,
+    remain_count INT NOT NULL,
+    FOREIGN KEY (session_id) REFERENCES exhibition_sessions (id) ON DELETE CASCADE,
+    CHECK (remain_count >= 0) -- 防止超卖
+);
+
+CREATE TABLE orders
+(
+    order_no       VARCHAR(64) PRIMARY KEY,
+    user_id        INT NOT NULL,
+    exhibition_id  INT NOT NULL,
+    session_id     INT NOT NULL,
+    ticket_type_id INT NOT NULL,
+    count          INT NOT NULL,
+    total_amount   DECIMAL(10, 2) NOT NULL,
+    status         ENUM('pending', 'paid', 'cancelled', 'refund_pending', 'refunded') DEFAULT 'pending',
+    create_time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    pay_time       TIMESTAMP NULL,
+
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (exhibition_id) REFERENCES exhibitions (id) ON DELETE CASCADE,
+    FOREIGN KEY (session_id) REFERENCES exhibition_sessions (id) ON DELETE CASCADE,
+    FOREIGN KEY (ticket_type_id) REFERENCES ticket_types (id) ON DELETE CASCADE
+);
+
+CREATE TABLE tickets
+(
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    order_no       VARCHAR(64) NOT NULL,
+    user_id        INT NOT NULL,
+    ticket_code    VARCHAR(100) NOT NULL UNIQUE,
+    status         ENUM('valid', 'used', 'refunded') DEFAULT 'valid',
+    verify_time    TIMESTAMP NULL,
+
+    FOREIGN KEY (order_no) REFERENCES orders (order_no) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
