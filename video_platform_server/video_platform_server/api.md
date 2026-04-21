@@ -129,13 +129,9 @@
 
 ```json
 {
-  "nickname": "新显示名称"
-}
-```
-
-```json
-{
-  "bio": "新个人简介"
+  "nickname": "新显示名称",
+  "bio": "新个人简介",
+  "avatar": "新头像URL"
 }
 ```
 
@@ -168,6 +164,9 @@
   "id": 1,
   "nickname": "用户名称",
   "bio": "个人简介",
+  "avatar": "头像URL",
+  "followers_count": 10,
+  "following_count": 5,
   "likes": 100,
   "earn_coins": 100,
   "videos": [
@@ -228,6 +227,75 @@
   "msg": "封禁账号失败"
 }
 ```
+
+# 关注服务 (FollowService)
+
+## 关注用户
+
+`POST /api/users/follow`
+
+请求
+
+```json
+{
+  "user_id": 2
+}
+```
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "关注成功"
+}
+```
+
+## 取消关注
+
+`POST /api/users/unfollow`
+
+请求
+
+```json
+{
+  "user_id": 2
+}
+```
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "取消关注成功"
+}
+```
+
+## 查看关注列表
+
+`GET /api/users/{id}/following`
+
+返回
+
+```json
+{
+  "users": [
+    {
+      "id": 2,
+      "nickname": "用户名称",
+      "avatar": "头像URL",
+      "bio": "个人简介"
+    }
+  ]
+}
+```
+
+## 查看粉丝列表
+
+`GET /api/users/{id}/followers`
+
+返回与关注列表相同。
 
 # 签到服务 (CheckInService)
 
@@ -643,7 +711,8 @@
 {
   "video_id": 1,
   "content": "评论内容",
-  "parent_id": null
+  "parent_id": null,
+  "image_url": "上传的照片URL，非必填"
 }
 ```
 
@@ -655,6 +724,7 @@
   "msg": "评论成功",
   "id": 1,
   "content": "评论内容",
+  "image_url": "上传的照片URL",
   "likes": 0,
   "parentId": null,
   "status": "true",
@@ -741,6 +811,21 @@
 }
 ```
 
+## 上传图片（头像/评论图）
+
+`POST /api/files/upload/image`
+
+使用`multipart/form-data`上传数据
+
+返回
+
+```json
+{
+  "success": true,
+  "image_url": "照片URL"
+}
+```
+
 # 举报服务 (ReportService)
 
 ## 举报视频
@@ -819,5 +904,243 @@
 {
   "success": false,
   "msg": "处理举报失败"
+}
+```
+
+# 漫展演出系统 (ExhibitionService TicketService)
+
+## 获取漫展演出列表
+
+`GET /api/exhibitions`
+
+- `page`: 页码
+- `type`: 展览，演出，赛事，本地生活
+- `time`: 全部时间，本周，本月
+
+返回
+
+```json
+{
+  "total": 100,
+  "exhibitions": [
+    {
+      "id": 1,
+      "title": "漫展名称",
+      "cover": "封面URL",
+      "address": "漫展地址",
+      "type": "展览",
+      "start_time": "2024-07-01",
+      "end_time": "2024-07-05",
+      "price_min": "100.00"
+    }
+  ]
+}
+```
+
+## 漫展展览详情
+
+`GET /api/exhibitions/{id}`
+
+返回
+
+```json
+{
+  "id": 1,
+  "title": "漫展名称",
+  "cover": "封面URL",
+  "address": "漫展地址",
+  "type": "展览",
+  "phone": "联系电话",
+  "description": "介绍详情",
+  "sessions": [
+    {
+      "id": 1,
+      "name": "首发日 7月1日",
+      "time": "2024-07-01 09:00:00",
+      "tickets": [
+        {
+          "id": 1,
+          "type_name": "VIP票",
+          "price": "299.00",
+          "remain_count": 50
+        },
+        {
+          "id": 2,
+          "type_name": "普通票",
+          "price": "99.00",
+          "remain_count": 1000
+        }
+      ]
+    }
+  ]
+}
+```
+
+## 用户购票
+
+`POST /api/tickets/buy`
+
+请求
+
+```json
+{
+  "exhibition_id": 1,
+  "session_id": 1,
+  "ticket_type_id": 1,
+  "count": 1
+}
+```
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "下单成功",
+  "order_id": "ORDER20240601xxxxx"
+}
+```
+
+## 历史订单/退票查询
+
+`GET /api/tickets/orders`
+
+返回历史所有票务订单记录及状态。
+
+## 用户退票
+
+`POST /api/tickets/refund`
+
+请求
+
+```json
+{
+  "order_id": "ORDER20240601xxxxx"
+}
+```
+
+返回
+
+```json
+{
+  "success": true,
+  "msg": "已申请退票，等待管理员同意"
+}
+```
+
+## 管理端 - 发布漫展演出
+
+`POST /api/admin/exhibitions`
+
+请求
+
+```json
+{
+  "title": "漫展名称",
+  "cover": "封面URL",
+  "address": "展会地址",
+  "phone": "联系电话",
+  "type": "演出",
+  "sessions": [
+    {
+      "name": "第一场",
+      "time": "2024-06-15",
+      "tickets": [
+        { "name": "VIP票", "price": "199", "quantity": 100 }
+      ]
+    }
+  ]
+}
+```
+
+## 管理端 - 修改漫展演出
+
+`PUT /api/admin/exhibitions/{id}`
+
+请求
+
+```json
+{
+  "title": "漫展名称",
+  "cover": "封面URL",
+  "address": "展会地址",
+  "phone": "联系电话",
+  "type": "演出",
+  "sessions": [
+    {
+      "name": "第一场",
+      "time": "2024-06-15",
+      "tickets": [
+        { "name": "VIP票", "price": "199", "quantity": 100 }
+      ]
+    }
+  ]
+}
+```
+
+## 管理端 - 查看所有订单信息
+
+`GET /api/admin/tickets/orders`
+
+获取平台所有用户的订单，可附加筛选查询。
+
+## 管理端 - 同意用户退票
+
+`POST /api/admin/tickets/refund/handle`
+
+请求
+
+```json
+{
+  "order_id": "ORDER20240601xxxxx",
+  "action": "approve" 
+  // approve or reject
+}
+```
+
+## 管理端 - 线下核销
+
+`POST /api/admin/tickets/verify`
+
+用户带电子票进行核销。
+
+请求
+
+```json
+{
+  "ticket_code": "用户的电子票核销码"
+}
+```
+
+返回
+
+```json
+{
+  "success": true,
+  "session_name": "场次信息",
+  "ticket_type": "门票种类"
+}
+```
+
+## 管理端 - 数据统计
+
+`GET /api/admin/exhibitions/{id}/stats`
+
+返回
+
+```json
+{
+  "total_revenue": "150000.00",
+  "total_tickets_sold": 1000,
+  "total_tickets_verified": 800,
+  "sessions_stats": [
+    {
+      "session_id": 1,
+      "session_name": "首日场",
+      "revenue": "80000.00",
+      "sold": 600,
+      "verified": 400
+    }
+  ]
 }
 ```
