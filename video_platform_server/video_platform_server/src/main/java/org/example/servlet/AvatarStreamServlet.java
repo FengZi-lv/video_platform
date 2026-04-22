@@ -15,8 +15,8 @@ import java.nio.file.Files;
 /**
  * GET /api/video/thumbnail?name=xx
  */
-@WebServlet("/api/video/thumbnail")
-public class ImageStreamServlet extends HttpServlet {
+@WebServlet("/api/admin/avatar")
+public class AvatarStreamServlet extends HttpServlet {
 
     private static final String IMAGE_BASE_PATH = Config.RES_BASE_PATH;
 

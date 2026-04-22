@@ -150,42 +150,6 @@ public class VideoService {
     }
 
     /**
-     * 上传视频
-     */
-    public ResultVO uploadVideo(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
-        Part videoPart = req.getPart("video");
-        Part thumbnailPart = req.getPart("thumbnail");
-
-        if (videoPart == null || thumbnailPart == null) {
-            return new ResultVO(false, "上传视频失败：缺少视频或缩略图文件");
-        }
-
-        File uploadDirFile = new File(uploadDir);
-        if (!uploadDirFile.exists()) {
-            uploadDirFile.mkdirs();
-        }
-
-        String videoFileName = UUID.randomUUID() + "-" + getSubmittedFileName(videoPart);
-        String thumbnailFileName = UUID.randomUUID() + "-" + getSubmittedFileName(thumbnailPart);
-
-        videoPart.write(uploadDir + videoFileName);
-        thumbnailPart.write(uploadDir + thumbnailFileName);
-
-        return new UploadResult(true, "上传视频成功", "/" + videoFileName, "/" + thumbnailFileName);
-    }
-
-    private String getSubmittedFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] tokens = contentDisp.split(";");
-        for (String token : tokens) {
-            if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length() - 1);
-            }
-        }
-        return "";
-    }
-
-    /**
      * 点赞视频
      */
     public ResultVO likeVideo(VideoActionDTO dto) throws Exception {
