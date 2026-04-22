@@ -7,6 +7,11 @@ public class ReviewVideoDTO extends UserPayloadDTO {
     public ReviewVideoDTO() {
     }
 
+    public ReviewVideoDTO(Integer video_id, String action) {
+        this.video_id = video_id;
+        this.action = action;
+    }
+
     public Integer getVideo_id() {
         return video_id;
     }

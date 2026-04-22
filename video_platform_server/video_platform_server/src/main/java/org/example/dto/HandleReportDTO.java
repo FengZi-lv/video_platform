@@ -3,6 +3,7 @@ package org.example.dto;
 public class HandleReportDTO extends UserPayloadDTO {
     private Integer report_id;
     private String action;
+    private Integer video_id;
 
     public HandleReportDTO() {
     }
@@ -21,6 +22,14 @@ public class HandleReportDTO extends UserPayloadDTO {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public Integer getVideo_id() {
+        return video_id;
+    }
+
+    public void setVideo_id(Integer id) {
+        video_id = id;
     }
 }
 

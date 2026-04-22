@@ -93,9 +93,24 @@ public class ReportService {
      */
     public ResultVO handleReport(HandleReportDTO dto) throws Exception {
         String status = "approve".equals(dto.getAction()) ? "pass" : "reject";
-        int rows = reportDao.updateReviewingReportStatus(dto.getReport_id(), status);
+        int rows = reportDao.updateStatusReport(new Report(
+                dto.getReport_id(),
+                0,
+                dto.getVideo_id(),
+                null,
+                dto.getAction(),
+                null,
+                null
+        ));
         if (rows == 0) {
             return new ResultVO(false, "处理举报失败，举报不存在或已经处理过");
+        }
+        // 举报成功后直接封禁视频
+        if (status.equals("pass")) {
+            rows = videoDao.updateReviewingVideoStatus(dto.getVideo_id(), "reject");
+            if (rows == 0) {
+                return new ResultVO(false, "处理举报成功，但是封禁失败，视频不存在或已经审核过");
+            }
         }
         return new ResultVO(true, "处理举报成功");
     }

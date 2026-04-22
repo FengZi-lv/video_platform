@@ -22,22 +22,15 @@ public class ReportDao extends BaseDao {
     }
 
     public int updateStatusReport(Report report) throws Exception {
-        var sql = "UPDATE reports SET status = ? WHERE id = ?";
+        var sql = "UPDATE reports SET status = ? WHERE id = ? AND video_id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, report.getStatus());
             stmt.setInt(2, report.getId());
+            stmt.setInt(2, report.getVideoId());
             return stmt.executeUpdate();
         }
     }
 
-    public int updateReviewingReportStatus(int id, String status) throws Exception {
-        var sql = "UPDATE reports SET status = ? WHERE id = ? AND status = 'reviewing'";
-        try (var stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, status);
-            stmt.setInt(2, id);
-            return stmt.executeUpdate();
-        }
-    }
 
     public List<Report> getAllReports() throws Exception {
         var sql = "SELECT r.id, r.video_id, r.context, r.status, u.nickname, r.user_id, r.create_date " +
