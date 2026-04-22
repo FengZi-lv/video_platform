@@ -8,17 +8,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.UserPayloadDTO;
 import org.example.service.FileService;
-import org.example.vo.ImageUploadResult;
+import org.example.vo.ImageUploadResultVO;
+import org.example.vo.ResultVO;
 
 import java.io.IOException;
 
 @WebServlet("/api/files/*")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2,  // 2MB 配置阈值
-        maxFileSize = 1024 * 1024 * 10,       // 10MB 最大单个文件大小
-        maxRequestSize = 1024 * 1024 * 15     // 15MB 最大整体请求大小
+        maxFileSize = 1024 * 1024 * 500,      // 500MB 最大单个文件大小
+        maxRequestSize = 1024 * 1024 * 550    // 550MB 最大整体请求大小
 )
-public class FileServlet extends HttpServlet {
+public class UploadFileServlet extends HttpServlet {
     private FileService fileService;
 
     @Override
@@ -33,7 +34,7 @@ public class FileServlet extends HttpServlet {
      */
     private void uploadImage(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            ImageUploadResult result = fileService.uploadImage((UserPayloadDTO) req.getAttribute("currentUser"), req);
+            ImageUploadResultVO result = fileService.uploadImage((UserPayloadDTO) req.getAttribute("currentUser"), req);
             resp.setContentType("application/json;charset=UTF-8");
             resp.getWriter().write(new com.google.gson.Gson().toJson(result));
         } catch (Exception e) {
@@ -53,9 +54,32 @@ public class FileServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
         if ("/upload/image".equals(pathInfo)) {
             uploadImage(req, resp);
+        } else if ("/upload/video".equals(pathInfo)) {
+            uploadVideo(req, resp);
         } else {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             resp.getWriter().write("{\"success\": false, \"msg\": \"API not found\"}");
+        }
+    }
+
+    /**
+     * POST /api/files/upload/video
+     * 上传视频 (multipart/form-data)
+     */
+    private void uploadVideo(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            ResultVO result = fileService.uploadVideo((UserPayloadDTO) req.getAttribute("currentUser"), req);
+            resp.setContentType("application/json;charset=UTF-8");
+            resp.getWriter().write(new com.google.gson.Gson().toJson(result));
+        } catch (Exception e) {
+            try {
+                e.printStackTrace();
+                resp.setContentType("application/json;charset=UTF-8");
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"success\": false, \"msg\": \"服务器发生错误\"}");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

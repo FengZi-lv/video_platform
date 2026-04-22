@@ -238,7 +238,7 @@
 
 ```json
 {
-  "user_id": 2
+  "following_id": 2
 }
 ```
 
@@ -259,7 +259,7 @@
 
 ```json
 {
-  "user_id": 2
+  "following_id": 2
 }
 ```
 
@@ -428,9 +428,16 @@
 
 ## 上传视频
 
-`POST /api/videos/upload`
+`POST /api/files/upload/video`
 
 使用`multipart/form-data`上传数据
+```json
+{
+  "video": "视频文件",
+  "thumbnail": "缩略图文件"
+}
+
+```
 
 返回
 
@@ -452,12 +459,12 @@
 
 ## 播放视频流
 
-`GET /api/video/play?name=xxxx.mp4`
+`GET /api/file/get-video?name=xxxx.mp4`
 
 
-## 获取视频缩略图
+## 获取图片（头像/评论图/缩略图）
 
-`GET /api/video/thumbnail?name=xx.jpg`
+`GET /api/file/get-image?name=xx.jpg`
 
 
 ## 查看审核视频

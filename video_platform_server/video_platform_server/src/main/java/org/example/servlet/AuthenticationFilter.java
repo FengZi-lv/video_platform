@@ -24,8 +24,8 @@ public class AuthenticationFilter implements Filter {
     };
 
     private static final String[] withoutJWTAllowed = {
-            "/api/video/play",
-            "/api/video/thumbnail"
+            "/api/file/get-video",
+            "/api/file/get-image"
     };
 
     private static final String[] adminAllowed = {

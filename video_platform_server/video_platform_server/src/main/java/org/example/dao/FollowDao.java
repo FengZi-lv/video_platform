@@ -46,7 +46,8 @@ public class FollowDao extends BaseDao {
                             rs.getString("bio"),
                             rs.getInt("coins"),
                             rs.getInt("earn_coins"),
-                            rs.getInt("likes")
+                            rs.getInt("likes"),
+                            rs.getString("avatar_url")
                     );
                     list.add(user);
                 }
@@ -71,7 +72,8 @@ public class FollowDao extends BaseDao {
                             rs.getString("bio"),
                             rs.getInt("coins"),
                             rs.getInt("earn_coins"),
-                            rs.getInt("likes")
+                            rs.getInt("likes"),
+                            rs.getString("avatar_url")
                     );
                     list.add(user);
                 }

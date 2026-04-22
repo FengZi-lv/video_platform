@@ -13,9 +13,9 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 
 /**
- * GET /api/video/play?name=xxxx.mp4
+ * GET /api/file/get-video?name=xxxx.mp4
  */
-@WebServlet("/api/video/play")
+@WebServlet("/api/file/get-video")
 public class VideoStreamServlet extends HttpServlet {
 
     private static final String VIDEO_BASE_PATH = Config.RES_BASE_PATH;

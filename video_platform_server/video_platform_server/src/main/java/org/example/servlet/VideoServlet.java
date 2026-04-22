@@ -87,27 +87,6 @@ public class VideoServlet extends HttpServlet {
     }
 
     /**
-     * POST /api/videos/upload
-     * 上传视频 (multipart/form-data)
-     */
-    private void uploadVideo(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            ResultVO result = videoService.uploadVideo((UserPayloadDTO) req.getAttribute("currentUser"), req);
-            resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write(new com.google.gson.Gson().toJson(result));
-        } catch (Exception e) {
-            try {
-                e.printStackTrace();
-                resp.setContentType("application/json;charset=UTF-8");
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                resp.getWriter().write("{\"success\": false, \"msg\": \"服务器发生错误\"}");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }
-
-    /**
      * POST /api/videos/like
      * 点赞视频
      */
@@ -179,7 +158,6 @@ public class VideoServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
         switch (pathInfo) {
             case "/publish" -> ServletUtil.handleJsonRequest(req, resp, PublishVideoDTO.class, this::publishVideo);
-            case "/upload" -> uploadVideo(req, resp);
             case "/like" -> ServletUtil.handleJsonRequest(req, resp, VideoActionDTO.class, this::likeVideo);
             case "/unlike" -> ServletUtil.handleJsonRequest(req, resp, VideoActionDTO.class, this::unlikeVideo);
             case "/favorite" -> ServletUtil.handleJsonRequest(req, resp, VideoActionDTO.class, this::favoriteVideo);
