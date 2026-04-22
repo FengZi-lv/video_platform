@@ -8,8 +8,10 @@ import org.example.dto.*;
 import org.example.dao.UserDao;
 import org.example.entity.User;
 import org.example.util.AuthUtil;
+import org.example.util.Config;
 import org.example.vo.*;
 
+import java.io.File;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -76,6 +78,14 @@ public class UserService {
             return new RegisterVO(false, "用户名已存在");
         }
 
+        // 检查头像是否存在
+        String physicalSrc = userRegisterDTO.getAvatar() != null ?
+                userRegisterDTO.getAvatar().replace("/", Config.RES_BASE_PATH) : "";
+
+        if (!new File(physicalSrc).exists()) {
+            return new RegisterVO(false, "头像不存在");
+        }
+
         var newUser = new User(
                 null,
                 userRegisterDTO.getUsername(),
@@ -85,7 +95,8 @@ public class UserService {
                 userRegisterDTO.getBio(),
                 0,
                 0,
-                0
+                0,
+                userRegisterDTO.getAvatar()
         );
 
         try {
@@ -139,6 +150,15 @@ public class UserService {
      * 修改个人信息
      */
     public ResultVO updateProfile(UpdateProfileDTO updateProfileDTO) throws Exception {
+        if (updateProfileDTO.getAvatar() != null) {
+            String physicalSrc = updateProfileDTO.getAvatar() != null ?
+                    updateProfileDTO.getAvatar().replace("/", Config.RES_BASE_PATH) : "";
+
+            if (!new File(physicalSrc).exists()) {
+                return new ResultVO(false, "头像不存在");
+            }
+        }
+
         var effortLinesCount = userDao.updateUserInfoById(new User(
                 updateProfileDTO.getUserId(),
                 null,
@@ -148,7 +168,8 @@ public class UserService {
                 updateProfileDTO.getBio(),
                 null,
                 null,
-                null
+                null,
+                updateProfileDTO.getAvatar()
         ));
         if (effortLinesCount == 0) {
             return new ResultVO(false, "更新失败，用户不存在或发生错误");
@@ -210,7 +231,8 @@ public class UserService {
                 null,
                 10,
                 0,
-                0
+                0,
+                null
         )) <= 0) {
             return new ResultVO(false, "签到失败，发生错误");
         }

@@ -7,7 +7,7 @@ CREATE TABLE users
     username   VARCHAR(255)                   NOT NULL UNIQUE,
     password   VARCHAR(255)                   NOT NULL,
     nickname   VARCHAR(255)                   NOT NULL,
-    avatar_url     VARCHAR(500)                   NULL,
+    avatar_url     VARCHAR(500)               NOT NULL,
     status     ENUM ('active', 'ban','admin') NOT NULL DEFAULT 'active',
     bio        TEXT                           NOT NULL,
     coins      INT                            NOT NULL DEFAULT 0,

@@ -1,18 +1,17 @@
 package org.example.dto;
 
-/**
- * 继承自UserPayloadDTO，已存在nickname
- */
+
 public class UpdateProfileDTO extends UserPayloadDTO {
     private String bio;
-
+    private String avatar;
 
     public UpdateProfileDTO() {
     }
 
-    public UpdateProfileDTO(String bio) {
+    public UpdateProfileDTO(String bio, String avatar) {
         super(null, null, null, null, null);
         this.bio = bio;
+        this.avatar = avatar;
     }
 
 
@@ -23,5 +22,13 @@ public class UpdateProfileDTO extends UserPayloadDTO {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

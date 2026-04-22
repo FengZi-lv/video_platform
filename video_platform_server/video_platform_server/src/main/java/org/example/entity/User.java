@@ -10,8 +10,9 @@ public class User {
     private Integer coins;
     private Integer earn_coins;
     private Integer likes;
+    private String avatar_url;
 
-    public User(Integer id, String username, String password, String nickname, String status, String bio, Integer coins,Integer earn_coins, Integer likes) {
+    public User(Integer id, String username, String password, String nickname, String status, String bio, Integer coins,Integer earn_coins, Integer likes, String avatar_url) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -21,6 +22,7 @@ public class User {
         this.coins = coins;
         this.earn_coins = earn_coins;
         this.likes = likes;
+        this.avatar_url = avatar_url;
     }
 
     public Integer getId() {
@@ -93,5 +95,13 @@ public class User {
 
     public void setEarn_coins(Integer earn_coins) {
         this.earn_coins = earn_coins;
+    }
+
+    public String getAvatar_url() {
+        return avatar_url;
+    }
+
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 }

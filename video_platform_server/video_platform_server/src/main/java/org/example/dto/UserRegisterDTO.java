@@ -4,6 +4,7 @@ public class UserRegisterDTO extends UserPayloadDTO {
     private String username;
     private String password;
     private String bio;
+    private String avatar;
 
     public UserRegisterDTO() {
     }
@@ -38,5 +39,13 @@ public class UserRegisterDTO extends UserPayloadDTO {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

@@ -30,7 +30,9 @@ public class UserDao extends BaseDao {
                             rs.getString("bio"),
                             rs.getInt("coins"),
                             rs.getInt("earn_coins"),
-                            rs.getInt("likes")
+                            rs.getInt("likes"),
+                            rs.getString("avatar_url")
+
                     );
                     users.add(user);
                 }
@@ -55,7 +57,8 @@ public class UserDao extends BaseDao {
                             rs.getString("bio"),
                             rs.getInt("coins"),
                             rs.getInt("earn_coins"),
-                            rs.getInt("likes")
+                            rs.getInt("likes"),
+                            rs.getString("avatar_url")
                     );
                     users.add(user);
                 }
@@ -95,7 +98,8 @@ public class UserDao extends BaseDao {
                 " bio = COALESCE(?, bio)," +
                 " coins = coins + COALESCE(?, 0)," +
                 " earn_coins = earn_coins + COALESCE(?, 0)," +
-                " likes = likes + COALESCE(?, 0)" +
+                " likes = likes + COALESCE(?, 0)," +
+                " avatar_url = COALESCE(?, avatar_url)" +
                 " WHERE id = ?";
         try (var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getNickname());
@@ -103,7 +107,8 @@ public class UserDao extends BaseDao {
             stmt.setObject(3, user.getCoins(), java.sql.Types.INTEGER);
             stmt.setObject(4, user.getEarn_coins(), java.sql.Types.INTEGER);
             stmt.setObject(5, user.getLikes(), java.sql.Types.INTEGER);
-            stmt.setInt(6, user.getId());
+            stmt.setObject(6, user.getAvatar_url(), java.sql.Types.VARCHAR);
+            stmt.setInt(7, user.getId());
             return stmt.executeUpdate();
         }
     }
@@ -123,7 +128,8 @@ public class UserDao extends BaseDao {
                         rs.getString("bio"),
                         rs.getInt("earn_coins"),
                         rs.getInt("coins"),
-                        rs.getInt("likes")
+                        rs.getInt("likes"),
+                        rs.getString("avatar_url")
                 );
                 users.add(user);
             }
