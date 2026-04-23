@@ -1005,7 +1005,7 @@
 {
   "success": true,
   "msg": "下单成功",
-  "order_id": "ORDER20240601xxxxx"
+  "order_id": 10001
 }
 ```
 
@@ -1023,7 +1023,7 @@
 
 ```json
 {
-  "order_id": "ORDER20240601xxxxx"
+  "order_id": 10001
 }
 ```
 
@@ -1049,6 +1049,7 @@
   "address": "展会地址",
   "phone": "联系电话",
   "type": "演出",
+  "description": "漫展详情描述",
   "sessions": [
     {
       "name": "第一场",
@@ -1074,6 +1075,7 @@
   "address": "展会地址",
   "phone": "联系电话",
   "type": "演出",
+  "description": "漫展详情描述",
   "sessions": [
     {
       "name": "第一场",
@@ -1100,7 +1102,7 @@
 
 ```json
 {
-  "order_id": "ORDER20240601xxxxx",
+  "order_id": 10001,
   "action": "approve" 
   // approve or reject
 }

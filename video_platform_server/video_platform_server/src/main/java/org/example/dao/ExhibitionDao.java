@@ -2,9 +2,12 @@ package org.example.dao;
 
 import org.example.entity.Exhibition;
 import org.example.entity.ExhibitionSession;
+import org.example.entity.ExhibitionStats;
 import org.example.entity.TicketType;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class ExhibitionDao extends BaseDao {
 
@@ -12,6 +15,10 @@ public class ExhibitionDao extends BaseDao {
         super();
     }
 
+    public ExhibitionDao(Connection conn) {
+        super(conn);
+    }
+    // 返回主键
     public int addExhibition(Exhibition exhibition) throws SQLException {
         var sql = "INSERT INTO exhibitions (title, cover, address, type, phone, description) VALUES (?, ?, ?, ?, ?, ?)";
         try (var stmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
@@ -73,5 +80,38 @@ public class ExhibitionDao extends BaseDao {
             stmt.setInt(5, ticketType.getQuantity()); // initial remain == total
             return stmt.executeUpdate();
         }
+    }
+
+    public ExhibitionStats getStats(int exhibitionId) throws SQLException {
+        // totalTickets: 统计该展会下所有场次的门票总发行量
+        // oldTickets: 统计该展会下所有状态为paid的订单中购买门票数量之和
+        // visitedTickets: 统计该展会下所有订单对应的门票中状态为used的记录总数
+        // totalRevenue: 统计该展会下所有状态为 'paid' 的订单总支付金额
+        String sql = "SELECT " +
+                "    (SELECT SUM(tt.quantity) FROM ticket_types tt JOIN exhibition_sessions es ON tt.session_id = es.id WHERE es.exhibition_id = ?) as totalTickets, " +
+                "    (SELECT IFNULL(SUM(o.count), 0) FROM orders o WHERE o.exhibition_id = ? AND o.status = 'paid') as soldTickets, " +
+                "    (SELECT COUNT(t.id) FROM tickets t JOIN orders o ON t.order_no = o.order_no WHERE o.exhibition_id = ? AND t.status = 'used') as visitedTickets, " +
+                "    (SELECT IFNULL(SUM(o.total_amount), 0) FROM orders o WHERE o.exhibition_id = ? AND o.status = 'paid') as totalRevenue";
+
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, exhibitionId);
+            stmt.setInt(2, exhibitionId);
+            stmt.setInt(3, exhibitionId);
+            stmt.setInt(4, exhibitionId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+                        return new ExhibitionStats(
+                            exhibitionId,
+                            rs.getInt("totalTickets"),
+                            rs.getInt("soldTickets"),
+                            rs.getInt("visitedTickets"),
+                            rs.getDouble("totalRevenue")
+                    );
+                }
+            }
+        }
+        return null;
     }
 }

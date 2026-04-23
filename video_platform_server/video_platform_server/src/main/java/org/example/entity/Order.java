@@ -3,7 +3,7 @@ package org.example.entity;
 import java.sql.Timestamp;
 
 public class Order {
-    private String orderNo;
+    private Integer orderNo;
     private Integer userId;
     private Integer exhibitionId;
     private Integer sessionId;
@@ -12,12 +12,11 @@ public class Order {
     private Double totalAmount;
     private String status;
     private Timestamp createTime;
-    private Timestamp timeoutTime;
     private Timestamp payTime;
 
     public Order() {}
 
-    public Order(String orderNo, Integer userId, Integer exhibitionId, Integer sessionId, Integer ticketTypeId, Integer count, Double totalAmount, String status, Timestamp createTime, Timestamp timeoutTime, Timestamp payTime) {
+    public Order(Integer orderNo, Integer userId, Integer exhibitionId, Integer sessionId, Integer ticketTypeId, Integer count, Double totalAmount, String status, Timestamp createTime, Timestamp payTime) {
         this.orderNo = orderNo;
         this.userId = userId;
         this.exhibitionId = exhibitionId;
@@ -27,12 +26,11 @@ public class Order {
         this.totalAmount = totalAmount;
         this.status = status;
         this.createTime = createTime;
-        this.timeoutTime = timeoutTime;
         this.payTime = payTime;
     }
 
-    public String getOrderNo() { return orderNo; }
-    public void setOrderNo(String orderNo) { this.orderNo = orderNo; }
+    public Integer getOrderNo() { return orderNo; }
+    public void setOrderNo(Integer orderNo) { this.orderNo = orderNo; }
 
     public Integer getUserId() { return userId; }
     public void setUserId(Integer userId) { this.userId = userId; }
@@ -57,9 +55,6 @@ public class Order {
 
     public Timestamp getCreateTime() { return createTime; }
     public void setCreateTime(Timestamp createTime) { this.createTime = createTime; }
-
-    public Timestamp getTimeoutTime() { return timeoutTime; }
-    public void setTimeoutTime(Timestamp timeoutTime) { this.timeoutTime = timeoutTime; }
 
     public Timestamp getPayTime() { return payTime; }
     public void setPayTime(Timestamp payTime) { this.payTime = payTime; }

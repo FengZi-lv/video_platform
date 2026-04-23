@@ -120,11 +120,11 @@ VALUES (1, 1, '内场VIP票', 888.00, 200, 199),
 
 -- 8.4 订单信息 (Orders)
 INSERT INTO orders (order_no, user_id, exhibition_id, session_id, ticket_type_id, count, total_amount, status, pay_time)
-VALUES ('ORDER2026042210001', 2, 1, 1, 1, 1, 888.00, 'paid', CURRENT_TIMESTAMP()),
-       ('ORDER2026042210002', 3, 2, 3, 3, 2, 136.00, 'cancelled', NULL),
-       ('ORDER2026042210003', 1, 2, 3, 4, 1, 98.00, 'pending', NULL);
+VALUES (10001, 2, 1, 1, 1, 1, 888.00, 'paid', CURRENT_TIMESTAMP()),
+       (10002, 3, 2, 3, 3, 2, 136.00, 'refund_pending', NULL),
+       (10003, 1, 2, 3, 4, 1, 98.00, 'pending', NULL);
 
 -- 8.5 实体/电子票据 (Tickets)
 -- 只为已支付(paid)的订单生成实体票据
 INSERT INTO tickets (id, order_no, user_id, ticket_code, status, verify_time)
-VALUES (1, 'ORDER2026042210001', 2, 'TICKET-NB2026-XYZ987', 'valid', NULL);
+VALUES (1, 10001, 2, 'TICKET-NB2026-XYZ987', 'valid', NULL);

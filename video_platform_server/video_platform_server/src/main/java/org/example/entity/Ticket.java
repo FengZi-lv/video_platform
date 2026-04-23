@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Ticket {
     private Integer id;
-    private String orderNo;
+    private Integer orderNo;
     private Integer userId;
     private String ticketCode;
     private String status;
@@ -12,7 +12,7 @@ public class Ticket {
 
     public Ticket() {}
 
-    public Ticket(Integer id, String orderNo, Integer userId, String ticketCode, String status, Timestamp verifyTime) {
+    public Ticket(Integer id, Integer orderNo, Integer userId, String ticketCode, String status, Timestamp verifyTime) {
         this.id = id;
         this.orderNo = orderNo;
         this.userId = userId;
@@ -24,8 +24,8 @@ public class Ticket {
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
-    public String getOrderNo() { return orderNo; }
-    public void setOrderNo(String orderNo) { this.orderNo = orderNo; }
+    public Integer getOrderNo() { return orderNo; }
+    public void setOrderNo(Integer orderNo) { this.orderNo = orderNo; }
 
     public Integer getUserId() { return userId; }
     public void setUserId(Integer userId) { this.userId = userId; }

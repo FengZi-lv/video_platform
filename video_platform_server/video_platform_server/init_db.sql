@@ -190,14 +190,14 @@ CREATE TABLE ticket_types
 
 CREATE TABLE orders
 (
-    order_no       VARCHAR(64) PRIMARY KEY,
+    order_no       INT AUTO_INCREMENT PRIMARY KEY,
     user_id        INT NOT NULL,
     exhibition_id  INT NOT NULL,
     session_id     INT NOT NULL,
     ticket_type_id INT NOT NULL,
     count          INT NOT NULL,
     total_amount   DECIMAL(10, 2) NOT NULL,
-    status         ENUM('pending', 'paid', 'cancelled', 'refund_pending', 'refunded') DEFAULT 'pending',
+    status         ENUM('pending', 'paid', 'refund_pending', 'refunded') DEFAULT 'pending',
     create_time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     pay_time       TIMESTAMP NULL,
 
@@ -210,7 +210,7 @@ CREATE TABLE orders
 CREATE TABLE tickets
 (
     id             INT AUTO_INCREMENT PRIMARY KEY,
-    order_no       VARCHAR(64) NOT NULL,
+    order_no       INT NOT NULL,
     user_id        INT NOT NULL,
     ticket_code    VARCHAR(100) NOT NULL UNIQUE,
     status         ENUM('valid', 'used', 'refunded') DEFAULT 'valid',
