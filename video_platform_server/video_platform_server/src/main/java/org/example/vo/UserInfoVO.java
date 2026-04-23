@@ -10,12 +10,13 @@ public class UserInfoVO extends ResultVO {
     private Integer likes;
     private Integer earn_coins;
     private String status;
+    private boolean is_followed;
     private List<VideoVO> videos;
 
     public UserInfoVO() {
     }
 
-    public UserInfoVO(boolean success, String msg, Integer id, String nickname, String bio, Integer likes, Integer earn_coins, String status, List<VideoVO> videos) {
+    public UserInfoVO(boolean success, String msg, Integer id, String nickname, String bio, Integer likes, Integer earn_coins, String status, boolean is_followed, List<VideoVO> videos) {
         super(success, msg);
         this.id = id;
         this.nickname = nickname;
@@ -23,6 +24,7 @@ public class UserInfoVO extends ResultVO {
         this.likes = likes;
         this.earn_coins = earn_coins;
         this.status = status;
+        this.is_followed = is_followed;
         this.videos = videos;
     }
 
@@ -82,4 +84,11 @@ public class UserInfoVO extends ResultVO {
         this.status = status;
     }
 
+    public boolean isIs_followed() {
+        return is_followed;
+    }
+
+    public void setIs_followed(boolean is_followed) {
+        this.is_followed = is_followed;
+    }
 }

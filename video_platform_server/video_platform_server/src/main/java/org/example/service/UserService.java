@@ -3,6 +3,7 @@ package org.example.service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dao.CheckInDao;
+import org.example.dao.FollowDao;
 import org.example.dao.VideoDao;
 import org.example.dto.*;
 import org.example.dao.UserDao;
@@ -24,11 +25,13 @@ public class UserService {
     private final UserDao userDao;
     private final VideoDao videoDao;
     private final CheckInDao checkInDao;
+    private final FollowDao followDao;
 
     public UserService() throws SQLException {
         videoDao = new VideoDao();
         userDao = new UserDao();
         checkInDao = new CheckInDao();
+        followDao = new FollowDao();
     }
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
@@ -207,6 +210,7 @@ public class UserService {
                 u.getLikes(),
                 u.getCoins(),
                 u.getStatus(),
+                followDao.isFollowing(userPayloadDTO.getUserId(), u.getId()),
                 videos
         );
     }
@@ -263,6 +267,7 @@ public class UserService {
                 u.getLikes(),
                 u.getEarn_coins(),
                 u.getStatus(),
+                true,
                 null
         )).collect(Collectors.toList());
         return new UserListVO(true, "获取成功", users);
