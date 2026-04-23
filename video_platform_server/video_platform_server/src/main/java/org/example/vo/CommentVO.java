@@ -8,35 +8,12 @@ public class CommentVO extends ResultVO {
     private String status;
     private Boolean is_liked;
     private Integer user_id;
+    private String image_url;
 
     public CommentVO() {
     }
 
-    public CommentVO(boolean success, String msg, int id, String content, int likes, Integer parentId, String status) {
-        super(success, msg);
-
-        this.id = id;
-        this.content = content;
-        this.likes = likes;
-        this.parentId = parentId;
-        this.status = status;
-        this.is_liked = false;
-        this.user_id = null;
-    }
-
-    public CommentVO(boolean success, String msg, int id, String content, int likes, Integer parentId, String status, Boolean is_liked) {
-        super(success, msg);
-
-        this.id = id;
-        this.content = content;
-        this.likes = likes;
-        this.parentId = parentId;
-        this.status = status;
-        this.is_liked = is_liked;
-        this.user_id = null;
-    }
-
-    public CommentVO(boolean success, String msg, int id, String content, int likes, Integer parentId, String status, Boolean is_liked, Integer user_id) {
+    public CommentVO(boolean success, String msg, int id, String content, int likes, Integer parentId, String status, Boolean is_liked, Integer user_id, String image_url) {
         super(success, msg);
 
         this.id = id;
@@ -46,6 +23,7 @@ public class CommentVO extends ResultVO {
         this.status = status;
         this.is_liked = is_liked;
         this.user_id = user_id;
+        this.image_url = image_url;
     }
 
     public int getId() {
@@ -102,5 +80,13 @@ public class CommentVO extends ResultVO {
 
     public void setUser_id(Integer user_id) {
         this.user_id = user_id;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 }

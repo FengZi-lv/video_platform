@@ -14,12 +14,13 @@ public class CommentDao extends BaseDao {
 
 
     public int addComment(Comment comment) throws Exception {
-        var sql = "INSERT INTO comments (user_id, video_id, context,parent_id) VALUES (?, ?,?, ?)";
+        var sql = "INSERT INTO comments (user_id, video_id, context,parent_id, image_url) VALUES (?, ?, ?, ?, ?)";
         try (var stmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, comment.getUserId());
             stmt.setInt(2, comment.getVideoId());
             stmt.setString(3, comment.getContext());
             stmt.setInt(4, comment.getParentId());
+            stmt.setString(5, comment.getImageUrl());
             stmt.executeUpdate();
             try (var rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -70,7 +71,8 @@ public class CommentDao extends BaseDao {
                         rs.getString("status"),
                         rs.getTimestamp("create_date"),
                         rs.getInt("parent_id"),
-                        rs.getString("context")
+                        rs.getString("context"),
+                        rs.getString("image_url")
                 );
                 comments.add(comment);
             }
@@ -93,7 +95,8 @@ public class CommentDao extends BaseDao {
                         rs.getString("status"),
                         rs.getTimestamp("create_date"),
                         rs.getInt("parent_id"),
-                        rs.getString("context")
+                        rs.getString("context"),
+                        rs.getString("image_url")
                 );
             }
             return null;

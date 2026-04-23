@@ -11,9 +11,10 @@ public class Comment {
     private Integer parentId;
     private String context;
     private Integer likes;
+    private String imageUrl;
 
 
-    public Comment(Integer id, Integer userId, Integer likes, Integer videoId, String status, Timestamp createDate, Integer parentId, String context) {
+    public Comment(Integer id, Integer userId, Integer likes, Integer videoId, String status, Timestamp createDate, Integer parentId, String context, String imageUrl) {
         this.id = id;
         this.userId = userId;
         this.likes = likes;
@@ -22,6 +23,7 @@ public class Comment {
         this.createDate = createDate;
         this.parentId = parentId;
         this.context = context;
+        this.imageUrl = imageUrl;
     }
 
     public Integer getId() {
@@ -86,5 +88,13 @@ public class Comment {
 
     public void setLikes() {
         this.likes = likes;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

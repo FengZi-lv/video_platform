@@ -4,6 +4,7 @@ public class CommentActionDTO extends UserPayloadDTO {
     private Integer video_id;
     private String content;
     private Integer parent_id;
+    private String image_url;
 
     public CommentActionDTO() {
     }
@@ -30,6 +31,14 @@ public class CommentActionDTO extends UserPayloadDTO {
 
     public void setParent_id(Integer parent_id) {
         this.parent_id = parent_id;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 }
 

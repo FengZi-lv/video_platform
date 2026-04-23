@@ -100,7 +100,8 @@ public class VideoService {
                         c.getParentId(),
                         c.getStatus(),
                         finalLikedCommentIds.contains(c.getId()),
-                        c.getUserId()
+                        c.getUserId(),
+                        Objects.equals(c.getStatus(), "del") ? null : c.getImageUrl()
                 ))
                 .toList();
 

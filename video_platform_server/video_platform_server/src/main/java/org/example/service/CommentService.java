@@ -6,8 +6,11 @@ import org.example.dto.CommentActionDTO;
 import org.example.dto.UserPayloadDTO;
 import org.example.entity.Comment;
 import org.example.entity.Video;
+import org.example.util.Config;
 import org.example.vo.CommentVO;
 import org.example.vo.ResultVO;
+
+import java.io.File;
 
 public class CommentService {
     private CommentDao commentDao;
@@ -22,6 +25,15 @@ public class CommentService {
         if (dto.getContent() == null || dto.getContent().trim().isEmpty()) {
             return new ResultVO(false, "评论失败，内容不能为空");
         }
+
+        // 检查图片是否存在
+        String physicalSrc = dto.getImage_url() != null ?
+                dto.getImage_url().replace("/", Config.RES_BASE_PATH) : "";
+
+        if (dto.getImage_url() != null && !dto.getImage_url().isEmpty() && !new File(physicalSrc).exists()) {
+            return new ResultVO(false, "图片不存在");
+        }
+
         Comment comment = new Comment(
                 null,
                 dto.getUserId(),
@@ -30,10 +42,11 @@ public class CommentService {
                 "none",
                 null,
                 dto.getParent_id() != null ? dto.getParent_id() : 0,
-                dto.getContent()
+                dto.getContent(),
+                dto.getImage_url()
         );
         int generatedId = commentDao.addComment(comment);
-        return new CommentVO(true, "评论成功", generatedId, dto.getContent(), 0, dto.getParent_id(), "none", false, dto.getUserId());
+        return new CommentVO(true, "评论成功", generatedId, dto.getContent(), 0, dto.getParent_id(), "none", false, dto.getUserId(), dto.getImage_url());
     }
 
     public ResultVO deleteComment(UserPayloadDTO user, int commentId) throws Exception {
@@ -64,6 +77,7 @@ public class CommentService {
                 null,
                 null,
                 "del",
+                null,
                 null,
                 null,
                 null
