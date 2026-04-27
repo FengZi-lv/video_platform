@@ -51,8 +51,6 @@ public class ReportService {
         List<Video> videos = videoDao.getAllPendingVideos();
         List<VideoVO> videoArray = videos.stream()
                 .map(v -> new VideoVO(
-                        true,
-                        "成功",
                         v.getId(),
                         v.getTitle(),
                         v.getThumbnailUrl(),

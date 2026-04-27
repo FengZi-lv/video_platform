@@ -192,8 +192,6 @@ public class UserService {
 
         var videos = videoDao.getUserAllVideoById(u.getId())
                 .stream().map(temp_user -> new VideoVO(
-                        true,
-                        "成功",
                         temp_user.getId(),
                         temp_user.getTitle(),
                         temp_user.getThumbnailUrl(),

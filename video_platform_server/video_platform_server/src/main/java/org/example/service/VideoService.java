@@ -224,8 +224,6 @@ public class VideoService {
     private List<VideoVO> toVideoVOArray(List<Video> videos) {
         return videos.stream()
                 .map(v -> new VideoVO(
-                        true,
-                        "成功",
                         v.getId(),
                         v.getTitle(),
                         v.getThumbnailUrl(),

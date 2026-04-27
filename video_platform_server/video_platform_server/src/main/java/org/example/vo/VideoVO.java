@@ -1,6 +1,6 @@
 package org.example.vo;
 
-public class VideoVO extends ResultVO {
+public class VideoVO {
 
     private int id;
     private String title;
@@ -12,8 +12,7 @@ public class VideoVO extends ResultVO {
     public VideoVO() {
     }
 
-    public VideoVO(boolean success, String msg, int id, String title, String thumbnail, int likes, int earn_coins) {
-        super(success, msg);
+    public VideoVO(int id, String title, String thumbnail, int likes, int earn_coins) {
         this.id = id;
         this.title = title;
         this.thumbnail = thumbnail;
