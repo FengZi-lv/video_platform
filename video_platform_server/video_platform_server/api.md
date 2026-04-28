@@ -3,7 +3,7 @@
 每次身份验证请求带上Bearer JWT，未登录即带上`Bearer guest`
 `username` 表示登录名，`nickname` 表示用户名称。
 
-## 登录
+## [x] 登录
 
 `POST /api/auth/login`
 
@@ -32,7 +32,7 @@
 }
 ```
 
-## 注册
+## [x] 注册
 
 `POST /api/auth/register`
 
@@ -43,7 +43,8 @@
   "username": "111@qqqq.com",
   "password": "密码",
   "nickname": "显示名称",
-  "bio": "个人简介"
+  "bio": "个人简介",
+  "avatar": "头像URL"
 }
 ```
 
@@ -63,7 +64,7 @@
 }
 ```
 
-## 修改密码
+## [x] 修改密码
 
 `POST /api/auth/change-password`
 
@@ -92,7 +93,7 @@
 }
 ```
 
-## 注销账号
+## [x] 注销账号
 
 `POST /api/auth/delete-account`
 
@@ -122,7 +123,7 @@
 
 # 用户服务 (UserService)
 
-## 修改个人信息
+## [x] 修改个人信息
 
 `POST /api/users/profile`
 请求
@@ -151,7 +152,7 @@
 }
 ```
 
-## 用户信息
+## [x] 用户信息
 
 `GET /api/users/{id}`
 
@@ -181,7 +182,7 @@
 }
 ```
 
-## 查看所有用户
+## [x] 查看所有用户
 
 `GET /api/admin/users`
 
@@ -200,7 +201,7 @@
 }
 ```
 
-## 封禁账号
+## [x] 封禁账号
 
 `POST /api/admin/users/ban`
 
@@ -230,7 +231,7 @@
 
 # 关注服务 (FollowService)
 
-## 关注用户
+## [x] 关注用户
 
 `POST /api/users/follow`
 
@@ -251,7 +252,7 @@
 }
 ```
 
-## 取消关注
+## [x] 取消关注
 
 `POST /api/users/unfollow`
 
@@ -272,7 +273,7 @@
 }
 ```
 
-## 查看关注列表
+## [x] 查看关注列表
 
 `GET /api/users/{id}/following`
 
@@ -291,7 +292,7 @@
 }
 ```
 
-## 查看粉丝列表
+## [x] 查看粉丝列表
 
 `GET /api/users/{id}/followers`
 
@@ -299,7 +300,7 @@
 
 # 签到服务 (CheckInService)
 
-## 签到
+## [x] 签到
 
 `POST /api/users/sign-in`
 
@@ -319,7 +320,7 @@
 }
 ```
 
-## 签到记录
+## [x] 签到记录
 
 `GET /api/users/sign-in/history`
 
@@ -335,7 +336,7 @@
 
 # 视频服务 (VideoService)
 
-## 视频列表
+## [x] 视频列表
 
 `GET /api/videos`
 
@@ -355,7 +356,7 @@
 }
 ```
 
-## 搜索视频
+## [x] 搜索视频
 
 `GET /api/videos/search?q=关键字&page=页码`
 
@@ -376,7 +377,7 @@
 }
 ```
 
-## 视频详情
+## [x] 视频详情
 
 `GET /api/videos/{id}`
 
@@ -411,7 +412,7 @@
 }
 ```
 
-## 发布视频
+## [x] 发布视频
 
 `POST /api/videos/publish`
 
@@ -426,7 +427,7 @@
 }
 ```
 
-## 上传视频
+## [x] 上传视频
 
 `POST /api/files/upload/video`
 
@@ -457,17 +458,17 @@
 }
 ```
 
-## 播放视频流
+## [x] 播放视频流
 
 `GET /api/file/get-video?name=xxxx.mp4`
 
 
-## 获取图片（头像/评论图/缩略图）
+## [x] 获取图片（头像/评论图/缩略图）
 
 `GET /api/file/get-image?name=xx.jpg`
 
 
-## 查看审核视频
+## [x] 查看审核视频
 
 `GET /api/admin/videos/pending`
 
@@ -487,7 +488,7 @@
 }
 ```
 
-## 审核视频
+## [x] 审核视频
 
 `POST /api/admin/videos/review`
 
@@ -519,7 +520,7 @@
 
 # 视频点赞服务 (VideoLikeService)
 
-## 点赞视频
+## [x] 点赞视频
 
 `POST /api/videos/like`
 
@@ -547,7 +548,7 @@
 }
 ```
 
-## 取消点赞
+## [x] 取消点赞
 
 `POST /api/videos/unlike`
 
@@ -577,7 +578,7 @@
 
 # 视频收藏服务 (VideoFavoritesService)
 
-## 收藏视频
+## [x] 收藏视频
 
 `POST /api/videos/favorite`
 
@@ -605,7 +606,7 @@
 }
 ```
 
-## 取消收藏
+## [x] 取消收藏
 
 `POST /api/videos/unfavorite`
 
@@ -633,7 +634,7 @@
 }
 ```
 
-## 收藏的视频
+## [x] 收藏的视频
 
 `GET /api/videos/favorites`
 
@@ -655,7 +656,7 @@
 
 # 视频历史服务 (VideoHistoryService)
 
-## 历史浏览
+## [x] 历史浏览
 
 `GET /api/videos/history`
 
@@ -677,7 +678,7 @@
 
 # 视频投币服务 (VideoCoinsService)
 
-## 投币
+## [x] 投币
 
 `POST /api/videos/coin`
 
@@ -708,7 +709,7 @@
 
 # 评论服务 (CommentService)
 
-## 发表评论
+## [x] 发表评论
 
 `POST /api/comments`
 
@@ -740,7 +741,7 @@
 }
 ```
 
-## 删除评论
+## [x] 删除评论
 
 `DELETE /api/comments/{id}`
 
@@ -762,7 +763,7 @@
 
 # 评论点赞服务 (CommentLikesService)
 
-## 点赞评论
+## [x] 点赞评论
 
 `POST /api/comments/like`
 
@@ -790,7 +791,7 @@
 }
 ```
 
-## 取消点赞评论
+## [x] 取消点赞评论
 
 `POST /api/comments/unlike`
 
@@ -818,7 +819,7 @@
 }
 ```
 
-## 上传图片（头像/评论图）
+## [x] 上传图片（头像/评论图）
 
 `POST /api/files/upload/image`
 
@@ -835,7 +836,7 @@
 
 # 举报服务 (ReportService)
 
-## 举报视频
+## [x] 举报视频
 
 `POST /api/videos/report`
 
@@ -864,7 +865,7 @@
 }
 ```
 
-## 查看举报列表
+## [x] 查看举报列表
 
 `GET /api/admin/reports`
 
@@ -884,7 +885,7 @@
 }
 ```
 
-## 处理举报
+## [x] 处理举报
 
 `POST /api/admin/reports/handle`
 
@@ -917,7 +918,7 @@
 
 # 漫展演出系统 (ExhibitionService TicketService)
 
-## 获取漫展演出列表
+## [x] 获取漫展演出列表
 
 `GET /api/exhibitions`
 
@@ -945,7 +946,7 @@
 }
 ```
 
-## 漫展展览详情
+## [x] 漫展展览详情
 
 `GET /api/exhibitions/{id}`
 
@@ -984,7 +985,7 @@
 }
 ```
 
-## 用户购票
+## [ ] 用户购票
 
 `POST /api/tickets/buy`
 
@@ -1009,13 +1010,49 @@
 }
 ```
 
-## 历史订单/退票查询
+## [ ] 历史订单/退票查询
 
 `GET /api/tickets/orders`
 
 返回历史所有票务订单记录及状态。
 
-## 用户退票
+返回
+```json
+{
+  "total": 25,
+  "orders": [
+    {
+      "order_id": 10001,
+      "exhibition": {
+        "id": 1,
+        "title": "xxxxxxxx",
+        "cover": "封面URL",
+        "address": "漫展地址"
+      },
+      "session_name": "首发日 7月1日",
+      "ticket_type_name": "VIP票",
+      "count": 2,
+      "total_amount": "598.00",
+      "status": "paid", 
+      "create_time": "2999-06-01 10:00:00",
+      "tickets": [
+        {
+          "ticket_code": "xxxx",
+          "status": "valid", 
+          "verify_time": null
+        },
+        {
+          "ticket_code": "xxxx",
+          "status": "used",
+          "verify_time": "2999-06-01 10:00:00"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## [ ] 用户退票
 
 `POST /api/tickets/refund`
 
@@ -1036,7 +1073,7 @@
 }
 ```
 
-## 管理端 - 发布漫展演出
+## [x] 管理端 - 发布漫展演出
 
 `POST /api/admin/exhibitions`
 
@@ -1062,7 +1099,7 @@
 }
 ```
 
-## 管理端 - 修改漫展演出
+## [x] 管理端 - 修改漫展演出
 
 `PUT /api/admin/exhibitions/{id}`
 
@@ -1088,13 +1125,13 @@
 }
 ```
 
-## 管理端 - 查看所有订单信息
+## [x] 管理端 - 查看所有订单信息
 
 `GET /api/admin/tickets/orders`
 
 获取平台所有用户的订单，可附加筛选查询。
 
-## 管理端 - 同意用户退票
+## [x] 管理端 - 同意用户退票
 
 `POST /api/admin/tickets/refund/handle`
 
@@ -1108,7 +1145,7 @@
 }
 ```
 
-## 管理端 - 线下核销
+## [x] 管理端 - 线下核销
 
 `POST /api/admin/tickets/verify`
 
@@ -1132,7 +1169,7 @@
 }
 ```
 
-## 管理端 - 数据统计
+## [x] 管理端 - 数据统计
 
 `GET /api/admin/exhibitions/{id}/stats`
 
@@ -1140,14 +1177,14 @@
 
 ```json
 {
-  "total_revenue": "150000.00",
+  "total_revenue": 150000,
   "total_tickets_sold": 1000,
   "total_tickets_verified": 800,
   "sessions_stats": [
     {
       "session_id": 1,
       "session_name": "首日场",
-      "revenue": "80000.00",
+      "revenue": 80000,
       "sold": 600,
       "verified": 400
     }
