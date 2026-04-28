@@ -6,18 +6,25 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.UserPayloadDTO;
+import org.example.service.ExhibitionService;
 import org.example.util.ServletUtil;
+import org.example.vo.ExhibitionsListVO;
 import org.example.vo.ResultVO;
 
 import java.io.IOException;
 
 @WebServlet("/api/exhibitions/*")
 public class ExhibitionServlet extends HttpServlet {
-
+    private ExhibitionService exhibitionService;
 
     @Override
     public void init() throws ServletException {
-
+        super.init();
+        try {
+            exhibitionService = new ExhibitionService();
+        } catch (Exception e) {
+            throw new ServletException("Failed to initialize UserService", e);
+        }
     }
 
     /**
@@ -25,10 +32,7 @@ public class ExhibitionServlet extends HttpServlet {
      * 获取漫展演出列表
      */
     private ResultVO getExhibitions(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
-        String page = req.getParameter("page");
-        String type = req.getParameter("type");
-        String time = req.getParameter("time");
-        return null;
+        return exhibitionService.getExhibitions(userPayloadDTO, req);
     }
 
     /**
@@ -36,8 +40,7 @@ public class ExhibitionServlet extends HttpServlet {
      * 漫展展览详情
      */
     private ResultVO getExhibitionDetail(UserPayloadDTO userPayloadDTO, HttpServletRequest req) throws Exception {
-
-        return null;
+        return exhibitionService.getExhibitionDetail(userPayloadDTO, req);
     }
 
     @Override
