@@ -92,4 +92,30 @@ public class FollowDao extends BaseDao {
             }
         }
     }
+
+    public int countFollowers(int userId) throws SQLException {
+        var sql = "SELECT COUNT(*) AS count FROM user_follows WHERE following_id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count");
+                }
+            }
+        }
+        return 0;
+    }
+
+    public int countFollowing(int userId) throws SQLException {
+        var sql = "SELECT COUNT(*) AS count FROM user_follows WHERE follower_id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("count");
+                }
+            }
+        }
+        return 0;
+    }
 }

@@ -189,6 +189,8 @@ public class UserService {
             return null;
         }
         var u = user.get(0);
+        var followersCount = followDao.countFollowers(u.getId());
+        var followingCount = followDao.countFollowing(u.getId());
 
         var videos = videoDao.getUserAllVideoById(u.getId())
                 .stream().map(temp_user -> new VideoVO(
@@ -199,7 +201,7 @@ public class UserService {
                         temp_user.getCoinsCount()
                 )).collect(Collectors.toList());
 
-        return new UserInfoVO(
+        var userInfo = new UserInfoVO(
                 true,
                 "成功",
                 u.getId(),
@@ -211,6 +213,10 @@ public class UserService {
                 followDao.isFollowing(userPayloadDTO.getUserId(), u.getId()),
                 videos
         );
+        userInfo.setAvatar(u.getAvatar_url());
+        userInfo.setFollowers_count(followersCount);
+        userInfo.setFollowing_count(followingCount);
+        return userInfo;
     }
 
     /**

@@ -7,6 +7,9 @@ public class UserInfoVO extends ResultVO {
     private Integer id;
     private String nickname;
     private String bio;
+    private String avatar;
+    private Integer followers_count;
+    private Integer following_count;
     private Integer likes;
     private Integer earn_coins;
     private String status;
@@ -40,6 +43,18 @@ public class UserInfoVO extends ResultVO {
         return bio;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public Integer getFollowers_count() {
+        return followers_count;
+    }
+
+    public Integer getFollowing_count() {
+        return following_count;
+    }
+
     public Integer getLikes() {
         return likes;
     }
@@ -66,6 +81,18 @@ public class UserInfoVO extends ResultVO {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setFollowers_count(Integer followers_count) {
+        this.followers_count = followers_count;
+    }
+
+    public void setFollowing_count(Integer following_count) {
+        this.following_count = following_count;
     }
 
     public void setLikes(Integer likes) {
