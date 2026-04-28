@@ -1,63 +1,51 @@
 package org.example.vo;
 
-public class ExhibitionStatsVO extends org.example.vo.ResultVO {
-    private int exhibitionId;
-    private int totalTickets;
-    private int soldTickets;
-    private int visitedTickets;
-    private double totalRevenue;
+import java.util.List;
 
-    public ExhibitionStatsVO() {
-    }
+public class ExhibitionStatsVO extends ResultVO {
 
+    private int total_revenue;
+    private int total_tickets_sold;
+    private int total_tickets_verified;
+    private List<SessionStatVO> sessions_stats;
 
-
-    public ExhibitionStatsVO(boolean success, String msg, int exhibitionId, int totalTickets, int soldTickets, int visitedTickets, double totalRevenue) {
+    public ExhibitionStatsVO(boolean success, String msg, int total_revenue, int total_tickets_sold, int total_tickets_verified, List<SessionStatVO> sessions_stats) {
         super(success, msg);
-        this.exhibitionId = exhibitionId;
-        this.totalTickets = totalTickets;
-        this.soldTickets = soldTickets;
-        this.visitedTickets = visitedTickets;
-        this.totalRevenue = totalRevenue;
+        this.total_revenue = total_revenue;
+        this.total_tickets_sold = total_tickets_sold;
+        this.total_tickets_verified = total_tickets_verified;
+        this.sessions_stats = sessions_stats;
     }
 
-    public int getExhibitionId() {
-        return exhibitionId;
+    public int getTotal_revenue() {
+        return total_revenue;
     }
 
-    public void setExhibitionId(int exhibitionId) {
-        this.exhibitionId = exhibitionId;
+    public void setTotal_revenue(int total_revenue) {
+        this.total_revenue = total_revenue;
     }
 
-    public int getTotalTickets() {
-        return totalTickets;
+    public int getTotal_tickets_sold() {
+        return total_tickets_sold;
     }
 
-    public void setTotalTickets(int totalTickets) {
-        this.totalTickets = totalTickets;
+    public void setTotal_tickets_sold(int total_tickets_sold) {
+        this.total_tickets_sold = total_tickets_sold;
     }
 
-    public int getSoldTickets() {
-        return soldTickets;
+    public int getTotalTicketsVerified() {
+        return total_tickets_verified;
     }
 
-    public void setSoldTickets(int soldTickets) {
-        this.soldTickets = soldTickets;
+    public void setTotal_tickets_verified(int total_tickets_verified) {
+        this.total_tickets_verified = total_tickets_verified;
     }
 
-    public int getVisitedTickets() {
-        return visitedTickets;
+    public List<SessionStatVO> getSessions_stats() {
+        return sessions_stats;
     }
 
-    public void setVisitedTickets(int visitedTickets) {
-        this.visitedTickets = visitedTickets;
-    }
-
-    public double getTotalRevenue() {
-        return totalRevenue;
-    }
-
-    public void setTotalRevenue(double totalRevenue) {
-        this.totalRevenue = totalRevenue;
+    public void setSessions_stats(List<SessionStatVO> sessions_stats) {
+        this.sessions_stats = sessions_stats;
     }
 }
